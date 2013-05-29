@@ -1,9 +1,11 @@
 -module(feed_writer).
 -behaviour(feed_consumer).
--include_lib("store/include/feed.hrl").
--include_lib("store/include/user.hrl").
--include_lib("store/include/meetings.hrl").
--include("feed_server.hrl").
+-include_lib("kvs/include/feeds.hrl").
+-include_lib("kvs/include/users.hrl").
+-include_lib("kvs/include/groups.hrl").
+-include_lib("kvs/include/meetings.hrl").
+-include_lib("kvs/include/log.hrl").
+-include_lib("feed_server/include/feed_server.hrl").
 -export([init/1, handle_notice/3, get_opts/1, handle_info/2, handle_call/3, start_link/2,
         cached_feed/3, cached_direct/3, feed_refresh/3, direct_refresh/3,
         cached_friends/2, cached_groups/1 ]).
@@ -92,8 +94,8 @@ handle_notice(["feed", "group", GroupId, "entry", EntryId, "add"] = Route,
             GE = Group#group.entries_count,
             kvs:put(Group#group{entries_count = GE+1}),
             {ok, Subs} = kvs:get(group_subs, {From, GroupId}),
-            SE = Subs#group_subs.user_posts_count,
-            kvs:put(Subs#group_subs{user_posts_count = SE+1})
+            SE = Subs#group_subscription.user_posts_count,
+            kvs:put(Subs#group_subscription{user_posts_count = SE+1})
     end,    
 
     self() ! {feed_refresh,Feed,20},

@@ -1,9 +1,10 @@
 -module(feed_launcher).
 -author('Vladimir Baranov <baranoff.vladimir@gmail.com>').
 -behaviour(feed_consumer).
--include_lib("store/include/users.hrl").
--include("feed_server.hrl").
--include("log.hrl").
+-include_lib("kvs/include/users.hrl").
+-include_lib("kvs/include/groups.hrl").
+-include_lib("kvs/include/log.hrl").
+-include_lib("feed_server/include/feed_server.hrl").
 -export([init/1, handle_notice/3, handle_info/2, get_opts/1, start_worker/4, start_link/2, start_worker/4]).
 -record(state, {name,type}).
 

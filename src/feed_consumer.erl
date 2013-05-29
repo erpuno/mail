@@ -1,6 +1,6 @@
 -module(feed_consumer).
 -behaviour(gen_server).
--include_lib("msq/include/mqs.hrl").
+-include_lib("mqs/include/mqs.hrl").
 -include("log.hrl").
 -include("feed_server.hrl").
 -export([behaviour_info/1,delivery/2,start_link/2]).
