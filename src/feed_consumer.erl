@@ -1,8 +1,8 @@
 -module(feed_consumer).
 -behaviour(gen_server).
 -include_lib("mqs/include/mqs.hrl").
--include("log.hrl").
--include("feed_server.hrl").
+-include_lib("kvs/include/log.hrl").
+-include_lib("feed_server/include/feed_server.hrl").
 -export([behaviour_info/1,delivery/2,start_link/2]).
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 behaviour_info(callbacks) ->
@@ -28,7 +28,6 @@ delivery(Envelope, Server) -> gen_server:cast(Server, {delivery, Envelope}).
 
 init([Module | Args]) ->
     process_flag(trap_exit, true),
-
     case catch Module:init(Args) of
         {ok, CState} ->
             {ok, Channel} = mqs:open([]),
@@ -38,25 +37,12 @@ init([Module | Args]) ->
 
             {ok, CallbackQueue} = subscribe_client(Channel, Options), % subscribe for client's events
             {ok, SystemQueue} = subscribe_system(Channel), % subscribe for system events
-
-            %% register in gproc if gproc name specified
-%            GProcName = proplists:get_value(gproc_name, Options),
-%            case GProcName of
-%                undefined ->
-%                    ok;
-%                Name ->
-%                    ?INFO("register ~p in gproc with name ~p", [Module, Name]),
-%                    catch gproc:reg(gproc_key(Name), Module)
-%            end,
-
             {ok, #state{callback_state = CState,
                         callback       = Module,
                         channel        = Channel,
                         system_queue   = SystemQueue,
                         callback_queue = CallbackQueue,
                         channel_mon    = MonRef}};
-%                        gproc_name     = GProcName}};
-
         {stop, Reason} ->    {stop, Reason};
         {'EXIT', Reason} ->  {stop, {init_failed, {Module, Reason}}}
     end.
@@ -129,9 +115,9 @@ subscribe_system(Channel) ->
 
 subscribe(Channel, Exchange, Routes, Queue, QueueOptions, ConsumeOptions) ->
 %    ?INFO("gen_worker: ~p, Exchange: ~p, Routes: ~p, Queue:~p, QueueOptions: ~p", [Channel, Exchange, Routes, Queue, QueueOptions]),
-    {ok, _} = mqs_channel:create_queue(Channel, Queue, QueueOptions),
+    mqs_channel:create_queue(Channel, Queue, QueueOptions),
     [begin RoutingKey = mqs_lib:list_to_key(Route), 
-           ok = mqs_channel:bind_queue(Channel, Queue, Exchange, RoutingKey) end || Route <- Routes],
+           mqs_channel:bind_queue(Channel, Queue, Exchange, RoutingKey) end || Route <- Routes],
     ConsumeOpts = [{callback, {?MODULE, delivery}}, {state, self()}|ConsumeOptions],
     {ok, _Ctag} = mqs_channel:consume(Channel, Queue, ConsumeOpts),
     {ok, Queue}.

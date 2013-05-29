@@ -1,6 +1,6 @@
 -module(feed_mailer).
 -behaviour(feed_consumer).
--include("log.hrl").
+-include_lib("kvs/include/log.hrl").
 -include_lib("kvs/include/membership_packages.hrl").
 -include_lib("kvs/include/config.hrl").
 -export([init/1, handle_notice/3, get_opts/1, handle_info/2, start_link/2]).
