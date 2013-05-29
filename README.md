@@ -19,7 +19,7 @@ Dependencies
 Credits
 -------
 
-Maxim Sokhatsky
-Andrii Zadorozhnii
+* Maxim Sokhatsky
+* Andrii Zadorozhnii
 
 OM A HUM
