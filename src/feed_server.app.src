@@ -1,0 +1,6 @@
+{application, feed_server, [{description, "Message Bus Consumers"},
+                       {vsn, "1"},
+                       {registered, []},
+                       {applications, [kernel, gproc, stdlib, store, mqs]},
+                       {mod, { nsm_bg_app, []}},
+                       {env, []}]}.
