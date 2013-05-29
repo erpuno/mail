@@ -1,6 +1,6 @@
--module(nsm_launcher).
+-module(feed_launcher).
 -author('Vladimir Baranov <baranoff.vladimir@gmail.com>').
--behaviour(nsm_consumer).
+-behaviour(feed_consumer).
 -include_lib("store/include/users.hrl").
 -include("feed_server.hrl").
 -include("log.hrl").
@@ -23,7 +23,7 @@ handle_notice(Route, Message, State) ->
     {noreply, State}.
 
 start_worker(Name, Type, Feed, Direct) ->
-    feed_sup:start_worker(nsm_writer, [{name,Name},{feed,Feed},{type,Type},{direct,Direct}]).
+    feed_sup:start_worker(feed_writer, [{name,Name},{feed,Feed},{type,Type},{direct,Direct}]).
 
 handle_info(start_all, State) ->
     ?INFO("Starting workers..."),
@@ -32,15 +32,15 @@ handle_info(start_all, State) ->
     RunGroups = fun(Groups) -> [begin start_worker(Name,group,Feed,undefined) end 
                                 || #group{username=Name,feed=Feed} <- Groups] end,
     RunSystem = fun() -> start_worker("system",system,-1,undefined) end,
-    Node = nsx_opt:get_env(nsm_bg,pool,5),
+    Node = nsx_opt:get_env(feed_server,pool,5),
     Users = case Node of
-                 4 -> [User || User<-nsm_db:all(user), User#user.email /= undefined, User#user.status == ok];
-                 5 -> [User || User<-nsm_db:all(user), User#user.email /= undefined, User#user.status == ok];
-                 X -> [R||R=#user{username=U,status=ok,email=E}<-nsm_db:all(user), CheckNode(U)==X,E/=undefined]
+                 4 -> [User || User<-kvs:all(user), User#user.email /= undefined, User#user.status == ok];
+                 5 -> [User || User<-kvs:all(user), User#user.email /= undefined, User#user.status == ok];
+                 X -> [R||R=#user{username=U,status=ok,email=E}<-kvs:all(user), CheckNode(U)==X,E/=undefined]
     end,
     ?INFO("Users Count on Node ~p: ~p",[Node,length(Users)]),
-    Groups = [Group || Group=#group{username=G} <-nsm_db:all(group), CheckNode(G)==Node ],
-    AllGroups = nsm_db:all(group),
+    Groups = [Group || Group=#group{username=G} <- kvs:all(group), CheckNode(G)==Node ],
+    AllGroups = kvs:all(group),
     case Node of
          1 -> RunGroups(Groups);
          2 -> RunGroups(Groups);

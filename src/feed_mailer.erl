@@ -27,7 +27,7 @@ handle_notice(["email", "send"], {Subject, TextContent, HTMLContent, To},
 handle_notice(["purchase", User, PurchaseId, PaymentType, PurchaseState],
               #membership_purchase{} = _Purchase,
               #state{smtp_options = Options} = State) ->
-    case nsm_db:get(config, "purchase/notifications/email") of
+    case kvs:get(config, "purchase/notifications/email") of
         [] ->
             ?INFO("email(~p): purchase notifications recipients list is empty",
                  [self()]);

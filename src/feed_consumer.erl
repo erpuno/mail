@@ -1,5 +1,4 @@
--module(nsm_consumer).
--author('Vladimir Baranov <baranoff.vladimir@gmail.com>').
+-module(feed_consumer).
 -behaviour(gen_server).
 -include_lib("msq/include/mqs.hrl").
 -include("log.hrl").
@@ -63,7 +62,7 @@ init([Module | Args]) ->
     end.
 
 handle_call(Request, _From, State) ->
-    {Reply, Answer, NewState} = nsm_writer:handle_call(Request,_From,State#state.callback_state),
+    {Reply, Answer, NewState} = feedwriter:handle_call(Request,_From,State#state.callback_state),
     {reply, Answer, State#state{callback_state=NewState}}.
 
 handle_cast({delivery, Envelope}, State) ->
@@ -130,19 +129,19 @@ subscribe_system(Channel) ->
 
 subscribe(Channel, Exchange, Routes, Queue, QueueOptions, ConsumeOptions) ->
 %    ?INFO("gen_worker: ~p, Exchange: ~p, Routes: ~p, Queue:~p, QueueOptions: ~p", [Channel, Exchange, Routes, Queue, QueueOptions]),
-    {ok, _} = nsm_mq_channel:create_queue(Channel, Queue, QueueOptions),
-    [begin RoutingKey = nsm_mq_lib:list_to_key(Route), 
-           ok = nsm_mq_channel:bind_queue(Channel, Queue, Exchange, RoutingKey) end || Route <- Routes],
+    {ok, _} = mqs_channel:create_queue(Channel, Queue, QueueOptions),
+    [begin RoutingKey = mqs_lib:list_to_key(Route), 
+           ok = mqs_channel:bind_queue(Channel, Queue, Exchange, RoutingKey) end || Route <- Routes],
     ConsumeOpts = [{callback, {?MODULE, delivery}}, {state, self()}|ConsumeOptions],
-    {ok, _Ctag} = nsm_mq_channel:consume(Channel, Queue, ConsumeOpts),
+    {ok, _Ctag} = mqs_channel:consume(Channel, Queue, ConsumeOpts),
     {ok, Queue}.
 
 publish(Channel, Exchange, RoutingKey, Message) ->
     BinaryRoutingKey = case RoutingKey of
-                            L when is_list(L)-> nsm_mq_lib:list_to_key(L);
+                            L when is_list(L)-> mqs_lib:list_to_key(L);
                             B when is_binary(B) -> B;
                             _ -> throw({unexpected_routing_key_format, RoutingKey})
     end,
-    ok = nsm_mq_channel:publish(Channel, Exchange, BinaryRoutingKey, Message).
+    ok = mqs_channel:publish(Channel, Exchange, BinaryRoutingKey, Message).
 
 gproc_key(Name) -> {p, l, Name}.

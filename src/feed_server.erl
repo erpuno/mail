@@ -9,16 +9,16 @@ start_link() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 init([]) ->
 
-    {ok, Channel} = nsm_mq:open([]),
+    {ok, Channel} = mqs:open([]),
     mqs_channel:create_exchange(Channel, ?DEAD_LETTER_EXCHANGE,
                                    [{type, <<"fanout">>}, durable, {auto_delete, false}]),
 
-    case nsx_opt:get_env(nsm_bg,start_email,false) of
+    case nsx_opt:get_env(feed_server,start_email,false) of
          false -> skip;
-         true ->  feed_sup:start_worker(nsm_mailer, [{name,"@mailer"},{type,system}])
+         true ->  feed_sup:start_worker(feed_mailer, [{name,"@mailer"},{type,system}])
     end,
 
-    {ok, BPid} = feed_sup:start_worker(nsm_launcher, [{name, "@launcher"},{type,system}]),
+    {ok, BPid} = feed_sup:start_worker(feed_launcher, [{name, "@launcher"},{type,system}]),
     erlang:send(BPid,start_all),
 
     {ok,#state{}}.

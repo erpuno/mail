@@ -13,8 +13,8 @@ Feed Server is a product and can be used
 Dependencies
 ------------
 
-* white_rabbit (RabbitMQ client library)
-* store_framework (KV storages abstraction layer)
+* mqs (RabbitMQ client library)
+* kvs (KV storages abstraction layer)
 
 Credits
 -------

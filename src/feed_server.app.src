@@ -2,5 +2,5 @@
                        {vsn, "1"},
                        {registered, []},
                        {applications, [kernel, gproc, stdlib, store, mqs]},
-                       {mod, { nsm_bg_app, []}},
+                       {mod, { feed_server_app, []}},
                        {env, []}]}.
