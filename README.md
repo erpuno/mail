@@ -13,7 +13,7 @@ Feed Server is a product that can be used for:
 
 * Handling partitioned distributed cache
 * Distribution worker proccesses connected to MQ bus
-* Providing sequential consistecy for DHT
+* Providing sequential consistency for DHT
 * Notifications handlers: mailers, background workers, etc.
 
 Dependencies
