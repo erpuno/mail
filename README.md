@@ -8,7 +8,13 @@ Feed Server is node of user workers pool (shards). It handles all MQ requests fo
 write operations for user's data and other APIs. Also it stores a cache for user data.
 Feed Server manages spawning those workers on startup and supervising them.
 You could create your own workers based on consumer behavior provided by Feed Server.
-Feed Server is a product and can be used 
+
+Feed Server is a product that can be used for:
+
+* Handling partitioned distributed cache
+* Distribution worker proccesses connected to MQ bus
+* Providing sequential consistecy for DHT
+* Notifications handlers: mailers, background workers, etc.
 
 Dependencies
 ------------
@@ -19,7 +25,7 @@ Dependencies
 Credits
 -------
 
-Maxim Sokhatsky
-Andrii Zadorozhnii
+* Maxim Sokhatsky
+* Andrii Zadorozhnii
 
 OM A HUM
