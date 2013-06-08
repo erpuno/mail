@@ -76,7 +76,7 @@ handle_info({direct_refresh, Fid, Page}, State) -> Reply = kvs:entries_in_feed(F
 handle_info(_Info, State) -> {noreply, State}.
 
 handle_notice(Route, Message, State) ->
-    feed_server_api:handle_notice(Route, Message, State).
+    feed_server_api:handle(Route, Message, State).
 
 get_opts(#state{type = user, owner = Owner}) ->
     Name = ?FEED_WORKER_NAME(user, Owner),
