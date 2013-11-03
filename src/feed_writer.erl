@@ -4,8 +4,7 @@
 -include_lib("kvs/include/users.hrl").
 -include_lib("kvs/include/groups.hrl").
 -include_lib("kvs/include/meetings.hrl").
--include_lib("kvs/include/log.hrl").
--include_lib("feed_server/include/feed_server.hrl").
+-include("feed_server.hrl").
 -export([init/1, handle_notice/3, get_opts/1, handle_info/2, handle_call/3, start_link/2,
         cached_feed/3, cached_direct/3, feed_refresh/3, direct_refresh/3,
         cached_friends/2, cached_groups/1 ]).
@@ -28,7 +27,7 @@ init(Params) ->
     Feed    = proplists:get_value(feed,   Params),
     Direct  = proplists:get_value(direct, Params, undefined),
     gproc:reg({p,l,Owner}, {Type,Feed,Direct}),
-    ?INFO("Init worker: ~p", [Params]),
+    error_logger:info_msg("Init worker: ~p", [Params]),
     {ok, #state{owner = Owner, type = Type, feed = Feed, direct = Direct}}.
 
 cached_feed(Uid,Fid,Page) -> Pid = feed_server:pid(Uid), gen_server:call(Pid,{cached_feed,Fid,Page}).
@@ -40,12 +39,12 @@ feed_refresh(Pid,Fid,Page) -> gen_server:call(Pid,{feed_refresh,Fid,Page}).
 direct_refresh(Pid,Fid,Page) -> gen_server:call(Pid,{direct_refresh,Fid,Page}).
 
 handle_call({cached_feed,FId,Page},From,State) ->
-    ?INFO("Old State: ~p",[State]),
+    error_logger:info_msg("Old State: ~p",[State]),
     Reply = case State#state.cached_feed of
                  undefined -> kvs:entries_in_feed(FId,Page);
                  A -> A end,
     NewState = State#state{cached_feed=Reply},
-    ?INFO("New State: ~p",[NewState]),
+    error_logger:info_msg("New State: ~p",[NewState]),
     {reply,Reply,NewState};
 
 handle_call({cached_direct,FId,Page},From,State) ->
@@ -55,12 +54,12 @@ handle_call({cached_direct,FId,Page},From,State) ->
     {reply,Reply,State#state{cached_direct=Reply}};
 
 handle_call({cached_friends,Id,Type},From,State) ->
-    ?INFO("~p Old State: ~p",[self(), State]),
+    error_logger:info_msg("~p Old State: ~p",[self(), State]),
     Reply = case State#state.cached_friends of
                  undefined -> users:retrieve_connections(Id,Type);
                  A -> A end,
     NewState = State#state{cached_friends=Reply},
-    ?INFO("New State: ~p",[NewState]),
+    error_logger:info_msg("New State: ~p",[NewState]),
     {reply,Reply,NewState};
 
 handle_call({cached_groups,User},From,State) ->

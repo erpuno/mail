@@ -2,5 +2,5 @@
 -behaviour(application).
 -export([start/2,stop/1]).
 
-start(_StartType, _StartArgs) -> feed_server_sup:start_link().
+start(_, _) -> case feed_server_sup:start_link() of {ok, Pid} -> {ok, Pid}; E -> E end.
 stop(_State) -> ok.

@@ -1,8 +1,7 @@
 -module(feed_consumer).
 -behaviour(gen_server).
 -include_lib("mqs/include/mqs.hrl").
--include_lib("kvs/include/log.hrl").
--include_lib("feed_server/include/feed_server.hrl").
+-include("feed_server.hrl").
 -export([behaviour_info/1,delivery/2,start_link/2]).
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 behaviour_info(callbacks) ->
@@ -57,14 +56,14 @@ handle_cast({delivery, Envelope}, State) ->
     process_delivery(Route, Envelope, State).
 
 handle_info({'DOWN', MRef, process, Ch, Reason}, #state{channel = Ch, channel_mon = MRef, callback_state = CS} = State) ->
-    ?ERROR("channel failed: ~p. CallbackState: ~p. Restart.", [Reason, CS]),
+    error_logger:info_msg("channel failed: ~p. CallbackState: ~p. Restart.", [Reason, CS]),
     {stop, {channel_failed, Ch}, State};
 
 handle_info(Info, #state{callback = Module, callback_state = CState0} = State)->
     process_result(State, Module:handle_info(Info, CState0));
 
 handle_info(Info, State) ->
-    ?WARNING("unexpected info: ~p", [Info]),
+    error_logger:info_msg("unexpected info: ~p", [Info]),
     {noreply, State}.
 
 terminate(_Reason, State) ->
@@ -76,7 +75,7 @@ terminate(_Reason, State) ->
 code_change(_OldVsn, State, _Extra) -> {ok, State}.
 
 process_delivery(["notice", "system", "reconfigure"], #envelope{payload = Conf}, State) ->
-%    ?INFO("recofigure received: ~p", [Conf]),
+%    error_logger:info_msg("recofigure received: ~p", [Conf]),
     {noreply, State};
 process_delivery(Route, Envelope, #state{callback = Module, callback_state = CState0} = State) ->
 %    ?DBG("process delivery. Not system call: ~p", [Route]),
@@ -87,7 +86,7 @@ process_result(State, Result) ->
     Module  = State#state.callback,
     Channel = State#state.channel,
     case Result of
-        {'EXIT', Reason} -> ?ERROR("~w: error: ~p, Stack: ~p", [Module, Reason, erlang:get_stacktrace()]), {noreply, State};
+        {'EXIT', Reason} -> error_logger:info_msg("~w: error: ~p, Stack: ~p", [Module, Reason, erlang:get_stacktrace()]), {noreply, State};
         {noreply, CState1} -> {noreply, State#state{callback_state = CState1}};
         {send, SRoutingKey, SMessage, CState1} -> publish(Channel, ?NOTIFICATIONS_EX, SRoutingKey, SMessage),
                                                   {noreply, State#state{callback_state = CState1}};
@@ -114,7 +113,7 @@ subscribe_system(Channel) ->
 
 
 subscribe(Channel, Exchange, Routes, Queue, QueueOptions, ConsumeOptions) ->
-%    ?INFO("gen_worker: ~p, Exchange: ~p, Routes: ~p, Queue:~p, QueueOptions: ~p", [Channel, Exchange, Routes, Queue, QueueOptions]),
+%    error_logger:info_msg("gen_worker: ~p, Exchange: ~p, Routes: ~p, Queue:~p, QueueOptions: ~p", [Channel, Exchange, Routes, Queue, QueueOptions]),
     mqs_channel:create_queue(Channel, Queue, QueueOptions),
     [begin RoutingKey = mqs_lib:list_to_key(Route), 
            mqs_channel:bind_queue(Channel, Queue, Exchange, RoutingKey) end || Route <- Routes],

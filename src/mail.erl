@@ -1,6 +1,5 @@
 -module(mail).
--include_lib("feed_server/include/feed_server.hrl").
--include_lib("kvs/include/log.hrl").
+-include("feed_server.hrl").
 
 -type smtp_options() :: with_ssl | {server, string()} | {port, integer()} |
           {user, string()} | {password, string()}.
@@ -17,11 +16,11 @@
 -spec send(string(), string(), string(), smtp_options()) -> ok.
 
 send(Subject, Content, To, Options) ->
-    User = nsx_opt:opt(user, Options, ?SMTP_USER),
+    User = application:get_env(user, Options, ?SMTP_USER),
     SendTo = format_send_to(To),
     ContentToSend = io_lib:format(
                       "Subject: ~s\r\n"
-                      "From: Kakaranet.com <~s> \r\n"
+                      "From: <~s> \r\n"
                       "To: ~s \r\n"
                       "Content-Transfer-Encoding: 7bit \r\n"
                       "Content-Type: text/plain; charset=\"utf-8\" \r\n"
@@ -35,11 +34,11 @@ send(Subject, Content, To, Options) ->
 %% @doc sending both plain and html version according to
 %% http://tools.ietf.org/html/rfc2046#section-5.1.4
 send_multipart(Subject, TextContent, HTMLContent, To, Options) ->
-    User = nsx_opt:opt(user, Options, ?SMTP_USER),
+    User = application:get_env(user, Options, ?SMTP_USER),
     SendTo = format_send_to(To),
     Boundary = "3b51a38ea77fe850dfba67b3e9192c001b211b3f",
     TS = io_lib:format(
-           "From: Kakaranet.com <~s> \r\n" %% From
+           "From: <~s> \r\n" %% From
            "To: ~s \r\n" %% Mail
            "Subject: ~s\r\n" %% Subject
            "MIME-version: 1.0\r\n"
@@ -66,20 +65,20 @@ send_multipart(Subject, TextContent, HTMLContent, To, Options) ->
 
 
 send_simple(Subject, Content, To, Options) ->
-    WithSSL = nsx_opt:opt(with_ssl, Options, ?SMTP_SSL),
-    Server  = nsx_opt:opt(server, Options, ?SMTP_HOST),
-    Port    = nsx_opt:opt(port, Options, ?SMTP_PORT),
-    User    = nsx_opt:opt(user, Options, ?SMTP_USER),
-    Password  = nsx_opt:opt(password, Options, ?SMTP_PASSWD),
+    WithSSL = application:get_env(with_ssl, Options, ?SMTP_SSL),
+    Server  = application:get_env(server, Options, ?SMTP_HOST),
+    Port    = application:get_env(port, Options, ?SMTP_PORT),
+    User    = application:get_env(user, Options, ?SMTP_USER),
+    Password= application:get_env(password, Options, ?SMTP_PASSWD),
 
-    ?INFO("Sibject:To: {~p,~p}", [Subject, To]),
+    error_logger:info_msg("Sibject:To: {~p,~p}", [Subject, To]),
 
     {ok, SockType, Sock} = connect(WithSSL, Server, Port),
     case Sock of 
-         none -> ?INFO("ERROR: Can't send email to: ~p",[To]);
+         none -> error_logger:info_msg("ERROR: Can't send email to: ~p",[To]);
          Socket ->
 
-    ?INFO("Socket: ~p",[Socket]),
+    error_logger:info_msg("Socket: ~p",[Socket]),
     send_data(SockType, Socket, "HELO kakaranet.com"),
     send_data(SockType, Socket, "AUTH LOGIN"),
     send_data(SockType, Socket, base64:encode_to_string(User)),
@@ -121,12 +120,12 @@ connect(WithSSL, Server, Port) ->
     {ok, SockType, Socket}.
 
 send_data(SockType, Socket, Data) ->
-    ?INFO("ME: ~p", [Data]),
+    error_logger:info_msg("ME: ~p", [Data]),
     SockType:send(Socket, Data ++ "\r\n"),
     recv(SockType, Socket).
 
 send_no_receive(SockType, Socket, Data) ->
-    ?INFO("ME: ~p", [Data]),
+    error_logger:info_msg("ME: ~p", [Data]),
     SockType:send(Socket, Data ++ "\r\n").
 
 close(SockType, Socket) ->
@@ -135,8 +134,8 @@ close(SockType, Socket) ->
 
 recv(SockType, Socket) ->
     case SockType:recv(Socket, 0, 140000) of
-        {ok, Return}    -> ?INFO("SERVER: ~p", [Return]);
-        {error, Reason} -> ?INFO("ERROR: ~p",  [Reason])
+        {ok, Return}    -> error_logger:info_msg("SERVER: ~p", [Return]);
+        {error, Reason} -> error_logger:info_msg("ERROR: ~p",  [Reason])
     end.
 
 %% when To - is list of emails

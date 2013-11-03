@@ -1,0 +1,6 @@
+ebin
+deps
+*.dets
+*.gz
+*.dump
+*.js
