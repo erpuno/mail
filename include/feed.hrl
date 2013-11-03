@@ -2,7 +2,7 @@
 -define(TEMP_ID, wf:temp_id()).
 -endif.
 
--record(feed_ui,        {?ELEMENT_BASE(feed_ui), state, icon="", icon_url, header=[], selection_ctl=[]}).
+-record(feed_ui,        {?ELEMENT_BASE(feed_ui), state, icon="", icon_url, header=[], selection_ctl=[],title=""}).
 -record(feed_entry,     {?ELEMENT_BASE(feed_ui), entry, state}).
 -record(row_entry,      {?ELEMENT_BASE(feed_ui), entry, state}).
 -record(div_entry,      {?ELEMENT_BASE(feed_ui), entry, state}).
