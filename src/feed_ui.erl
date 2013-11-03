@@ -22,7 +22,7 @@ render_element(#feed_ui{state=undefined})-> wf:render([
         #panel{class=["row-fluid","feed-title"], body=#panel{class=[span12],body= <<"[no state]">>}}}]);
 
 render_element(#feed_ui{state=S}=F) ->
-    Title = F#feed_ui.title,
+    Title = case F#feed_ui.title of undefined -> "";T->T end,
     Icon = F#feed_ui.icon,
     IconUrl = F#feed_ui.icon_url,
     Class= F#feed_ui.class,
