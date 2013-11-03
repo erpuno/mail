@@ -13,7 +13,7 @@
 -define(SYSTEM_FEEDS, [{feed,?USR_FEED},{feed,?PRD_FEED},{feed,?GRP_FEED},{feed,?ENT_FEED},{feed,?CMT_FEED}]).
 
 start_link() -> case gen_server:start_link({local, ?MODULE}, ?MODULE, [], []) of
-                    {ok,Pid} -> Pid ! start_all;
+                    {ok,Pid} -> Pid ! start_all, {ok,Pid};
                     E -> error_logger:info_msg("[feed_server] Start failed! ~p", [E]) end.
 
 init([])->
