@@ -18,7 +18,7 @@ feed_state(Id) ->  wf:cache({Id,?CTX#context.module}).
 input_state(Id) -> wf:cache({?FD_INPUT(Id),?CTX#context.module}).
 
 render_element(#feed_ui{state=S}=F) ->
-    Title = F#feed_ui.title,
+    Title = case F#feed_ui.title of undefined -> "";T->T end,
     Icon = F#feed_ui.icon,
     IconUrl = F#feed_ui.icon_url,
     Class= F#feed_ui.class,
