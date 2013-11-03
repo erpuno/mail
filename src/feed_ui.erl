@@ -17,6 +17,10 @@
 feed_state(Id) ->  wf:cache({Id,?CTX#context.module}).
 input_state(Id) -> wf:cache({?FD_INPUT(Id),?CTX#context.module}).
 
+render_element(#feed_ui{state=undefined})-> wf:render([
+    #section{class=[feed],body=
+        #panel{class=["row-fluid","feed-title"], body=#panel{class=[span12],body= <<"[no state]">>}}}]);
+
 render_element(#feed_ui{state=S}=F) ->
     Title = F#feed_ui.title,
     Icon = F#feed_ui.icon,
