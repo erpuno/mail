@@ -14,7 +14,7 @@
 -define(THUMB_SIZE,     [{139, 80}, {270, 124}, {180,180}, {200, 200}, {570, 570}, {716, 480}, {1170, 350}]).
 -define(MONTH(M),       element(M, {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"})).
 
--record(input, {?ELEMENT_BASE(input), state, icon="icon-edit"}).
+-record(input, {?ELEMENT_BASE(input), state, icon="fa fa-edit icon-edit"}).
 
 -record(input_state, {
     id          = ?TEMP_ID,
@@ -75,5 +75,5 @@
     expand_btn  = <<"">>,
     expand_class= [btn, "btn-info"],
     post_class  = [btn, "btn-info"],
-    close_class = [btn],
-    cancel_class= [btn] }).
+    close_class = [btn, "btn-default"],
+    cancel_class= [btn, "btn-default"] }).
