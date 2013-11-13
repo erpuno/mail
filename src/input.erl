@@ -91,7 +91,6 @@ body(#input_state{show_body=true}=S)->
     Dir = ?DIR(case wf:user() of undefined -> "anonymous"; #user{email=E}->E end),
 
     #htmlbox{id=S#input_state.body_id, class=[span12,"col-sm-12 form-control"],
-        style = <<"min-height: 120px;resize: vertical;overflow: hidden;">>,
         html = S#input_state.description,
         root=Root, dir=Dir,
         post_write=attach_media,
