@@ -11,9 +11,10 @@
 -include("input.hrl").
 -include("feed.hrl").
 
--jsmacro([selectpicker/0]).
+-jsmacro([selectpicker/0, htmlbox/0]).
 
 selectpicker()-> P = jq(".selectpicker"), P:each(fun()-> S = jq(this), S:selectpicker(S:data()) end).
+htmlbox() -> H = jq("[data-edit=\"htmlbox\"]"), H:each(fun()-> E = jq(this), E:htmlbox(E:data()) end).
 
 -record(struct, {lst=[]}).
 
@@ -150,8 +151,8 @@ media_preview(Id, Medias)->
     _ ->
         #panel{class=[row, "row-fluid"], body=[
             begin
-            Id = integer_to_list(12 div length(Medias)),
-            #panel{class=["col-sm-"++Id, "span"++Id], style="position:relative;", body=[
+            ColId = integer_to_list(12 div length(Medias)),
+            #panel{class=["col-sm-"++ColId, "span"++ColId], style="position:relative;", body=[
                 #link{class=[close, "text-error"],
                       style="position:absolute; right:10px;top:5px;",
                       body= <<"&times;">>, 
@@ -326,7 +327,8 @@ event({edit, P=#product{}, #input_state{}=S}) ->
 
     wf:cache(medias, media(P#product.cover)),
     wf:replace(S#input_state.id, #input{state=Is}),
-    wf:wire(selectpicker());
+    wf:wire(selectpicker()),
+    wf:wire(htmlbox());
 
 event({edit, #entry{}=E, #input_state{}=S}) ->
     wf:info("[input] Edit entry ~p", [S#input_state.id]),
@@ -346,7 +348,8 @@ event({edit, #entry{}=E, #input_state{}=S}) ->
         recipients=Games},
 
     wf:cache(medias, E#entry.media),
-    wf:replace(S#input_state.id, #input{state=Is});
+    wf:replace(S#input_state.id, #input{state=Is}),
+    wf:wire(htmlbox());
 
 event({flush_input, #input_state{}=S}) ->
     wf:info("[input] flush_input ~p ~p", [S#input_state.id, (wf_context:context())#context.module]),
@@ -356,7 +359,8 @@ event({flush_input, #input_state{}=S}) ->
     wf:update(S#input_state.id, #input{state=Upd}),
     wf:cache(Id, Upd),
     wf:cache(medias, undefined),
-    wf:wire(selectpicker());
+    wf:wire(selectpicker()),
+    wf:wire(htmlbox());
 
 event(_) -> ok.
 
