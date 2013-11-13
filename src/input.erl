@@ -101,7 +101,7 @@ body(#input_state{show_body=true}=S)->
 body(_)-> [].
 
 price(#input_state{show_price=true}=S)-> 
-    Val = float_to_list(if S#input_state.price == undefined -> 0; true -> S#input_state.price end/100, [{decimals, 2}]),
+    Val = wf:to_list(if S#input_state.price == undefined -> 0; true -> S#input_state.price end/100, [{decimals, 2}]),
     #panel{class=["input-group"], body=[
         #textbox{id=S#input_state.price_id, class=["form-control"],value= Val},
         #panel{class=["input-group-btn"],body=[
@@ -485,7 +485,7 @@ escape(Input) when is_binary(Input) ->
 to_price(Str)->
     PriceStr2 = case string:to_float(Str) of
         {error, no_float} -> Str;
-        {F, _} -> float_to_list(F, [{decimals, 2}]) end,
+        {F, _} -> wf:to_list(F, [{decimals, 2}]) end,
     {P1, Rest} = case string:to_integer(PriceStr2) of
         {error, no_integer} -> {0, "0"};
         {Pa, [_|Ra]} -> {Pa, Ra};
