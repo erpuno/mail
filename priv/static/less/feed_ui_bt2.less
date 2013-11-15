@@ -1,0 +1,61 @@
+.fd-nostate {}
+.fd-ui {}
+.fd-title {
+    .row-fluid();
+
+    & .fd-title-i { .span(1); }
+    & .fd-title-row{
+        .span(11);
+        & .fd-label {
+            .text-warning();
+        }
+        & .fd-alert{}
+        & .fd-sel-toolbar{}
+        & .fd-btn-delete {
+            .btn(); .btn-default();
+            & .fd-trash {
+                //icon-trash
+            }
+        }
+        & .fd-traverse-ctl{
+            .pull-right();
+            & .fd-btn-next{
+                .btn(); .btn-default();
+                & .fd-chevron-left{
+                    //icon-chevron-left
+                }
+            }
+            & .fd-btn-prev{
+                .btn(); .btn-default();
+                & .fd-chevron-right{
+                    //icon-chevron-right
+                }
+            }
+        }
+        &.fd-close{
+            .pull-right();
+            & .close{ .text-error(); }
+        }
+    }
+}
+
+.fd-table {
+    .table();
+    .table-hover();
+
+    & .fd-tbody{
+    }
+}
+.fd-body{
+    .fd-entry{
+        .row-fluid();
+        .fd-entry-sel{ .span(1); }
+        .fd-entry-container{ .span(11); }
+    }
+}
+
+.fd-more-toolbar {
+    .btn-toolbar();
+    .text-center();
+    .fb-btn-more{ .btn(); .btn-info(); }
+}

@@ -11,7 +11,7 @@
 -endif.
 
 -define(CURRENCY,       [{<<"Dollar">>, <<"USD">>}]).
--define(THUMB_SIZE,     [{139, 80}, {270, 124}, {180,180}, {200, 200}, {570, 570}, {716, 480}, {1170, 350}]).
+-define(THUMB_SIZE,     [{139, 80}, {270, 124}, {200, 200}, {370, 250}, {500, 500}, {1170, 350}]).
 -define(MONTH(M),       element(M, {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"})).
 
 -record(input, {?ELEMENT_BASE(input), state, icon="fa fa-edit icon-edit"}).
