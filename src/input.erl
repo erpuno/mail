@@ -33,9 +33,9 @@ render_element(#input{state=S}) ->
 
     wf:render(#panel{id=S#input_state.id, body=[
 
-        #panel{id=S#input_state.toolbar_id, class=[row, "row-fluid"], body=[
+        #panel{id=S#input_state.toolbar_id, class=["in-ex-toolbar"], body=[
             #panel{style=if S#input_state.collapsed -> ""; true -> "display:none;" end,
-                    class=[span12,"col-sm-12", "btn-toolbar", S#input_state.class],
+                    class=["in-btn-toolbar", S#input_state.class],
                     body=[#link{class=S#input_state.expand_class,
                                 body=S#input_state.expand_btn,
                                 postback={show_input,S}, delegate=input}]} ]},
@@ -46,12 +46,12 @@ render_element(#input{state=S}) ->
             #panel{id=S#input_state.alert_id},
             #h4{body=S#input_state.control_title},
 
-            #panel{class=[row, "row-fluid"], body=[
-                #panel{class=[span9,"col-sm-9", input], body=[recipients(S), title(S), body(S), price(S), scope(S)]},
-                #panel{class=[span3,"col-sm-3"], body=upload(S)}]},
+            #panel{class=["in-row"], body=[
+                #panel{class=["in-body"], body=[recipients(S), title(S), body(S), price(S), scope(S)]},
+                #panel{class=["in-upload"], body=upload(S)}]},
 
-            #panel{class=[row, "row-fluid"], body=[
-                #panel{class=[span9,"col-sm-9", "btn-toolbar"], body=[
+            #panel{class=["in-row"], body=[
+                #panel{class=["in-body"], body=[
                     #button{id=S#input_state.post_id,
                           class=S#input_state.post_class,
                           body=if S#input_state.update -> S#input_state.update_btn; true -> S#input_state.post_btn end,
@@ -66,10 +66,9 @@ render_element(#input{state=S}) ->
                           style=if S#input_state.update -> undefined; true -> "display:none;" end,
                           body=S#input_state.cancel_btn,
                           postback={flush_input, S}, delegate=input}
-                ]},
-                #panel{class=[span3,"col-sm-3"]}
+                ]}
             ]},
-            #panel{id=S#input_state.media_id, class=[row, "row-fluid"], body=[media_preview(S#input_state.media_id, Medias)]}
+            #panel{id=S#input_state.media_id, class=["in-row"], body=[media_preview(S#input_state.media_id, Medias)]}
         ]} ]}).
 
 recipients(#input_state{show_recipients=true}=S)->
@@ -82,7 +81,7 @@ recipients(_)-> [].
 
 title(#input_state{show_title=true}=S)->
     #textbox{id=S#input_state.title_id,
-        class=[span12,"col-sm-12", "form-control"],
+        class=["in-title"],
         placeholder= S#input_state.placeholder_ttl,
         value=S#input_state.title};
 title(_)-> [].
@@ -91,7 +90,7 @@ body(#input_state{show_body=true}=S)->
     Root = ?ROOT,
     Dir = ?DIR(case wf:user() of undefined -> "anonymous"; #user{email=E}->E end),
 
-    #htmlbox{id=S#input_state.body_id, class=[span12,"col-sm-12 form-control"],
+    #htmlbox{id=S#input_state.body_id, class=["in-description"],
         html = S#input_state.description,
         root=Root, dir=Dir,
         post_write=attach_media,
@@ -102,16 +101,16 @@ body(_)-> [].
 
 price(#input_state{show_price=true}=S)-> 
     Val = float_to_list(if S#input_state.price == undefined -> 0; true -> S#input_state.price end/100, [{decimals, 2}]),
-    #panel{class=["input-group"], body=[
-        #textbox{id=S#input_state.price_id, class=["form-control"],value= Val},
-        #panel{class=["input-group-btn"],body=[
+    #panel{class=["in-price"], body=[
+        #textbox{id=S#input_state.price_id, value= Val},
+        #panel{class=["in-price-btn"],body=[
             #select{id=S#input_state.currency_id, class=[selectpicker],
                 body=[#option{label= L, body = V} || {L,V} <- ?CURRENCY]}
         ]} ]};
 price(_)-> [].
 
 scope(#input_state{show_scope=true}=S) -> [
-    #select{id=S#input_state.scope_id, class=["form-control"], body=[
+    #select{id=S#input_state.scope_id, class=["in-scope"], body=[
         #option{label= <<"scope">>,   body = <<"scope">>, disabled=true, selected=true, style="display:none; color:gray;"},
         #option{label= <<"Public">>,  value = public},
         #option{label= <<"Private">>, value = private} ]} ];
@@ -134,14 +133,11 @@ upload(_)-> [].
 media_preview(Id, Medias)->
     case Medias of [] -> [];
     _ when length(Medias) > 4 ->
-        #carousel{class=[span9,"col-sm-9"], indicators=false, style="border:1px solid #eee;", 
-            caption= <<"attachments">>,
-            items=[
-        #panel{class=[row, "row-fluid"], body=[
-            #panel{class=[span3,"col-sm-3"], style="position:relative;", body=[
-                #link{class=[close, "text-error"],
-                      style="position:absolute; right:10px;top:5px;",
-                      body= <<"&times;">>, 
+        #carousel{class=["in-media-list"], indicators=false, caption= <<"attachments">>, items=[
+        #panel{class=["in-row"], body=[
+            #panel{class=["in-media-3"], body=[
+                #link{class=[close],
+                      body= <<"&times;">>,
                       postback={remove_media, M, Id},
                       delegate=input},
 
@@ -149,17 +145,15 @@ media_preview(Id, Medias)->
             || M <- lists:sublist(Medias, I, 4) ]}
         || I <- lists:seq(1, length(Medias), 4) ]};
     _ ->
-        #panel{class=[row, "row-fluid"], body=[
+        #panel{class=["in-row"], body=[
             begin
             ColId = integer_to_list(12 div length(Medias)),
-            #panel{class=["col-sm-"++ColId, "span"++ColId], style="position:relative;", body=[
-                #link{class=[close, "text-error"],
-                      style="position:absolute; right:10px;top:5px;",
+            #panel{class=["in-media-"++ColId], body=[
+                #link{class=[close],
                       body= <<"&times;">>, 
                       postback={remove_media, M, Id},
                       delegate=input},
-                #entry_media{media=M, mode=input}
-                ]}
+                #entry_media{media=M, mode=input}]}
             end || #media{} = M <- Medias]}
     end.
 
