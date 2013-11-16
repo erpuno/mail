@@ -80,12 +80,16 @@ render_element(#feed_ui{state=S}=F) ->
                     next_btn(State, element(#iterator.prev, Last) /= undefined, Last)];
                 true-> [#i{id=S#feed_state.prev},#i{id=S#feed_state.next}] end}; true -> [] end,
 
-            SelectionCtl = #span{id=S#feed_state.select_toolbar, style="display:none;",class=["fd-sel-toolbar"], body=[
-                delete_btn(State),
-                F#feed_ui.selection_ctl,
-                #button{id=S#feed_state.close, class=["fd-close"],
-                    postback={cancel_select, State},
-                    delegate=feed_ui, body= <<"&times;">>}]},
+            SelectionCtl = if S#feed_state.enable_selection ->
+                #span{id=S#feed_state.select_toolbar,
+                    style="display:none;",
+                    class=["fd-sel-toolbar"], body=[
+                    delete_btn(State),
+                    F#feed_ui.selection_ctl,
+                    #button{id=S#feed_state.close, class=["fd-close"],
+                        postback={cancel_select, State},
+                        delegate=feed_ui, body= <<"&times;">>}]}; true -> [] end,
+
             FdTitle = if S#feed_state.show_title == true ->
                 Alert = #span{id=S#feed_state.alert, class=["fd-alert"]},
                 #panel{id=S#feed_state.feed_title, class=["fd-title"], body=[
