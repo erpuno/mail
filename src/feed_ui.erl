@@ -34,9 +34,8 @@ render_element(#feed_ui{state=S}=F) ->
                 #panel{class=["fd-title-i"],  body=[#i{class=Icon}]},
                 #panel{class=["fd-title-row"], body=[Title, #span{class=["fd-label"], body= <<" [no feed]">>}]}]};
         {ok,Feed} ->
-            Entries = kvs:entries(Feed, S#feed_state.entry_type, S#feed_state.page_size),
-
             Total = element(#container.entries_count, Feed),
+            Entries = kvs:entries(Feed, S#feed_state.entry_type, S#feed_state.page_size),
             Current = length(Entries),
             {Last, First} = case Entries of [] -> {#iterator{},#iterator{}}; Es -> {lists:last(Es), lists:nth(1,Es)} end,
             State = S#feed_state{
@@ -63,7 +62,7 @@ render_element(#feed_ui{state=S}=F) ->
             More = if S#feed_state.enable_traverse == false ->
                 #panel{id=S#feed_state.more_toolbar, class=["fd-more-toolbar"], body=[
                     if Current < S#feed_state.page_size -> []; true ->
-                        #link{class=["fd-btn-more"],
+                        #button{class=["fd-btn-more"],
                             body= <<"more">>,
                             delegate=feed_ui,
                             postback = {check_more, Last, State}} end]};true -> [] end,
