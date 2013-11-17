@@ -351,7 +351,7 @@ process_delivery([Type,_,    deleted], [E]) ->         update_entry(remove, ?FEE
 process_delivery([show_entry], [Entry, #feed_state{} = S]) ->
     wf:insert_bottom(S#feed_state.entries, #feed_entry{entry=Entry, state=S#feed_state{js_escape=true}}),
     wf:wire("Holder.run();"),
-    wf:update(S#feed_state.more_toolbar, #link{ class=[btn,"btn-info"],
+    wf:update(S#feed_state.more_toolbar, #button{ class=["fd-btn-more"],
                                                 body= <<"more">>,
                                                 delegate=feed_ui,
                                                 postback={check_more, Entry, S}});
