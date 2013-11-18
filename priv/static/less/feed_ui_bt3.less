@@ -22,7 +22,6 @@
 .fd-ui {}
 .fd-title {
     .make-row();
-    padding:10px;
 
     & .fd-checkbox{
         .checkbox-inline();
@@ -84,10 +83,8 @@
 }
 
 .fd-body{
-    padding-bottom:40px;
     .fd-entry{
-        padding-top:10px;
-        padding-bottom:10px;
+        margin-bottom: 10px;
         &.warning  { background: @state-warning-bg}
         & .fd-entry-sel{ .make-sm-column(1, @gutter:0px); text-align:center;}
         & .fd-entry-container{ .make-sm-column(11, @gutter:0px); }
