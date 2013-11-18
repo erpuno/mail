@@ -115,13 +115,16 @@ render_element(#feed_entry{entry=E, state=#feed_state{html_tag=table}=S})->
 render_element(#feed_entry{entry=E, state=S})->
     Id = wf:to_list(erlang:phash2(element(S#feed_state.entry_id, E))),
     SelId = ?EN_SEL(Id),
+    Wrap = fun(En, IsSel) -> if IsSel -> [
+        #panel{class=["fd-entry-sel"], body=
+            #checkbox{id=SelId,
+                      postback={select, SelId, S},
+                      delegate=S#feed_state.delegate_sel,
+                      source=[SelId],
+                      value=Id}},
+        #panel{class=["fd-entry-container"], body=En}]; true -> En end end,
     El = element_panel:render_element(#panel{id=?EN_ROW(Id), class=["fd-entry"], body=[
-        if S#feed_state.enable_selection ->
-            #panel{class=["fd-entry-sel"], body=#checkbox{id=SelId,
-                    postback={select, SelId, S},
-                    delegate=S#feed_state.delegate_sel,
-                    source=[SelId], value=Id}}; true -> [] end,
-        #panel{class=["fd-entry-container"], body=#div_entry{entry=E, state=S, module=S#feed_state.delegate}} ]}),
+        Wrap(#div_entry{entry=E, state=S, module=S#feed_state.delegate}, S#feed_state.enable_selection)]}),
     if S#feed_state.js_escape -> wf:js_escape(El); true -> El end;
 
 render_element(#row_entry{entry=E, state=#feed_state{}=S}) -> wf:render(#td{body=wf:to_list(element(S#feed_state.entry_id, E))});
