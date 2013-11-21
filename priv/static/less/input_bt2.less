@@ -11,7 +11,9 @@
 
 .in-ex-toolbar {
     #grid > .fluid > .row-fluid;
-    & .in-btn-toolbar{ .fd-make-col(12); }
+    & .in-btn-toolbar{
+        .fd-make-col(12);
+    }
 }
 
 .in-row{
@@ -21,7 +23,10 @@
 }
 .in-title {
     .fd-make-col(12);
+    #grid > .input > .span(12);
+    width: (@fluidGridColumnWidth * 12) + (@fluidGridGutterWidth * (10));
     margin-bottom:10px;
+    margin-left:0;
 }
 .in-description {
     .fd-make-col(12);
@@ -29,9 +34,34 @@
 }
 .in-price {
     .input-append();
+    display: inline-block;
+    margin-bottom: @baseLineHeight / 2;
+    vertical-align: middle;
+    font-size: 0;
+    white-space: nowrap;
 
-    & input {  }
-    & .in-price-btn{ .btn-group(); }
+
+    & input[class*="span"],
+    & input,
+    & select,
+    & .uneditable-input{
+        font-size: @baseFontSize;
+        display: inline-block;
+        position: relative;
+        margin-bottom: 0;
+        *margin-left: 0;
+        vertical-align: top;
+        &:focus {
+            z-index: 2;
+        }
+    }
+
+    & .in-price-btn{
+        .btn-group();
+        display:inline-block;
+        margin-left: -1px;
+        .border-radius(0 @inputBorderRadius @inputBorderRadius 0);
+    }
 }
 .in-scope{  }
 

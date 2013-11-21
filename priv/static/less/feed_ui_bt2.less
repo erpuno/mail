@@ -36,26 +36,25 @@
 .fd-title {
     .make-row();
     position:relative;
+    display:table;
 
     & .fd-checkbox{
-//        .checkbox-inline();
+        display:table-cell;
         padding-left:0;
     }
     & .fd-title-i {
-        display:inline-block;
+        display:table-cell;
         padding:9px 12px;
     }
 
     & .fd-title-row{
-        display:inline-block;
+        display:table-cell;
+        text-align:right;
 
         & .fd-label { .text-warning;}
         & .fd-alert{}
         & .fd-sel-toolbar{
             & .fd-close{
-                position: absolute;
-                right: 10px;
-                top:35px;
                 border: none;
                 background: transparent;
                 &:hover{color: darken(@errorText, 10%);}
@@ -68,7 +67,6 @@
             }
         }
         & .fd-traverse-ctl{
-            .pull-right;
             & .fd-btn-next{
                 .btn();
                 & .fd-chevron-left{
