@@ -1,0 +1,60 @@
+.fd-make-col(@span: 1,@offset:0){
+    .makeColumn(@span);
+    #grid > .fluid > .span(@span);
+    #grid > .fluid > .offset(@offset);
+
+    &:first-child{
+        margin-left:0;
+        #grid > .fluid > .offsetFirstChild(@offset);
+    }
+}
+
+.in-ex-toolbar {
+    #grid > .fluid > .row-fluid;
+    & .in-btn-toolbar{ .fd-make-col(12); }
+}
+
+.in-row{
+    #grid > .fluid > .row-fluid;
+    & .in-upload { .fd-make-col(3); }
+    & .in-body { .fd-make-col(9); }
+}
+.in-title {
+    .fd-make-col(12);
+    margin-bottom:10px;
+}
+.in-description {
+    .fd-make-col(12);
+    min-height:120px;
+}
+.in-price {
+    .input-append();
+
+    & input {  }
+    & .in-price-btn{ .btn-group(); }
+}
+.in-scope{  }
+
+.in-media-list{
+    .fd-make-col(9);
+    border:1px solid #eee;
+}
+
+@grid-columns: 12;
+@grid-gutter-width:0;
+@screen-sm-min: 768px;
+
+.in-media(@index) when (@index =< @grid-columns){
+    @item: ~".in-media-@{index}";
+    @{item}{
+        .fd-make-col(@index);
+        & .close{
+            .text-error();
+            position:absolute;
+            right:15px;
+            top:5px;
+        }
+    }
+    .in-media(@index+1)
+}
+.in-media(1);
