@@ -1,7 +1,7 @@
-Feed Server
+Feeds
 ===========
 
-Overview
+Feed Server
 --------
 
 Feed Server is node of user workers pool (shards). It handles all MQ requests for
@@ -15,6 +15,11 @@ Feed Server is a product that can be used for:
 * Distribution worker proccesses connected to MQ bus
 * Providing sequential consistency for DHT
 * Notifications handlers: mailers, background workers, etc.
+
+Feed UI
+--------
+
+The set of modules to render the chain of objects (feed) and corresponding input control.
 
 Dependencies
 ------------
