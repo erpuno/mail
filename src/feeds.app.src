@@ -1,4 +1,4 @@
-{application, feed_server, [{description, "Message Bus Consumers"},
+{application, feeds, [{description, "Message Bus Consumers"},
                        {vsn, "1"},
                        {registered, []},
                        {applications, [kernel, gproc, stdlib, kvs, mqs]},
