@@ -18,6 +18,7 @@ htmlbox() -> H = jq("[data-edit=\"htmlbox\"]"), H:each(fun()-> E = jq(this), E:h
 
 -record(struct, {lst=[]}).
 
+render_element(#input{state=undefined}=I) -> render_element(I#input{state=#input_state{}});
 render_element(#input{state=S}) ->
     Source = [S#input_state.title_id,
         S#input_state.body_id,
