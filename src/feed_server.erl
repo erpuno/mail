@@ -10,7 +10,6 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 -export([start_link/0]).
 -record(state,{}).
--define(SYSTEM_FEEDS, [{feed,?USR_FEED},{feed,?PRD_FEED},{feed,?GRP_FEED},{feed,?ENT_FEED},{feed,?CMT_FEED}]).
 
 start_link() -> case gen_server:start_link({local, ?MODULE}, ?MODULE, [], []) of
                     {ok,Pid} -> Pid ! start_all, {ok,Pid};
