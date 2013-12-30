@@ -113,15 +113,15 @@ render_element(#feed_entry{entry=E, state=#feed_state{}=S}=FE)->
     case S#feed_state.html_tag of table -> #td{body=Ch};_ -> #panel{class=["fd-entry-sel"],body=Ch} end;true -> [] end,
 
   Wrap = fun(En) -> case S#feed_state.html_tag of
-    ul-> #li{id=?EN_ROW(Id), body=En};table-> #tr{id=?EN_ROW(Id), body=En};_-> #panel{id=?EN_ROW(Id), body=En} end end,
+    ul-> #li{id=?EN_ROW(Id), body=En};table->#tr{id=?EN_ROW(Id), cells=En};_-> #panel{id=?EN_ROW(Id), body=En} end end,
 
   Entry = case S#feed_state.delegate of
     ?MODULE ->
       Body = wf:to_list(element(S#feed_state.entry_id, E)),
       case S#feed_state.html_tag of table -> #td{body=Body};_ -> Body end;
-    M -> FE#feed_entry{module=M} end,
+    M -> M:render_element(FE#feed_entry{module=M}) end,
 
-  El = wf:render(Wrap([Checkbox,Entry])),
+  El = wf:render(Wrap(lists:flatten([Checkbox,Entry]))),
   if S#feed_state.js_escape -> wf:js_escape(El); true -> El end;
 
 % Media elements
