@@ -68,6 +68,7 @@
     single_media = false,
     medias=[],
 
+    delegate    = input,
     post_btn    = <<"post">>,
     close_btn   = <<"close">>,
     update_btn  = <<"update">>,

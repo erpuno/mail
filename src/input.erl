@@ -19,7 +19,7 @@ htmlbox() -> H = jq("[data-edit=\"htmlbox\"]"), H:each(fun()-> E = jq(this), E:h
 -record(struct, {lst=[]}).
 
 render_element(#input{state=undefined}=I) -> render_element(I#input{state=#input_state{}});
-render_element(#input{state=S}) ->
+render_element(#input{state=S}=I) ->
     Source = [S#input_state.title_id,
         S#input_state.body_id,
         S#input_state.recipients_id,
@@ -32,7 +32,7 @@ render_element(#input{state=S}) ->
         undefined -> [];
         Ms -> Ms end,
 
-    wf:render(#panel{id=S#input_state.id, body=[
+    wf:render(#panel{id=S#input_state.id, style=I#input.style, body=[
 
         #panel{id=S#input_state.toolbar_id, class=["in-ex-toolbar"], body=[
             #panel{style=if S#input_state.collapsed -> ""; true -> "display:none;" end,
@@ -57,16 +57,16 @@ render_element(#input{state=S}) ->
                           class=S#input_state.post_class,
                           body=if S#input_state.update -> S#input_state.update_btn; true -> S#input_state.post_btn end,
                           postback={if S#input_state.update -> update; true -> post end, S#input_state.entry_type, S},
-                          source=Source, delegate=input},
+                          source=Source, delegate=S#input_state.delegate},
                     #button{class=S#input_state.close_class,
                           style=if S#input_state.collapsed -> undefined; true -> "display:none;" end,
                           body=S#input_state.close_btn,
-                          postback={hide_input, S}, delegate=input},
+                          postback={hide_input, S}, delegate=S#input_state.delegate},
 
                     #button{class=S#input_state.cancel_class,
                           style=if S#input_state.update -> undefined; true -> "display:none;" end,
                           body=S#input_state.cancel_btn,
-                          postback={flush_input, S}, delegate=input}
+                          postback={flush_input, S}, delegate=S#input_state.delegate}
                 ]}
             ]},
             #panel{id=S#input_state.media_id, class=["in-row"], body=[media_preview(S#input_state.media_id, Medias)]}
