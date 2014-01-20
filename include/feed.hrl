@@ -36,6 +36,7 @@
     more_toolbar    = ?TEMP_ID,
     close           = ?TEMP_ID,
     alert           = ?TEMP_ID,
+    ext_header      = ?TEMP_ID,
     full,
     start           = 0,
     total           = 0,
@@ -64,6 +65,7 @@
 -define(FD_SELKEY(Id),    ?FD_ID(Id)++"sk").
 -define(FD_VISKEY(Id),    ?FD_ID(Id)++"vk").
 -define(FD_CLOSE(Id),     ?FD_ID(Id)++"cs").
+-define(FD_EXTHEAD(Id),   ?FD_ID(Id)++"xhd").
 -define(FD_STATE(Id), #feed_state{
         container_id    = Id,
         feed_title      = ?FD_TITLE(Id),
@@ -79,7 +81,8 @@
         feed_toolbar    = ?FD_TOOLBAR(Id),
         selected_key    = ?FD_SELKEY(Id),
         visible_key     = ?FD_VISKEY(Id),
-        close           = ?FD_CLOSE(Id)}).
+        close           = ?FD_CLOSE(Id),
+        ext_header      = ?FD_EXTHEAD(Id)}).
 -define(FD_STATE(Id, S), S#feed_state{
         container_id    = Id,
         feed_title      = ?FD_TITLE(Id),
@@ -95,10 +98,10 @@
         feed_toolbar    = ?FD_TOOLBAR(Id),
         selected_key    = ?FD_SELKEY(Id),
         visible_key     = ?FD_VISKEY(Id),
-        close           = ?FD_CLOSE(Id)}).
+        close           = ?FD_CLOSE(Id),
+        ext_header      = ?FD_EXTHEAD(Id)}).
 
 % Feed entry id based identifiers
-
 -define(EN_ROW(Id),     wf:to_list(Id)++"row").
 -define(EN_SEL(Id),     wf:to_list(Id)++"sel").
 -define(EN_FROMSEL(Sel),lists:sublist(Sel,1, length(Sel) - length("sel"))).

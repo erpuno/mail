@@ -26,7 +26,10 @@ render_element(#feed_ui{state=S}=F) ->
         undefined when Icon == [] -> [];
         undefined -> #i{class=[Icon]};
         Url-> #link{url=Url, body=[#i{class=[Icon]}], data_fields=?DATA_TAB} end,
-    ExtHeader = if S#feed_state.show_header == true -> [F#feed_ui.header]; true -> [] end,
+    ExtHeader = if S#feed_state.show_header == true ->
+      case S#feed_state.html_tag of
+        table -> #thead{id=S#feed_state.ext_header, body=F#feed_ui.header};
+        _ -> #panel{id=S#feed_state.ext_header, body=F#feed_ui.header} end; true -> [] end,
 
     wf:render(#section{class=["fd-ui", F#feed_ui.class], body=[
         case kvs:get(S#feed_state.container, S#feed_state.container_id) of {error,_}->
