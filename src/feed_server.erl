@@ -3,7 +3,7 @@
 -include_lib("kvs/include/products.hrl").
 -include_lib("kvs/include/groups.hrl").
 -include_lib("kvs/include/feeds.hrl").
--include_lib("kvs/include/users.hrl").
+-include_lib("kvs/include/user.hrl").
 -include_lib("kvs/include/accounts.hrl").
 -include("records.hrl").
 

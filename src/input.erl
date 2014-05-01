@@ -3,7 +3,7 @@
 -compile({parse_transform, shen}).
 -include_lib("n2o/include/wf.hrl").
 -include_lib("n2o_bootstrap/include/wf.hrl").
--include_lib("kvs/include/users.hrl").
+-include_lib("kvs/include/user.hrl").
 -include_lib("kvs/include/products.hrl").
 -include_lib("kvs/include/feeds.hrl").
 -include_lib("kvs/include/groups.hrl").
@@ -90,6 +90,7 @@ title(_)-> [].
 
 body(#input_state{show_body=true}=S)->
     Root = ?ROOT,
+    wf:info(?MODULE,"input user: ~p",[wf:user()]),
     Dir = ?DIR(case wf:user() of undefined -> "anonymous"; #user{email=E}->E end),
 
     #htmlbox{id=S#input_state.body_id, class=["in-description"],
