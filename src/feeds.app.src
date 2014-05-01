@@ -1,6 +1,6 @@
 {application, feeds, [{description, "Message Bus Consumers"},
                        {vsn, "1"},
                        {registered, []},
-                       {applications, [kernel, gproc, stdlib, kvs, mqs]},
+                       {applications, [kernel, gproc, stdlib, kvs]},
                        {mod, { feeds_app, []}},
                        {env, []}]}.
