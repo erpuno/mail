@@ -1,4 +1,4 @@
-{application, feeds, [{description, "Message Bus Consumers"},
+{application, feeds, [{description, "SRC FEEDS Chains Server"},
                        {vsn, "1"},
                        {registered, []},
                        {applications, [kernel, gproc, stdlib, kvs]},

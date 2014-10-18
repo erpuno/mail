@@ -12,7 +12,7 @@ start_link(Params) -> gen_server:start_link(?MODULE, [Params], []).
 init([Params]) ->
     error_logger:info_msg("init worker ~p", [Params]),
 
-    gproc:reg({p,l,?MAIN_CH}),
+    gproc:reg({p,l,?MAIN_CH}), % broadcast bus
 
     {ok, #state{
         owner = proplists:get_value(id, Params),
