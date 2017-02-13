@@ -2,6 +2,8 @@
 -define(TEMP_ID, wf:temp_id()).
 -endif.
 
+-include_lib("nitro/include/nitro.hrl").
+
 -record(feed_ui,        {?ELEMENT_BASE(feed_ui), state, icon="", icon_url, header=[], selection_ctl=[]}).
 -record(feed_entry,     {?ELEMENT_BASE(feed_ui), entry, state}).
 -record(entry_media,    {?ELEMENT_BASE(feed_ui), media, mode}).

@@ -1,11 +1,17 @@
 -module(writer).
 -behaviour(gen_server).
 -include_lib("kvs/include/kvs.hrl").
--include_lib("kvs/include/feeds.hrl").
--include_lib("kvs/include/feed_state.hrl").
+-include_lib("kvs/include/feed.hrl").
 -include("records.hrl").
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 -export([start_link/1]).
+
+-record(state, {
+        owner = "feed_owner",
+        type :: user | group | system | product,
+        feeds = [],
+        callback,
+        cached_feeds=[]}).
 
 start_link(Params) -> gen_server:start_link(?MODULE, [Params], []).
 

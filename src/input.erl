@@ -2,11 +2,13 @@
 -compile(export_all).
 -compile({parse_transform, shen}).
 -include_lib("n2o/include/wf.hrl").
--include_lib("n2o_bootstrap/include/wf.hrl").
+%-include_lib("n2o_bootstrap/include/wf.hrl").
 -include_lib("kvs/include/user.hrl").
--include_lib("kvs/include/products.hrl").
--include_lib("kvs/include/feeds.hrl").
--include_lib("kvs/include/groups.hrl").
+-include_lib("kvs/include/product.hrl").
+-include_lib("kvs/include/feed.hrl").
+-include_lib("kvs/include/group.hrl").
+-include_lib("kvs/include/entry.hrl").
+-include_lib("kvs/include/comment.hrl").
 -include_lib("kernel/include/file.hrl").
 -include("records.hrl").
 -include("input.hrl").
@@ -19,8 +21,9 @@ htmlbox() -> H = jq("[data-edit=\"htmlbox\"]"), H:each(fun()-> E = jq(this), E:h
 
 -record(struct, {lst=[]}).
 
-render_element(#input{state=undefined}=I) -> render_element(I#input{state=#input_state{}});
-render_element(#input{state=S}=I) ->
+render_element(#textboxlist{}) -> wf:render(#panel{body=[ <<"textboxlist here">>]});
+render_element(#feed_input{state=undefined}=I) -> render_element(I#feed_input{state=#input_state{}});
+render_element(#feed_input{state=S}=I) ->
     Source = [S#input_state.title_id,
         S#input_state.body_id,
         S#input_state.recipients_id,
@@ -122,15 +125,17 @@ scope(_)-> [].
 upload(#input_state{show_upload=true}=S) -> [
     case  S#input_state.upload_title of undefined -> [];
         Title -> #panel{class=["btn-toolbar"], body=#span{class=["btn-toolbar-title"], body=Title}} end,
-    #upload{id=S#input_state.upload_id,
-        preview= false, root=?ROOT,
-        dir=S#input_state.upload_dir,
-        delegate_query= S#input_state.delegate_query,
-        post_write = S#input_state.post_upload,
-        delegate_api = S#input_state.delegate_api,
-        img_tool=S#input_state.img_tool,
-        post_target=S#input_state.media_id,
-        size=?THUMB_SIZE}];
+    #upload{id=S#input_state.upload_id
+        %preview= false, 
+        %root=?ROOT,
+        %dir=S#input_state.upload_dir,
+        %delegate_query= S#input_state.delegate_query,
+        %post_write = S#input_state.post_upload,
+        %delegate_api = S#input_state.delegate_api,
+        %img_tool=S#input_state.img_tool,
+        %post_target=S#input_state.media_id,
+        %size=?THUMB_SIZE
+    }];
 upload(_)-> [].
 
 media_preview(Id, Medias)->
@@ -187,7 +192,9 @@ control_event(Cid, Role) ->
 
     Data = [[list_to_binary(wf:to_list(Role)++Id++"="++Name), list_to_binary(Name)]
         || {Id, Name} <- Entries, string:str(string:to_lower(Name), string:to_lower(SearchTerm)) > 0],
-    element_textboxlist:process_autocomplete(Cid, Data, SearchTerm).
+    process_autocomplete(Cid, Data, SearchTerm).
+
+process_autocomplete(_,_,_) -> ok.
 
 event({post, group, #input_state{}=Is}) ->
     User = wf:user(),
@@ -204,7 +211,7 @@ event({post, group, #input_state{}=Is}) ->
                     creator = From,
                     owner = From,
                     feeds = ?GRP_CHUNK,
-                    created = now()},
+                    created = erlang:timestamp()},
 
     msg:notify([kvs_group, User#user.email, add], [Group]);
 
@@ -217,7 +224,7 @@ event({post, product, #input_state{}=Is}) ->
         creator = User#user.email,
         owner = User#user.email,
         feeds = ?PRD_CHUNK,
-        created = now() },
+        created = erlang:timestamp() },
 
     Groups = groups(Is),
 
@@ -236,7 +243,7 @@ event({post, comment, #input_state{}=Is}) ->
     C = #comment{from = From,
                  content = Comment,
                  media = Medias,
-                 created = now()},
+                 created = erlang:timestamp()},
 
     [msg:notify([kvs_feed, Route, To, comment, Cid, add],
         [C#comment{ comment_id = Cid,
@@ -255,7 +262,7 @@ event({post, EntryType, #input_state{}=Is})->
         from=From,
         type=EntryType,
         shared="",
-        created = now()},
+        created = erlang:timestamp()},
     Recipients = to_recipients(Is,EntryType),
 
     [msg:notify([kvs_feed, Route, To, entry, Eid, add],
@@ -323,7 +330,7 @@ event({edit, P=#product{}, #input_state{}=S}) ->
         recipients=Groups},
 
     wf:cache(medias, media(P#product.cover)),
-    wf:replace(S#input_state.id, #input{state=Is}),
+    wf:replace(S#input_state.id, #feed_input{state=Is}),
     wf:wire(selectpicker()),
     wf:wire(htmlbox());
 
@@ -345,15 +352,15 @@ event({edit, #entry{}=E, #input_state{}=S}) ->
         recipients=Games},
 
     wf:cache(medias, E#entry.media),
-    wf:replace(S#input_state.id, #input{state=Is}),
+    wf:replace(S#input_state.id, #feed_input{state=Is}),
     wf:wire(htmlbox());
 
 event({flush_input, #input_state{}=S}) ->
-    wf:info("[input] flush_input ~p ~p", [S#input_state.id, (wf_context:context())#context.module]),
-    Id = {S#input_state.id, (wf_context:context())#context.module},
+    wf:info("[input] flush_input ~p ~p", [S#input_state.id, (wf:context())#cx.module]),
+    Id = {S#input_state.id, (wf:context())#cx.module},
     Init = wf:cache(Id),
     Upd = Init#input_state{body_id=wf:temp_id(), update=false, collapsed=S#input_state.collapsed},
-    wf:replace(S#input_state.id, #input{state=Upd}),
+    wf:replace(S#input_state.id, #feed_input{state=Upd}),
     wf:cache(Id, Upd),
     wf:cache(medias, undefined),
     wf:wire(selectpicker()),

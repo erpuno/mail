@@ -1,10 +1,11 @@
 -module(feed_server).
 -behaviour(gen_server).
--include_lib("kvs/include/products.hrl").
--include_lib("kvs/include/groups.hrl").
--include_lib("kvs/include/feeds.hrl").
+-include_lib("kvs/include/product.hrl").
+-include_lib("kvs/include/group.hrl").
+-include_lib("kvs/include/feed.hrl").
+-include_lib("kvs/include/entry.hrl").
+-include_lib("kvs/include/comment.hrl").
 -include_lib("kvs/include/user.hrl").
--include_lib("kvs/include/accounts.hrl").
 -include("records.hrl").
 
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).

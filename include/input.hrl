@@ -14,7 +14,49 @@
 -define(THUMB_SIZE,     [{139, 80}, {270, 124}, {200, 200}, {370, 250}, {500, 500}, {1170, 350}]).
 -define(MONTH(M),       element(M, {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"})).
 
--record(input, {?ELEMENT_BASE(input), state, icon="fa fa-edit icon-edit"}).
+% from kvs.social
+-define(USR_FEED, users).
+-define(PRD_FEED, products).
+-define(GRP_FEED, groups).
+-define(ENT_FEED, entries).
+-define(CMT_FEED, comments).
+-define(FEED(Type), case Type of 
+  user -> ?USR_FEED; 
+  product -> ?PRD_FEED; 
+  group -> ?GRP_FEED; 
+  entry-> ?ENT_FEED; 
+  comment-> ?CMT_FEED;
+  _-> undefined end).
+
+% social schema
+-record(media, {
+        id,
+        title :: iolist(),
+        width,
+        height,
+        html :: iolist(),
+        url :: iolist(),
+        version,
+        thumbnail_url :: iolist(),
+        type :: {atom(), atom() | string()},
+        thumbnail_height}).
+
+-record(group_subscription, {
+        key,
+        who,
+        where,
+        type,
+        posts_count = 0 :: integer() % we need this for sorting and counting is expensive
+        }).
+
+-include_lib("nitro/include/nitro.hrl").
+
+-record(feed_input, {?ELEMENT_BASE(input), state, icon="fa fa-edit icon-edit"}).
+
+% fake missing records
+-record(textboxlist, {?ELEMENT_BASE(input), placeholder, values}).
+-record(htmlbox, {?ELEMENT_BASE(element_textbox), root, html, post_write, delegate_api, img_tool, post_target, size}).
+-record(carousel, {?ELEMENT_BASE(panel), caption, indicators, items}).
 
 -record(input_state, {
     id          = ?TEMP_ID,

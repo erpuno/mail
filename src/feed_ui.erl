@@ -1,12 +1,13 @@
 -module(feed_ui).
 -compile(export_all).
 -include_lib("n2o/include/wf.hrl").
--include_lib("n2o_bootstrap/include/wf.hrl").
--include_lib("kvs/include/products.hrl").
+-include_lib("kvs/include/product.hrl").
 -include_lib("kvs/include/user.hrl").
--include_lib("kvs/include/acls.hrl").
--include_lib("kvs/include/groups.hrl").
--include_lib("kvs/include/feeds.hrl").
+-include_lib("kvs/include/acl.hrl").
+-include_lib("kvs/include/group.hrl").
+-include_lib("kvs/include/feed.hrl").
+-include_lib("kvs/include/entry.hrl").
+-include_lib("kvs/include/comment.hrl").
 -include("feed.hrl").
 -include("input.hrl").
 
@@ -15,8 +16,8 @@
 -define(UPDATE_DOM(Method,Target,Elements,Format),
     wf:wire(#jq{format=Format,target=Target,method=[Method], args=[Elements]})).
 
-feed_state(Id) ->  wf:cache({Id,?CTX#context.module}).
-input_state(Id) -> wf:cache({?FD_INPUT(Id),?CTX#context.module}).
+feed_state(Id) ->  wf:cache({Id,?CTX#cx.module}).
+input_state(Id) -> wf:cache({?FD_INPUT(Id),?CTX#cx.module}).
 
 render_element(#feed_ui{state=undefined})-> wf:render(#panel{class=["fd-nostate"], body= <<"no state">>});
 
@@ -38,7 +39,7 @@ render_element(#feed_ui{state=S}=F) ->
                 #panel{class=["fd-title-i"],  body=[#i{class=Icon}]},
                 #panel{class=["fd-title-row"], body=[Title, #span{class=["fd-label"], body= <<" [no feed]">>}]}]};
         {ok,Feed} ->
-            Total = element(#container.entries_count, Feed),
+            Total = element(#container.count, Feed),
             Entries = kvs:entries(Feed, S#feed_state.entry_type, S#feed_state.page_size),
             Current = length(Entries),
             {Last, First} = case Entries of [] -> {#iterator{},#iterator{}}; Es -> {lists:last(Es), lists:nth(1,Es)} end,
@@ -270,7 +271,7 @@ traverse(Direction, Start, #feed_state{}=S)->
         Prev -> kvs:entries(S#feed_state.entry_type, Prev, S#feed_state.page_size, Direction) end,
 
     {NewLast, NewFirst} = case Entries of [] -> {#iterator{},#iterator{}}; E  -> {lists:last(E), lists:nth(1,E)} end,
-    Total = element(#container.entries_count, Container),
+    Total = element(#container.count, Container),
     Current = length(Entries),
 
     NewStart = case Direction of
@@ -367,7 +368,7 @@ update_entry(Act, Fid, E) ->
     case feed_state(Fid) of #feed_state{visible_key=Vkey, entry_id=Eid}=S ->
         Id = element(Eid, E),
         UiId = wf:to_list(erlang:phash2(Id)),
-        wf:info("[feed_ui] entry ~p ~p [~p] in ~p [~p]", [wf:to_list(Act), Id, UiId, Fid, ?CTX#context.module]),
+        wf:info("[feed_ui] entry ~p ~p [~p] in ~p [~p]", [wf:to_list(Act), Id, UiId, Fid, ?CTX#cx.module]),
 
         if S#feed_state.enable_traverse -> 
             traverse(#iterator.next,E,S);
@@ -387,10 +388,10 @@ update_entry(Act, Fid, E) ->
 
 update_input(Fid, E, Class) ->
     case input_state(Fid) of #input_state{}=Is ->
-        wf:info("[feed_ui] update input ~p for ~p", [Fid, ?CTX#context.module]),
+        wf:info("[feed_ui] update input ~p for ~p", [Fid, ?CTX#cx.module]),
         wf:update(Is#input_state.alert_id, alert(E, Class)); _-> ok end.
 
-to_date(undefined) -> to_date(now());
+to_date(undefined) -> to_date(erlang:timestamp());
 to_date(Date)->
     {{Y, M, D}, {H,Mi,_}} = calendar:now_to_datetime(Date),
     io_lib:format("~s ~p, ~p at ~p:~p", [?MONTH(M), D, Y, H,Mi]).
