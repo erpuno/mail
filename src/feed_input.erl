@@ -1,4 +1,4 @@
--module(input).
+-module(feed_input).
 -compile(export_all).
 -compile({parse_transform, shen}).
 -include_lib("n2o/include/wf.hrl").

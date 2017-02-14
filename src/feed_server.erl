@@ -18,7 +18,7 @@ start_link() -> case gen_server:start_link({local, ?MODULE}, ?MODULE, [], []) of
 
 init([])->
     gproc:reg({p,l,?MAIN_CH}),
-    kvs:wait_for_tables(),
+    kvs:wait(),
     {ok, #state{}}.
 
 handle_call(_,_,S) -> {reply, ok, S}.
@@ -29,7 +29,8 @@ handle_info(start_all, S) ->
 
     [handle_notice([ok, user,    init], [Id, Feeds]) || #user{email=Id, feeds=Feeds} <- kvs:all(user)],
     [handle_notice([ok, group,   init], [Id, Feeds]) || #group{id = Id, feeds=Feeds} <- kvs:all(group)],
-    [handle_notice([ok, product, init], [Id, Feeds]) || #product{id=Id, feeds=Feeds} <- kvs:all(product)],
+    % product table need to be descibed
+    %[handle_notice([ok, product, init], [Id, Feeds]) || #product{id=Id, feeds=Feeds} <- kvs:all(product)],
 
     {noreply, S};
 handle_info(_,S) -> {noreply, S}.
