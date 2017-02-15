@@ -8,6 +8,7 @@
 -include_lib("kvs/include/feed.hrl").
 -include_lib("kvs/include/entry.hrl").
 -include_lib("kvs/include/comment.hrl").
+-include("elements.hrl").
 -include("feed.hrl").
 -include("input.hrl").
 
@@ -22,112 +23,87 @@ input_state(Id) -> wf:cache({?FD_INPUT(Id),?CTX#cx.module}).
 render_element(#feed_ui{state=undefined})-> wf:render(#panel{class=["fd-nostate"], body= <<"no state">>});
 
 render_element(#feed_ui{state=S}=F) ->
-    Title = case F#feed_ui.title of undefined -> ""; T when is_atom(T)-> atom_to_list(T); T -> T end,
-    Icon = case F#feed_ui.icon of undefined -> []; L when is_list(L) -> L; I -> [I] end,
-    IconLink = case F#feed_ui.icon_url of
-        undefined when Icon == [] -> [];
-        undefined -> #i{class=[Icon]};
-        Url-> #link{url=Url, body=[#i{class=[Icon]}], data_fields=?DATA_TAB} end,
-    ExtHeader = if S#feed_state.show_header == true ->
-      case S#feed_state.html_tag of
-        table -> #thead{id=S#feed_state.ext_header, body=F#feed_ui.header};
-        _ -> #panel{id=S#feed_state.ext_header, body=F#feed_ui.header} end; true -> [] end,
+  Title = case F#feed_ui.title of undefined -> ""; T when is_atom(T)-> atom_to_list(T); T -> T end,
 
-    wf:render(#section{class=["fd-ui", F#feed_ui.class], body=[
-        case kvs:get(S#feed_state.container, S#feed_state.container_id) of {error,_}->
-            #panel{id=S#feed_state.feed_title, class=["fd-title"], body=[
-                #panel{class=["fd-title-i"],  body=[#i{class=Icon}]},
-                #panel{class=["fd-title-row"], body=[Title, #span{class=["fd-label"], body= <<" [no feed]">>}]}]};
-        {ok,Feed} ->
-            Total = element(#container.count, Feed),
-            Entries = kvs:entries(Feed, S#feed_state.entry_type, S#feed_state.page_size),
-            Current = length(Entries),
-            {Last, First} = case Entries of [] -> {#iterator{},#iterator{}}; Es -> {lists:last(Es), lists:nth(1,Es)} end,
-            State = S#feed_state{
-                start_element = First,
-                last_element = Last,
-                start = 1,
-                total = Total,
-                current = Current},
-            DisplayStyle = if Total > 0 -> [] ; true-> "display:none;" end,
+  X = case kvs:get(S#feed_state.container, S#feed_state.container_id) of {error,E1r}->
+      wf:info(?MODULE,"Container failed: ~p | ~p id:~p", [E1r, S#feed_state.container,  S#feed_state.container_id]),
+      #panel{id=S#feed_state.feed_title, class=["fd-title"], body=[
+        #panel{class=["fd-title-row"], body=[Title, #span{class=["fd-label"], body= <<" [no feed]">>}]}]};
+    {ok,Feed} ->
+        Total = element(#container.count, Feed),
+        Entries = kvs:entries(Feed, S#feed_state.entry_type, S#feed_state.page_size),
+        Current = length(Entries),
+        wf:info(?MODULE, "We gona render: ~p", [Feed]),
+        {Last, First} = case Entries of [] -> {#iterator{},#iterator{}}; Es -> {lists:last(Es), lists:nth(1,Es)} end,
+        State = S#feed_state{
+            start = 1,
+            total = Total,
+            current = Current},
+        DisplayStyle = if Total > 0 -> [] ; true-> "display:none;" end,
 
-            {UiEntries, {Ids, Hashs}} = lists:mapfoldl(fun(E,{IdsIn, HashIn})->
-                Id = element(S#feed_state.entry_id,E),
-                Hash = wf:to_list(erlang:phash2(Id)),
-                {#feed_entry{entry=E, state=State}, {[Id|IdsIn],[Hash|HashIn]}} end, {[], []}, Entries),
+        {UiEntries, {Ids, Hashs}} = lists:mapfoldl(fun(E,{IdsIn, HashIn})->
+            Id = element(S#feed_state.entry_id,E),
+            Hash = wf:to_list(erlang:phash2(Id)),
+            {#feed_entry{entry=E, state=State}, {[Id|IdsIn],[Hash|HashIn]}} end, {[], []}, Entries),
 
-            wf:cache(S#feed_state.visible_key, Ids),
-            wf:cache(S#feed_state.selected_key,[]),
+        wf:cache(S#feed_state.visible_key, Ids),
+        wf:cache(S#feed_state.selected_key,[]),
 
-            Body = case S#feed_state.html_tag of
-                table ->
-                    #table{class=["fd-table"], header=ExtHeader, body=
-                        [#tbody{id=S#feed_state.entries, class=["fd-tbody"], body=UiEntries}]};
-                ul -> [ExtHeader, #list{id=S#feed_state.entries,  class=["fd-body"], body=UiEntries}];
-                _ ->  [ExtHeader, #panel{id=S#feed_state.entries, class=["fd-body"], body=UiEntries}] end,
+        Body = [F#feed_ui.header, #panel{id=S#feed_state.entries, class=["fd-body"], body=UiEntries}],
 
-            More = if S#feed_state.enable_traverse == false ->
-                #panel{id=S#feed_state.more_toolbar, class=["fd-more-toolbar"], body=[
-                    if Current < S#feed_state.page_size -> []; true ->
-                        #button{class=["fd-btn-more"],
-                            body= <<"more">>,
-                            delegate=feed_ui,
-                            postback = {check_more, Last, State}} end]};true -> [] end,
+        More = #panel{id=S#feed_state.more_toolbar, class=["fd-more-toolbar"], body=[
+                if Current < S#feed_state.page_size -> []; true ->
+                    #button{class=["fd-btn-more"],
+                        body= <<"more">>,
+                        delegate=feed_ui,
+                        postback = {check_more, Last, State}} end]},
 
-            SelectAll = selectall_checkbox(State, Hashs, DisplayStyle),
+        SelectAll = selectall_checkbox(State, Hashs, DisplayStyle),
 
-            TraverseCtl = if S#feed_state.enable_traverse == true ->
-                #span{id=S#feed_state.feed_toolbar,
-                      class=["fd-traverse-ctl"],
-                      body=if Total > 0 -> [
-                    #small{id=S#feed_state.page_label, body=[
-                        integer_to_list(State#feed_state.start),"-",integer_to_list(Current)," of ",integer_to_list(Total)]},
-                    prev_btn(State, element(#iterator.next, First) /= undefined, First),
-                    next_btn(State, element(#iterator.prev, Last) /= undefined, Last)];
-                true-> [#i{id=S#feed_state.prev},#i{id=S#feed_state.next}] end}; true -> [] end,
+        TraverseCtl = #span{id=S#feed_state.feed_toolbar,
+                  class=["fd-traverse-ctl"],
+                  body=if Total > 0 -> [
+                #small{id=S#feed_state.page_label, body=[
+                    integer_to_list(State#feed_state.start),"-",integer_to_list(Current)," of ",integer_to_list(Total)]},
+                prev_btn(State, element(#iterator.next, First) /= undefined, First),
+                next_btn(State, element(#iterator.prev, Last) /= undefined, Last)];
+            true-> [#i{id=S#feed_state.prev},#i{id=S#feed_state.next}] end},
 
-            SelectionCtl = if S#feed_state.enable_selection ->
-                #span{id=S#feed_state.select_toolbar,
-                    style="display:none;",
-                    class=["fd-sel-toolbar"], body=[
-                    delete_btn(State),
-                    F#feed_ui.selection_ctl,
-                    #button{id=S#feed_state.close, class=["fd-close"],
-                        postback={cancel_select, State},
-                        delegate=feed_ui, body= <<"&times;">>}]}; true -> [] end,
+        SelectionCtl = 
+            #span{id=S#feed_state.select_toolbar,
+                style="display:none;",
+                class=["fd-sel-toolbar"], body=[
+                delete_btn(State),
+                #button{id=S#feed_state.close, class=["fd-close"],
+                    postback={cancel_select, State},
+                    delegate=feed_ui, body= <<"&times;">>}]},
+        
+        Alert = #span{id=S#feed_state.alert, class=["fd-alert"]},
 
-            FdTitle = if S#feed_state.show_title == true ->
-                Alert = #span{id=S#feed_state.alert, class=["fd-alert"]},
-                #panel{id=S#feed_state.feed_title, class=["fd-title"], body=[
-                    SelectAll,
-                    #panel{class=["fd-title-i"], body= [IconLink, Title]},
-                    #panel{class=["fd-title-row"], body=[Alert, SelectionCtl, TraverseCtl]}]};
-            true -> [] end,
+        FdTitle = #panel{id=S#feed_state.feed_title, class=["fd-title"], body=[
+                SelectAll,
+                #panel{class=["fd-title-i"], body= [Title]},
+                #panel{class=["fd-title-row"], body=[Alert, SelectionCtl, TraverseCtl]} ]},
 
-            [FdTitle, Body, More] end]});
+        [FdTitle, Body, More]
+    end,
+  
+  wf:render(#section{class=[F#feed_ui.class], body=X});
 
 % feed entry representation
-render_element(#feed_entry{entry=E, state=#feed_state{}=S}=FE)->
+render_element(#feed_entry{entry=E, state=#feed_state{}=S})->
   Id = wf:to_list(erlang:phash2(element(S#feed_state.entry_id, E))),
   SelId = ?EN_SEL(Id),
-  Checkbox = if S#feed_state.enable_selection ->
-    Ch = #checkbox{id=SelId,
-                    postback={select, SelId, S},
-                    delegate=S#feed_state.delegate_sel,
-                    source=[SelId], value=Id},
-    case S#feed_state.html_tag of table -> #td{body=Ch};_ -> #panel{class=["fd-entry-sel"],body=Ch} end;true -> [] end,
 
-  Wrap = fun(En) -> case S#feed_state.html_tag of
-    ul-> #li{id=?EN_ROW(Id), body=En};table->#tr{id=?EN_ROW(Id), cells=En};_-> #panel{id=?EN_ROW(Id), body=En} end end,
+  Ch = #checkbox{id=SelId, postback={select, SelId, S},source=[SelId], value=Id},
+  Checkbox = #panel{class=["fd-entry-sel"],body=Ch},
 
-  Entry = case S#feed_state.delegate of
-    ?MODULE ->
-      Body = wf:to_list(element(S#feed_state.entry_id, E)),
-      case S#feed_state.html_tag of table -> #td{body=Body};_ -> Body end;
-    M -> M:render_element(FE#feed_entry{module=M}) end,
+  Wrap = fun(En) -> #panel{id=?EN_ROW(Id), body=En} end,
 
-  El = wf:render(Wrap(lists:flatten([Checkbox,Entry]))),
-  if S#feed_state.js_escape -> wf:js_escape(El); true -> El end;
+  Entry = wf:to_list(element(S#feed_state.entry_id, E)),
+
+  wf:render(Wrap(lists:flatten([Checkbox,Entry])));
+  
 
 % Media elements
 
@@ -183,13 +159,12 @@ prev_btn(S, HasNext, First)->
         body=[#i{class=["fd-chevron-left"]}], data_fields=?TOOLTIP, title= <<"previous">>,
         postback={traverse, #iterator.next, First, S}, delegate=feed_ui}.
 selectall_checkbox(S, Hashs, Style)->
-    if S#feed_state.enable_selection == true ->
+    
         #checkbox{id=S#feed_state.select_all, class=["fd-checkbox"],
             postback={select, S#feed_state.select_all, S},
-            delegate=S#feed_state.delegate_sel,
             source=[S#feed_state.select_all],
             value= string:join(Hashs, "|"),
-            style=Style}; true -> [] end.
+            style=Style}.
 
 % events
 
@@ -201,14 +176,14 @@ event({delete, #feed_state{selected_key=Selected, visible_key=Visible}=S}) ->
     User = wf:user(),
     {Type, Module} = case S#feed_state.entry_type of
         product -> {product, kvs_product};
-        entry when S#feed_state.view == product -> {product, kvs_product};
+        %entry when S#feed_state.view == product -> {product, kvs_product};
         group -> {group, kvs_group};
         T -> {T, kvs_feed} end,
 
     [begin
         case kvs:get(Type, Id) of {error,_} -> wf:info("[feed_ui] no ~p ~p", [Type, Id]);
         {ok, Obj} ->
-        Route = if S#feed_state.del_by_index orelse Type /= entry ->
+        Route = if Type /= entry ->
             [Module, User#user.email, delete];
          true ->
             [Module, User#user.email, Type, delete] end,
@@ -280,14 +255,12 @@ traverse(Direction, Start, #feed_state{}=S)->
 
     State = S#feed_state{
         start=NewStart,
-        start_element=NewFirst,
-        last_element=NewLast,
         current=Current},
 
     {UiEntries, {Ids, Hashs}} = lists:mapfoldl(fun(E,{IdsIn, HashIn})->
         Id = element(S#feed_state.entry_id,E),
         Hash = wf:to_list(erlang:phash2(Id)),
-        {#feed_entry{entry=E, state=State#feed_state{js_escape=true}}, {[Id|IdsIn],[Hash|HashIn]}} end, {[], []}, Entries),
+        {#feed_entry{entry=E, state=State}, {[Id|IdsIn],[Hash|HashIn]}} end, {[], []}, Entries),
 
     wf:cache(S#feed_state.visible_key, Ids),
     wf:cache(S#feed_state.selected_key,[]),
@@ -351,7 +324,7 @@ process_delivery([_,{_,Fid}, deleted], [#entry{}=E])-> update_entry(remove, Fid,
 process_delivery([Type,_,    deleted], [E]) ->         update_entry(remove, ?FEED(Type), E);
 
 process_delivery([show_entry], [Entry, #feed_state{} = S]) ->
-    wf:insert_bottom(S#feed_state.entries, #feed_entry{entry=Entry, state=S#feed_state{js_escape=true}}),
+    wf:insert_bottom(S#feed_state.entries, #feed_entry{entry=Entry, state=S}),
     wf:wire("Holder.run();"),
     wf:update(S#feed_state.more_toolbar, #button{ class=["fd-btn-more"],
                                                 body= <<"more">>,
@@ -370,13 +343,13 @@ update_entry(Act, Fid, E) ->
         UiId = wf:to_list(erlang:phash2(Id)),
         wf:info("[feed_ui] entry ~p ~p [~p] in ~p [~p]", [wf:to_list(Act), Id, UiId, Fid, ?CTX#cx.module]),
 
-        if S#feed_state.enable_traverse -> 
-            traverse(#iterator.next,E,S);
-        true ->
-            ?UPDATE_DOM(Act,
-                case Act of prepend -> S#feed_state.entries;_-> ?EN_ROW(UiId) end,
-                case Act of remove -> [];_-> #feed_entry{entry=E, state=S#feed_state{js_escape=true}} end,
-                case Act of remove -> "~s"; _-> "'~s'" end) end,
+        
+        traverse(#iterator.next,E,S),
+        
+            % ?UPDATE_DOM(Act,
+            %     case Act of prepend -> S#feed_state.entries;_-> ?EN_ROW(UiId) end,
+            %     case Act of remove -> [];_-> #feed_entry{entry=E, state=S} end,
+            %     case Act of remove -> "~s"; _-> "'~s'" end) end,
 
         case Act of
             remove -> wf:cache(Vkey, lists:delete(element(Eid,E), wf:cache(Vkey)));

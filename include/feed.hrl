@@ -1,54 +1,31 @@
--ifndef(TEMP_ID).
--define(TEMP_ID, wf:temp_id()).
--endif.
-
--include_lib("nitro/include/nitro.hrl").
-
--record(feed_ui,        {?ELEMENT_BASE(feed_ui), state, icon="", icon_url, header=[], selection_ctl=[]}).
--record(feed_entry,     {?ELEMENT_BASE(feed_ui), entry, state}).
--record(entry_media,    {?ELEMENT_BASE(feed_ui), media, mode}).
-
+%
+% Feed specification
+%
 -record(feed_state, {
-    view,
-    js_escape       = false,
-    delegate        = feed_ui,
-    delegate_sel    = feed_ui,
-    flat_mode       = false,
-    html_tag        = 'div',
     entry_type      = entry,
     entry_id        = #iterator.id,
     container       = feed,
     container_id,
-    del_by_index    = false,
-    feed_title      = ?TEMP_ID,
-    show_title      = true,
-    show_header     = true,
-    enable_selection= false,
-    enable_traverse = false,
-    selection,
-    selectall_ctl   = ?TEMP_ID,
-    select_all      = ?TEMP_ID,
-    delete_btn      = ?TEMP_ID,
-    prev            = ?TEMP_ID,
-    next            = ?TEMP_ID,
-    entries         = ?TEMP_ID,
-    page_label      = ?TEMP_ID,
-    select_toolbar  = ?TEMP_ID,
-    feed_toolbar    = ?TEMP_ID,
-    more_toolbar    = ?TEMP_ID,
-    close           = ?TEMP_ID,
-    alert           = ?TEMP_ID,
-    ext_header      = ?TEMP_ID,
-    full,
+    feed_title      = wf:temp_id(),
+    selectall_ctl   = wf:temp_id(),
+    select_all      = wf:temp_id(),
+    delete_btn      = wf:temp_id(),
+    prev            = wf:temp_id(),
+    next            = wf:temp_id(),
+    entries         = wf:temp_id(),
+    page_label      = wf:temp_id(),
+    select_toolbar  = wf:temp_id(),
+    feed_toolbar    = wf:temp_id(),
+    more_toolbar    = wf:temp_id(),
+    close           = wf:temp_id(),
+    alert           = wf:temp_id(),
     start           = 0,
     total           = 0,
     current         = 0,
-    start_element,
-    last_element,
     page_size = 4,
-    selected_key = ?TEMP_ID,
-    visible_key  = ?TEMP_ID,
-    recipients=[]}).
+    selected_key = wf:temp_id(),
+    visible_key  = wf:temp_id()
+    }).
 
 % Feed id based identifies
 -define(FD_ID(Id), wf:to_list(erlang:phash2(Id))).
@@ -83,8 +60,7 @@
         feed_toolbar    = ?FD_TOOLBAR(Id),
         selected_key    = ?FD_SELKEY(Id),
         visible_key     = ?FD_VISKEY(Id),
-        close           = ?FD_CLOSE(Id),
-        ext_header      = ?FD_EXTHEAD(Id)}).
+        close           = ?FD_CLOSE(Id)}).
 -define(FD_STATE(Id, S), S#feed_state{
         container_id    = Id,
         feed_title      = ?FD_TITLE(Id),
@@ -100,8 +76,7 @@
         feed_toolbar    = ?FD_TOOLBAR(Id),
         selected_key    = ?FD_SELKEY(Id),
         visible_key     = ?FD_VISKEY(Id),
-        close           = ?FD_CLOSE(Id),
-        ext_header      = ?FD_EXTHEAD(Id)}).
+        close           = ?FD_CLOSE(Id)}).
 
 % Feed entry id based identifiers
 -define(EN_ROW(Id),     wf:to_list(Id)++"row").

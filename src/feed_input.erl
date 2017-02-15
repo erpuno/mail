@@ -2,7 +2,7 @@
 -compile(export_all).
 -compile({parse_transform, shen}).
 -include_lib("n2o/include/wf.hrl").
-%-include_lib("n2o_bootstrap/include/wf.hrl").
+
 -include_lib("kvs/include/user.hrl").
 -include_lib("kvs/include/product.hrl").
 -include_lib("kvs/include/feed.hrl").
@@ -10,7 +10,8 @@
 -include_lib("kvs/include/entry.hrl").
 -include_lib("kvs/include/comment.hrl").
 -include_lib("kernel/include/file.hrl").
--include("records.hrl").
+-include("elements.hrl").
+
 -include("input.hrl").
 -include("feed.hrl").
 
@@ -210,7 +211,7 @@ event({post, group, #input_state{}=Is}) ->
                     scope = Publicity,
                     creator = From,
                     owner = From,
-                    feeds = ?GRP_CHUNK,
+                    feeds = [feed, products, comments],
                     created = erlang:timestamp()},
 
     msg:notify([kvs_group, User#user.email, add], [Group]);
@@ -223,7 +224,7 @@ event({post, product, #input_state{}=Is}) ->
         id = kvs:uuid(),
         creator = User#user.email,
         owner = User#user.email,
-        feeds = ?PRD_CHUNK,
+        feeds = [features, specs, gallery, videos, reviews, news, bundles, comments],
         created = erlang:timestamp() },
 
     Groups = groups(Is),
