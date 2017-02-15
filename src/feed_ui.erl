@@ -27,7 +27,7 @@ render_element(#feed_ui{state=S}=F) ->
 
   X = case kvs:get(S#feed_state.container, S#feed_state.container_id) of {error,E1r}->
       wf:info(?MODULE,"Container failed: ~p | ~p id:~p", [E1r, S#feed_state.container,  S#feed_state.container_id]),
-      #panel{id=S#feed_state.feed_title, class=["fd-title"], body=[
+      #panel{class=["fd-title"], body=[
         #panel{class=["fd-title-row"], body=[Title, #span{class=["fd-label"], body= <<" [no feed]">>}]}]};
     {ok,Feed} ->
         Total = element(#container.count, Feed),
@@ -80,7 +80,7 @@ render_element(#feed_ui{state=S}=F) ->
         
         Alert = #span{id=S#feed_state.alert, class=["fd-alert"]},
 
-        FdTitle = #panel{id=S#feed_state.feed_title, class=["fd-title"], body=[
+        FdTitle = #panel{class=["fd-title"], body=[
                 SelectAll,
                 #panel{class=["fd-title-i"], body= [Title]},
                 #panel{class=["fd-title-row"], body=[Alert, SelectionCtl, TraverseCtl]} ]},
@@ -209,8 +209,7 @@ event({select, Sel, #feed_state{selected_key=Key}=S})->
     case sets:size(NewSel) of 0 -> deselect(S);
     Size ->
         wf:wire(#jq{target=S#feed_state.select_toolbar, method=["show"]}),
-        wf:wire(#jq{target=S#feed_state.close,          method=["show"]}),
-        wf:wire(#jq{target=S#feed_state.feed_title,     method=["attr"], args=["'style', 'background-color:lightblue'"]}),
+        wf:wire(#jq{target=S#feed_state.close,          method=["show"]}),        
         wf:wire(#jq{target=S#feed_state.feed_toolbar,   method=["hide"]}),
         wf:wire(#jq{target=S#feed_state.select_all,     method=["prop"], args=["'checked'," ++
             if Size == S#feed_state.page_size orelse Size == S#feed_state.current -> "'checked'"; true -> "false" end]})
@@ -233,7 +232,6 @@ deselect(#feed_state{selected_key=Key}=S) ->
     wf:wire(#jq{target=S#feed_state.select_toolbar, method=["hide"]}),
     wf:wire(#jq{target=S#feed_state.feed_toolbar, method=["show"]}),
     wf:wire(#jq{target=S#feed_state.close, method=["hide"]}),
-    wf:wire(#jq{target=S#feed_state.feed_title, method=["attr"], args=["'style', 'background-color:none;'"]}),
     wf:cache(Key, []).
 
 % Traverse

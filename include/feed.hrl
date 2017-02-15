@@ -6,7 +6,6 @@
     entry_id        = #iterator.id,
     container       = feed,
     container_id,
-    feed_title      = wf:temp_id(),
     selectall_ctl   = wf:temp_id(),
     select_all      = wf:temp_id(),
     delete_btn      = wf:temp_id(),
@@ -30,7 +29,6 @@
 % Feed id based identifies
 -define(FD_ID(Id), wf:to_list(erlang:phash2(Id))).
 -define(FD_INPUT(Id),     ?FD_ID(Id)++"in").
--define(FD_TITLE(Id),     ?FD_ID(Id)++"ft").
 -define(FD_SELALLCTL(Id), ?FD_ID(Id)++"sallctl").
 -define(FD_SELALL(Id),    ?FD_ID(Id)++"all").
 -define(FD_PG_LBL(Id),    ?FD_ID(Id)++"pgl").
@@ -47,7 +45,6 @@
 -define(FD_EXTHEAD(Id),   ?FD_ID(Id)++"xhd").
 -define(FD_STATE(Id), #feed_state{
         container_id    = Id,
-        feed_title      = ?FD_TITLE(Id),
         selectall_ctl   = ?FD_SELALLCTL(Id),
         select_all      = ?FD_SELALL(Id),
         delete_btn      = ?FD_DEL(Id),
@@ -63,7 +60,6 @@
         close           = ?FD_CLOSE(Id)}).
 -define(FD_STATE(Id, S), S#feed_state{
         container_id    = Id,
-        feed_title      = ?FD_TITLE(Id),
         selectall_ctl   = ?FD_SELALLCTL(Id),
         select_all      = ?FD_SELALL(Id),
         delete_btn      = ?FD_DEL(Id),

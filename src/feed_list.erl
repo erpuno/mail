@@ -14,7 +14,7 @@ render_element(#feed_list{state=S}=F) ->
     wf:render(#section{class=[F#feed_list.class], body=[
         case kvs:get(S#feed_state.container, S#feed_state.container_id) of {error,E1r}->
           wf:info(?MODULE,"Container failed: ~p | ~p id:~p", [E1r, S#feed_state.container,  S#feed_state.container_id]),
-            #panel{id=S#feed_state.feed_title, class=["fd-title"], body=[
+            #panel{class=["fd-title"], body=[
                 #panel{class=["fd-title-row"], body=[Title, #span{class=["fd-label"], body= <<" [no feed]">>}]}]};
         {ok,Feed} ->
             Total = element(#container.count, Feed),
@@ -66,7 +66,7 @@ render_element(#feed_list{state=S}=F) ->
                         delegate=feed_list, body= <<"&times;">>}]},
             
             Alert = #span{id=S#feed_state.alert, class=["fd-alert"]},
-            FdTitle = #panel{id=S#feed_state.feed_title, class=["fd-title"], body=[
+            FdTitle = #panel{class=["fd-title"], body=[
                     SelectAll,
                     #panel{class=["fd-title-i"], body= [Title]},
                     #panel{class=["fd-title-row"], body=[Alert, SelectionCtl, TraverseCtl]}]},
