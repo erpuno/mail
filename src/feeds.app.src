@@ -1,6 +1,0 @@
-{application, feeds, [{description, "SRC FEEDS Chains Server"},
-                       {vsn, "1"},
-                       {registered, []},
-                       {applications, [kernel, gproc, stdlib, kvs]},
-                       {mod, { feeds_app, []}},
-                       {env, []}]}.

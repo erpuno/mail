@@ -1,1 +1,0 @@
--define(FEED_WORKER_NAME(Type, Name), [feed, worker, Type, Name]).
