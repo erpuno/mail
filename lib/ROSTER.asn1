@@ -1,0 +1,22 @@
+ROSTER DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+    P2P ::= SEQUENCE { dst OCTET STRING }
+    MUC ::= SEQUENCE { dst OCTET STRING }
+    Adr ::= SEQUENCE { src OCTET STRING,
+                       dst CHOICE { muc [0] MUC,
+                                    p2p [1] P2P } }
+    Pub ::= SEQUENCE { key OCTET STRING, adr Adr,
+                       tag OCTET STRING, bin OCTET STRING }
+    Sub ::= SEQUENCE { key OCTET STRING, adr Adr }
+    Cut ::= SEQUENCE { id  OCTET STRING }
+    N2O ::= SEQUENCE { tok OCTET STRING }
+    Ack ::= SEQUENCE { lex OCTET STRING }
+    Nak ::= SEQUENCE { key OCTET STRING }
+    Msg ::=   CHOICE { n2o [0] N2O,
+                       ack [1] Ack,
+                       nak [2] Nak,
+                       pub [3] Pub,
+                       sub [4] Sub,
+                       cut [5] Cut }
+
+END
