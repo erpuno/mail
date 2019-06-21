@@ -6,6 +6,8 @@ defmodule CHAT.Mixfile do
       app: :chat,
       version: "0.6.0",
       elixir: "~> 1.7",
+      compilers: [:asn1] ++ Mix.compilers,
+      asn1_paths: ["src"],
       deps: deps()
     ]
   end
@@ -14,6 +16,7 @@ defmodule CHAT.Mixfile do
 
   def deps() do
     [
+      {:asn1ex, github: "vicentfg/asn1ex"},
       {:cowboy, "~> 2.5"},
       {:rocksdb, github: "voxoz/rocks"},
       {:syn, github: "ostinelli/syn"},
