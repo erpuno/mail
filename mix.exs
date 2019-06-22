@@ -6,13 +6,14 @@ defmodule CHAT.Mixfile do
       app: :chat,
       version: "0.6.0",
       elixir: "~> 1.7",
-      compilers: [:asn1] ++ Mix.compilers,
+      compilers: [:asn1] ++ Mix.compilers(),
       asn1_paths: ["src"],
       deps: deps()
     ]
   end
 
-  def application(), do: [mod: {CHAT.Application, []}]
+  def application(),
+    do: [mod: {CHAT.Application, []}, applications: [:ranch, :cowboy, :n2o, :kvx, :syn]]
 
   def deps() do
     [
