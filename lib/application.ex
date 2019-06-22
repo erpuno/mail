@@ -18,20 +18,32 @@ defmodule CHAT.Application do
 
   Example:
 
-  ```erlang
+  ```elixir
   iex(1)> Supervisor.which_children(:n2o)
   [
-    {{:ring, {:server, 4}}, #PID<0.257.0>, :worker, [:n2o_wsnode]},
-    {{:ring, {:server, 3}}, #PID<0.256.0>, :worker, [:n2o_wsnode]},
-    {{:ring, {:server, 2}}, #PID<0.255.0>, :worker, [:n2o_wsnode]},
-    {{:ring, {:server, 1}}, #PID<0.254.0>, :worker, [:n2o_wsnode]},
-    {{:ring, 4}, #PID<0.200.0>, :worker, [:n2o_vnode]},
-    {{:ring, 3}, #PID<0.199.0>, :worker, [:n2o_vnode]},
-    {{:ring, 2}, #PID<0.198.0>, :worker, [:n2o_vnode]},
-    {{:ring, 1}, #PID<0.197.0>, :worker, [:n2o_vnode]},
-    {{:caching, 'timer'}, #PID<0.196.0>, :worker, [:n2o]}
+    {{:part, 4}, #PID<0.300.0>, :worker, [:n2o_wsnode]},
+    {{:part, 3}, #PID<0.299.0>, :worker, [:n2o_wsnode]},
+    {{:part, 2}, #PID<0.298.0>, :worker, [:n2o_wsnode]},
+    {{:part, 1}, #PID<0.297.0>, :worker, [:n2o_wsnode]},
+    {{:ring, 4}, #PID<0.243.0>, :worker, [:n2o_vnode]},
+    {{:ring, 3}, #PID<0.242.0>, :worker, [:n2o_vnode]},
+    {{:ring, 2}, #PID<0.241.0>, :worker, [:n2o_vnode]},
+    {{:ring, 1}, #PID<0.240.0>, :worker, [:n2o_vnode]},
+    {{:caching, 'timer'}, #PID<0.239.0>, :worker, [:n2o]}
   ]
   ```
+
+  In example you see two rings: `ring` for MQTT workers and `part` for WebSocket workers.
+
+  File `config/config.exs` should contain `proto` N2O parameter, the module
+  which contains N2O protocol that will be runned inside ring worker:
+
+  ```elixir
+  config :n2o,
+    proto: CHAT.Server
+  ```
+
+  In CHAT application this `:n2o_wsnode` worker is `CHAT.Server` module.
   """
   def initialize() do
     options = [
@@ -47,7 +59,7 @@ defmodule CHAT.Application do
 
     for {{_, _}, pos} <- :lists.zip(:n2o.ring(), :lists.seq(1, length(:n2o.ring()))) do
       :n2o_pi.start(
-        pi(module: :n2o_wsnode, table: :ring, sup: :n2o, state: [], name: {:server, pos})
+        pi(module: :n2o_wsnode, table: :part, sup: :n2o, state: [], name: pos)
       )
     end
   end
