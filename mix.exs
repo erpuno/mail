@@ -4,7 +4,7 @@ defmodule CHAT.Mixfile do
   def project() do
     [
       app: :chat,
-      version: "0.6.0",
+      version: "3.6.0",
       elixir: "~> 1.7",
       compilers: [:asn1] ++ Mix.compilers(),
       asn1_paths: ["src"],
