@@ -1,13 +1,21 @@
 defmodule CHAT.TXT do
+  @moduledoc """
+  `CHAT.TXT` is a WebSocket client interface and client
+  socket protocol (session level) representation and
+  textual protocol termination.
+  """
   use N2O, with: [:n2o, :kvx]
   require CHAT
 
-  def format_msg(
+  defp format_msg(
         CHAT."Pub"(bin: pl, key: id, adr: CHAT."Adr"(src: fr, dst: {:p2p, CHAT."P2P"(dst: to)}))
       ) do
     :io_lib.format('~s:~s:~s:~s', [fr, to, id, pl])
   end
 
+  @doc """
+  N2O protocol implementation (client, session part).
+  """
   def info({:text, <<"N2O", x::binary>>}, r, s) do
     a = :string.trim(:erlang.binary_to_list(x))
     N2O.reg({:client, a})

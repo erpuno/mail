@@ -17,6 +17,7 @@ defmodule CHAT.Mixfile do
 
   def deps() do
     [
+      {:ex_doc, "~> 0.11", only: :dev},
       {:asn1ex, github: "vicentfg/asn1ex"},
       {:cowboy, "~> 2.5"},
       {:rocksdb, github: "voxoz/rocks"},

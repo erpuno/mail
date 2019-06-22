@@ -1,4 +1,8 @@
 defmodule CHAT do
+  @moduledoc """
+  `CHAT` is the front API module for application.
+  It provides records defititions, KVX mentainformation and useful functions.
+  """
   require Record
   require KVX
 
