@@ -8,6 +8,7 @@ Features
 
 * Usage Example of N2O and KVX
 * RocksDB support out of the box
+* 150 LOC
 
 Prerequisites
 -------------
@@ -25,7 +26,7 @@ $ mix compile
 $ iex -S mix
 ```
 
-Then open `https://localhost:8042/app/index.html`
+Then run `wscat --no-check -c https://localhost:8042/ws`
 
 Credits
 -------
