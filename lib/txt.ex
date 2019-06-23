@@ -46,7 +46,7 @@ defmodule CHAT.TXT do
 
             true ->
               {:ring, n} = :n2o_ring.lookup(to)
-              N2O.send({:server, n}, {:publish, self(), from, msg})
+              N2O.send(n, {:publish, self(), from, msg})
               <<>>
           end
 
