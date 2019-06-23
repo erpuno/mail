@@ -13,8 +13,8 @@ defmodule CHAT.Application do
   end
 
   @doc """
-  TLS cert options for `:cowboy`, `:syn` and `:kvx` start. This function
-  also spawns ring of `:n2o_wsnode` modules under N2O supervision tree.
+  Manual startup and conifiguring during startup the following Erlang/OTP
+  applications: `:cowboy`, `:syn`, `:kvx` and `:n2o`.
 
   Example:
 
