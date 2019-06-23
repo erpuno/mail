@@ -8,8 +8,8 @@ defmodule CHAT.TXT do
   require CHAT
 
   defp format_msg(
-        CHAT."Pub"(bin: pl, key: id, adr: CHAT."Adr"(src: fr, dst: {:p2p, CHAT."P2P"(dst: to)}))
-      ) do
+         CHAT."Pub"(bin: pl, key: id, adr: CHAT."Adr"(src: fr, dst: {:p2p, CHAT."P2P"(dst: to)}))
+       ) do
     :io_lib.format('~s:~s:~s:~s', [fr, to, id, pl])
   end
 
