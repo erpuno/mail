@@ -29,17 +29,21 @@ defmodule CHAT.Application do
   ]
   ```
 
-  In example you see two rings: `ring` for MQTT workers and `part` for WebSocket workers.
+  In example you see two rings: `mqtt` and `ws` for MQTT and WebSocket workers respectively.
 
   File `config/config.exs` should contain `proto` N2O parameter, the module
   which contains N2O protocol that will be runned inside ring worker:
 
   ```elixir
   config :n2o,
-    proto: CHAT.Server
+    proto: CHAT.Server,
+    ws_server: false
   ```
 
   In CHAT application this `:n2o_wsnode` worker is `CHAT.Server` module.
+  Also we need to disable WebSocket ring creationg at N2O startup and create it manually during CHAT startup
+  as PI protocol `:init` function contains SYN registration which is dependency only for CHAT,
+  the higher level that N2O.
   """
   def initialize() do
     :cowboy.start_tls(:http, :n2o_cowboy.env(:chat), %{env: %{dispatch: :n2o_cowboy2.points()}})
