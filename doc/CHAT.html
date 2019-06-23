@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.20.2">
+    <meta name="project" content="chat v3.6.0">
+    <title>CHAT — chat v3.6.0</title>
+    <link rel="stylesheet" href="dist/html-d9f58a6320b5bfa6dd77.css" />
+    <script src="dist/sidebar_items-f77c19a3ab.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/html-d9f58a6320b5bfa6dd77.js"></script>
+    
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
+    <div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="api-reference.html" class="sidebar-projectName">
+chat      </a>
+      <h2 class="sidebar-projectVersion">
+        v3.6.0
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="app-vsn">chat v3.6.0</small>
+CHAT              </h1>
+
+
+        <section id="moduledoc">
+<p><a href="#content"><code class="inline">CHAT</code></a> is the front API module for application.
+It provides records defititions, KVX mentainformation and useful functions.</p>
+        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Ack/1">Ack(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Ack/2">Ack(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Adr/1">Adr(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Adr/2">Adr(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Cut/1">Cut(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Cut/2">Cut(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#FTP/1">FTP(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#FTP/2">FTP(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#MUC/1">MUC(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#MUC/2">MUC(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#N2O/1">N2O(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#N2O/2">N2O(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Nak/1">Nak(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Nak/2">Nak(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#P2P/1">P2P(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#P2P/2">P2P(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Pub/1">Pub(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Pub/2">Pub(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Sub/1">Sub(args \\ [])</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#Sub/2">Sub(record, args)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#bin/1">bin(key)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#metainfo/0">metainfo()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#user/1">user(id)</a>
+  </div>
+</div>
+  </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="Ack/1">
+  
+    <span id="Ack/0"></span>
+  <div class="detail-header">
+    <a href="#Ack/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Ack(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Ack/2">
+    <div class="detail-header">
+    <a href="#Ack/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Ack(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Adr/1">
+  
+    <span id="Adr/0"></span>
+  <div class="detail-header">
+    <a href="#Adr/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Adr(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Adr/2">
+    <div class="detail-header">
+    <a href="#Adr/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Adr(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Cut/1">
+  
+    <span id="Cut/0"></span>
+  <div class="detail-header">
+    <a href="#Cut/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Cut(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Cut/2">
+    <div class="detail-header">
+    <a href="#Cut/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Cut(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="FTP/1">
+  
+    <span id="FTP/0"></span>
+  <div class="detail-header">
+    <a href="#FTP/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">FTP(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="FTP/2">
+    <div class="detail-header">
+    <a href="#FTP/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">FTP(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="MUC/1">
+  
+    <span id="MUC/0"></span>
+  <div class="detail-header">
+    <a href="#MUC/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">MUC(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="MUC/2">
+    <div class="detail-header">
+    <a href="#MUC/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">MUC(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="N2O/1">
+  
+    <span id="N2O/0"></span>
+  <div class="detail-header">
+    <a href="#N2O/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">N2O(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="N2O/2">
+    <div class="detail-header">
+    <a href="#N2O/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">N2O(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Nak/1">
+  
+    <span id="Nak/0"></span>
+  <div class="detail-header">
+    <a href="#Nak/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Nak(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Nak/2">
+    <div class="detail-header">
+    <a href="#Nak/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Nak(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="P2P/1">
+  
+    <span id="P2P/0"></span>
+  <div class="detail-header">
+    <a href="#P2P/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">P2P(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="P2P/2">
+    <div class="detail-header">
+    <a href="#P2P/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">P2P(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Pub/1">
+  
+    <span id="Pub/0"></span>
+  <div class="detail-header">
+    <a href="#Pub/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Pub(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Pub/2">
+    <div class="detail-header">
+    <a href="#Pub/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Pub(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Sub/1">
+  
+    <span id="Sub/0"></span>
+  <div class="detail-header">
+    <a href="#Sub/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Sub(args \\ [])</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="Sub/2">
+    <div class="detail-header">
+    <a href="#Sub/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">Sub(record, args)</span>
+    
+      <span class="note">(macro)</span>
+      </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="bin/1">
+    <div class="detail-header">
+    <a href="#bin/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">bin(key)</span>
+          </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="metainfo/0">
+    <div class="detail-header">
+    <a href="#metainfo/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">metainfo()</span>
+          </div>
+  <section class="docstring">
+  </section>
+</section>
+<section class="detail" id="user/1">
+    <div class="detail-header">
+    <a href="#user/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">user(id)</span>
+          </div>
+  <section class="docstring">
+  </section>
+</section>
+          </div>
+        </section>
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.20.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  
+  </body>
+</html>
+
