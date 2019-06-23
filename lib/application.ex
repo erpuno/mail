@@ -43,7 +43,7 @@ defmodule CHAT.Application do
   In CHAT application this `:n2o_wsnode` worker is `CHAT.Server` module.
   Also we need to disable WebSocket ring creationg at N2O startup and create it manually during CHAT startup
   as PI protocol `:init` function contains SYN registration which is dependency only for CHAT,
-  the higher level that N2O.
+  the higher level that N2O, which is zero-dependency library.
   """
   def initialize() do
     :cowboy.start_tls(:http, :n2o_cowboy.env(:chat), %{env: %{dispatch: :n2o_cowboy2.points()}})
