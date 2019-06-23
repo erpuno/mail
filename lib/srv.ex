@@ -2,7 +2,7 @@ defmodule CHAT.Server do
   @moduledoc """
   The `CHAT.Server` is a ring node implemented as `:n2o_pi`
   worker that handle all the incoming requests though hash function and
-  implements RPC over MQ pattern. It suports bith SYN and GPROC message buses (QoS=0). 
+  implements RPC over MQ pattern. It suports both SYN and GPROC message buses (QoS=0). 
   """
   use N2O, with: [:n2o, :kvx]
   require CHAT
