@@ -16,7 +16,7 @@ defmodule CHAT.Mixfile do
 
   def package() do
     [
-      files: ~w(doc include priv lib src mix.exs rebar.config LICENSE),
+      files: ~w(doc include priv lib src mix.exs LICENSE),
       licenses: ["ISC"],
       links: %{"GitHub" => "https://github.com/o7/chat"}
     ]
