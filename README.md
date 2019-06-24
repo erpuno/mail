@@ -6,7 +6,7 @@ TL;DR CRM core example for Elixir.
 Features
 --------
 
-* Usage Example of N2O and KVX
+* Usage Example of N2O and KVS
 * RocksDB support out of the box
 * 150 LOC
 

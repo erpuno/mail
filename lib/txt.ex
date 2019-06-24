@@ -4,7 +4,7 @@ defmodule CHAT.TXT do
   socket protocol (session level) representation and
   textual protocol termination.
   """
-  use N2O, with: [:n2o, :kvx]
+  use N2O, with: [:n2o, :kvs]
   require CHAT
 
   defp format_msg(
@@ -19,7 +19,7 @@ defmodule CHAT.TXT do
   def info({:text, <<"N2O", x::binary>>}, r, s) do
     a = :string.trim(:erlang.binary_to_list(x))
     N2O.reg({:client, a})
-    KVX.ensure(writer(id: a))
+    KVS.ensure(writer(id: a))
 
     {:reply, {:text, <<"USER " <> :erlang.list_to_binary(a)::binary>>}, r, cx(s, session: a)}
   end
@@ -30,7 +30,7 @@ defmodule CHAT.TXT do
   def info({:text, <<"SEND", x::binary>>}, r, cx(session: from) = s) do
     case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ' ') do
       [to | rest] ->
-        key = KVX.seq([], [])
+        key = KVS.seq([], [])
 
         msg =
           CHAT."Pub"(
@@ -58,8 +58,8 @@ defmodule CHAT.TXT do
   end
 
   def info({:text, <<"BOX">>}, r, cx(session: from) = s) do
-    KVX.ensure(writer(id: from))
-    fetch = reader(KVX.take(reader(:kvx.reader(from), args: -1)), :args)
+    KVS.ensure(writer(id: from))
+    fetch = reader(KVS.take(reader(:kvs.reader(from), args: -1)), :args)
 
     res =
       "LIST\n" <>
@@ -81,7 +81,7 @@ defmodule CHAT.TXT do
   def info({:text, <<"CUT", x::binary>>}, r, cx(session: from) = s) do
     case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ' ') do
       [id] ->
-        case KVX.cut(from, id) do
+        case KVS.cut(from, id) do
           {:ok, count} -> {:reply, {:text, <<"ERASED ", CHAT.bin(count)::binary>>}, r, s}
           {:error, _} -> {:reply, {:text, <<"NOT FOUND ">>}, r, s}
         end

@@ -4,19 +4,19 @@ defmodule CHAT.Server do
   worker that handle all the incoming requests though hash function and
   implements RPC over MQ pattern. It suports both SYN and GPROC message buses (QoS=0). 
   """
-  use N2O, with: [:n2o, :kvx]
+  use N2O, with: [:n2o, :kvs]
   require CHAT
 
   @doc """
   N2O protocol implementation (server part).
   """
   def info(CHAT."Cut"(id: id), r, cx(session: from) = s) do
-    KVX.cut(from, id)
+    KVS.cut(from, id)
     {:reply, {:default, CHAT."Ack"(lex: id)}, r, s}
   end
 
   def info(CHAT."Pub"(key: id, adr: CHAT."Adr"(dst: {:p2p, CHAT."P2P"(dst: to)})) = msg, r, s) do
-    KVX.append(msg, to)
+    KVS.append(msg, to)
     N2O.send({:client, to}, {:flush, msg})
     {:reply, {:binary, CHAT."Ack"(lex: id)}, r, s}
   end

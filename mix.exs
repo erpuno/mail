@@ -5,6 +5,8 @@ defmodule CHAT.Mixfile do
     [
       app: :chat,
       version: "3.6.0",
+      description: "CHAT Instant Messaging wss://n2o.im",
+      package: package(),
       elixir: "~> 1.7",
       compilers: [:asn1] ++ Mix.compilers(),
       asn1_paths: ["src"],
@@ -12,18 +14,26 @@ defmodule CHAT.Mixfile do
     ]
   end
 
+  def package() do
+    [
+      files: ~w(doc include priv lib src mix.exs rebar.config LICENSE),
+      licenses: ["ISC"],
+      links: %{"GitHub" => "https://github.com/o7/chat"}
+    ]
+  end
+
   def application(),
-    do: [mod: {CHAT.Application, []}, applications: [:ranch, :cowboy, :n2o, :kvx, :syn]]
+    do: [mod: {CHAT.Application, []}, applications: [:ranch, :cowboy, :n2o, :kvs, :syn]]
 
   def deps() do
     [
       {:ex_doc, "~> 0.11", only: :dev},
-      {:asn1ex, github: "vicentfg/asn1ex"},
+      {:asn1ex, github: "vicentfg/asn1ex", only: :dev},
       {:cowboy, "~> 2.5"},
-      {:rocksdb, github: "voxoz/rocks"},
-      {:syn, github: "ostinelli/syn"},
-      {:kvx, github: "synrc/kvx"},
-      {:n2o, github: "synrc/n2o"}
+      {:rocksdb, "~> 1.2.0"},
+      {:syn, "~> 1.6.3"},
+      {:kvs, "~> 6.6"},
+      {:n2o, "~> 6.6"}
     ]
   end
 end

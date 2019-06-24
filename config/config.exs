@@ -10,7 +10,7 @@ config :n2o,
   upload: "./priv/static",
   protocols: [:n2o_heart, CHAT.TXT]
 
-config :kvx,
-  dba: :kvx_rocks,
-  dba_st: :kvx_st,
-  schema: [:kvx, :kvx_stream, CHAT]
+config :kvs,
+  dba: :kvs_rocks,
+  dba_st: :kvs_st,
+  schema: [:kvs, :kvs_stream, CHAT]

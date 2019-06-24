@@ -14,7 +14,7 @@ defmodule CHAT.Application do
 
   @doc """
   Manual startup and conifiguring during startup the following Erlang/OTP
-  applications: `:cowboy`, `:syn`, `:kvx` and `:n2o`.
+  applications: `:cowboy`, `:syn`, `:kvs` and `:n2o`.
 
   Example:
 
@@ -47,7 +47,7 @@ defmodule CHAT.Application do
   """
   def initialize() do
     :cowboy.start_tls(:http, :n2o_cowboy.env(:chat), %{env: %{dispatch: :n2o_cowboy2.points()}})
-    :kvx.join()
+    :kvs.join()
     :syn.init()
     :n2o.start_ws_ring()
   end
