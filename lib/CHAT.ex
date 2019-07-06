@@ -28,7 +28,7 @@ defmodule CHAT do
   def bin(key), do: :erlang.list_to_binary(:io_lib.format("~p", [key]))
 
   def user(id) do
-    case :kvs.get(:writer, id) do
+    case :kvs.get(:writer, '/chat/' ++ id) do
       {:ok, _} -> true
       {:error, _} -> false
     end

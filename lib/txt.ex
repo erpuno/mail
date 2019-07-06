@@ -18,8 +18,9 @@ defmodule CHAT.TXT do
   """
   def info({:text, <<"N2O", x::binary>>}, r, s) do
     a = :string.trim(:erlang.binary_to_list(x))
-    N2O.reg({:client, a})
-    KVS.ensure(writer(id: a))
+    key = '/chat/' ++ a
+    N2O.reg({:client, key})
+    KVS.ensure(writer(id: key))
 
     {:reply, {:text, <<"USER " <> :erlang.list_to_binary(a)::binary>>}, r, cx(s, session: a)}
   end
@@ -41,12 +42,8 @@ defmodule CHAT.TXT do
 
         res =
           case CHAT.user(to) do
-            false ->
-              "ERROR user doesn't exist."
-
-            true ->
-              {:ring, n} = :n2o_ring.lookup(to)
-              N2O.send(n, {:publish, self(), from, msg})
+            false -> "ERROR user doesn't exist."
+            true -> :n2o_ring.send(:ws, {:publish, self(), from, msg})
               <<>>
           end
 
@@ -58,8 +55,8 @@ defmodule CHAT.TXT do
   end
 
   def info({:text, <<"BOX">>}, r, cx(session: from) = s) do
-    KVS.ensure(writer(id: from))
-    fetch = reader(KVS.take(reader(:kvs.reader(from), args: -1)), :args)
+    KVS.ensure(writer(id: '/chat/' ++ from))
+    fetch = reader(KVS.take(reader(:kvs.reader('/chat/'++from), args: -1)), :args)
 
     res =
       "LIST\n" <>
@@ -81,7 +78,7 @@ defmodule CHAT.TXT do
   def info({:text, <<"CUT", x::binary>>}, r, cx(session: from) = s) do
     case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ' ') do
       [id] ->
-        case KVS.cut(from, id) do
+        case KVS.cut('/chat/' ++ from, id) do
           {:ok, count} -> {:reply, {:text, <<"ERASED ", CHAT.bin(count)::binary>>}, r, s}
           {:error, _} -> {:reply, {:text, <<"NOT FOUND ">>}, r, s}
         end

@@ -21,10 +21,10 @@ defmodule CHAT.Application do
   ```elixir
   iex(1)> Supervisor.which_children(:n2o)
   [
-    {{:ws, 4}, #PID<0.258.0>, :worker, [:n2o_wsnode]},
-    {{:ws, 3}, #PID<0.257.0>, :worker, [:n2o_wsnode]},
-    {{:ws, 2}, #PID<0.256.0>, :worker, [:n2o_wsnode]},
-    {{:ws, 1}, #PID<0.255.0>, :worker, [:n2o_wsnode]},
+    {{:ws, '/ws/chat/1'}, #PID<0.258.0>, :worker, [:n2o_wsnode]},
+    {{:ws, '/ws/chat/2'}, #PID<0.257.0>, :worker, [:n2o_wsnode]},
+    {{:ws, '/ws/chat/3'}, #PID<0.256.0>, :worker, [:n2o_wsnode]},
+    {{:ws, '/ws/chat/4'}, #PID<0.255.0>, :worker, [:n2o_wsnode]},
     {{:caching, 'timer'}, #PID<0.201.0>, :worker, [:n2o]}
   ]
   ```
@@ -49,6 +49,5 @@ defmodule CHAT.Application do
     :cowboy.start_tls(:http, :n2o_cowboy.env(:chat), %{env: %{dispatch: :n2o_cowboy2.points()}})
     :kvs.join()
     :syn.init()
-    :n2o.start_ws_ring()
   end
 end

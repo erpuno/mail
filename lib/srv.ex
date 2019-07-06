@@ -11,13 +11,14 @@ defmodule CHAT.Server do
   N2O protocol implementation (server part).
   """
   def info(CHAT."Cut"(id: id), r, cx(session: from) = s) do
-    KVS.cut(from, id)
+    KVS.cut('/chat/' ++ from, id)
     {:reply, {:default, CHAT."Ack"(lex: id)}, r, s}
   end
 
   def info(CHAT."Pub"(key: id, adr: CHAT."Adr"(dst: {:p2p, CHAT."P2P"(dst: to)})) = msg, r, s) do
-    KVS.append(msg, to)
-    N2O.send({:client, to}, {:flush, msg})
+    key = '/chat/' ++ to
+    KVS.append(msg, key)
+    N2O.send({:client, key}, {:flush, msg})
     {:reply, {:binary, CHAT."Ack"(lex: id)}, r, s}
   end
 

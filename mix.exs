@@ -23,17 +23,17 @@ defmodule CHAT.Mixfile do
   end
 
   def application(),
-    do: [mod: {CHAT.Application, []}, applications: [:ranch, :cowboy, :n2o, :kvs, :syn]]
+    do: [mod: {CHAT.Application, []}, applications: [:ranch, :cowboy, :kvs, :syn, :n2o]]
 
   def deps() do
     [
-      {:ex_doc, "~> 0.11", only: :dev},
+      {:ex_doc, "~> 0.20.2", only: :dev},
       {:asn1ex, github: "vicentfg/asn1ex", only: :dev},
       {:cowboy, "~> 2.5"},
       {:rocksdb, "~> 1.2.0"},
       {:syn, "~> 1.6.3"},
-      {:kvs, "~> 6.6"},
-      {:n2o, "~> 6.6"}
+      {:n2o, "~> 6.7.2"},
+      {:kvs, "~> 6.7.3"}
     ]
   end
 end
