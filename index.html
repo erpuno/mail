@@ -74,16 +74,16 @@
  | SEND &lt;user&gt; &lt;msg&gt;
  | BOX
  | CUT &lt;id&gt;.
- > N2O maxim
+ > AUTH maxim
  < USER maxim
  > SEND vlad HELO
  < ERROR user doesn't exist.
- > N2O vlad
+ > AUTH vlad
  < USER vlad
  > SEND maxim OK
  < NOTIFY vlad:maxim:1556151953113322286:OK
  < ACK "1556151953113322286"
- > N2O maxim
+ > AUTH maxim
  < USER maxim
  > BOX
  < LIST
