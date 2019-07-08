@@ -5,18 +5,17 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.20.2">
-    <meta name="project" content="chat v3.7.2">
-    <title>CHAT.Application — chat v3.7.2</title>
+    <meta name="project" content="chat v3.7.3">
+    <title>CHAT.Application — chat v3.7.3</title>
     <link rel="stylesheet" href="dist/html-d9f58a6320b5bfa6dd77.css" />
       <link rel="canonical" href="https://hexdocs.pm/chat/CHAT.Application.html" />
     <script src="dist/sidebar_items-f77c19a3ab.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/html-d9f58a6320b5bfa6dd77.js"></script>
-    
   </head>
   <body data-type="modules">
     <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
-    <div class="main">
+<div class="main">
 
 <button class="sidebar-button sidebar-toggle">
   <span class="icon-menu" title="Collapse/expand sidebar"></span>
@@ -45,7 +44,7 @@
       <a href="api-reference.html" class="sidebar-projectName">
 chat      </a>
       <h2 class="sidebar-projectVersion">
-        v3.7.2
+        v3.7.3
       </h2>
     </div>
   </div>
@@ -65,10 +64,9 @@ chat      </a>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-
       <h1>
-        <small class="app-vsn">chat v3.7.2</small>
-CHAT.Application              </h1>
+        <small class="app-vsn">chat v3.7.3</small>
+CHAT.Application      </h1>
 
 
         <section id="moduledoc">
@@ -114,25 +112,25 @@ applications: <code class="inline">:cowboy</code>, <code class="inline">:syn</co
 Functions          </h1>
           <div class="functions-list">
 <section class="detail" id="initialize/0">
-    <div class="detail-header">
+  <div class="detail-header">
     <a href="#initialize/0" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">initialize()</span>
-          </div>
+  </div>
   <section class="docstring">
 <p>Manual startup and conifiguring during startup the following Erlang/OTP
 applications: <code class="inline">:cowboy</code>, <code class="inline">:syn</code>, <code class="inline">:kvs</code> and <code class="inline">:n2o</code>.</p>
 <p>Example:</p>
-<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex(1)&gt; </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">which_children</span><span class="p" data-group-id="6803923044-1">(</span><span class="ss">:n2o</span><span class="p" data-group-id="6803923044-1">)</span><span class="w">
-</span><span class="p" data-group-id="6803923044-2">[</span><span class="w">
-  </span><span class="p" data-group-id="6803923044-3">{</span><span class="p" data-group-id="6803923044-4">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/1&#39;</span><span class="p" data-group-id="6803923044-4">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-5">#</span><span class="nc" data-group-id="6803923044-5">PID</span><span class="p" data-group-id="6803923044-5">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">258</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="6803923044-5">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-6">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="6803923044-6">]</span><span class="p" data-group-id="6803923044-3">}</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="6803923044-7">{</span><span class="p" data-group-id="6803923044-8">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/2&#39;</span><span class="p" data-group-id="6803923044-8">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-9">#</span><span class="nc" data-group-id="6803923044-9">PID</span><span class="p" data-group-id="6803923044-9">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">257</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="6803923044-9">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-10">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="6803923044-10">]</span><span class="p" data-group-id="6803923044-7">}</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="6803923044-11">{</span><span class="p" data-group-id="6803923044-12">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/3&#39;</span><span class="p" data-group-id="6803923044-12">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-13">#</span><span class="nc" data-group-id="6803923044-13">PID</span><span class="p" data-group-id="6803923044-13">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">256</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="6803923044-13">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-14">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="6803923044-14">]</span><span class="p" data-group-id="6803923044-11">}</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="6803923044-15">{</span><span class="p" data-group-id="6803923044-16">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/4&#39;</span><span class="p" data-group-id="6803923044-16">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-17">#</span><span class="nc" data-group-id="6803923044-17">PID</span><span class="p" data-group-id="6803923044-17">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="6803923044-17">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-18">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="6803923044-18">]</span><span class="p" data-group-id="6803923044-15">}</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="6803923044-19">{</span><span class="p" data-group-id="6803923044-20">{</span><span class="ss">:caching</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;timer&#39;</span><span class="p" data-group-id="6803923044-20">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-21">#</span><span class="nc" data-group-id="6803923044-21">PID</span><span class="p" data-group-id="6803923044-21">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">201</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="6803923044-21">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6803923044-22">[</span><span class="ss">:n2o</span><span class="p" data-group-id="6803923044-22">]</span><span class="p" data-group-id="6803923044-19">}</span><span class="w">
-</span><span class="p" data-group-id="6803923044-2">]</span></code></pre>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex(1)&gt; </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">which_children</span><span class="p" data-group-id="8182088594-1">(</span><span class="ss">:n2o</span><span class="p" data-group-id="8182088594-1">)</span><span class="w">
+</span><span class="p" data-group-id="8182088594-2">[</span><span class="w">
+  </span><span class="p" data-group-id="8182088594-3">{</span><span class="p" data-group-id="8182088594-4">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/1&#39;</span><span class="p" data-group-id="8182088594-4">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-5">#</span><span class="nc" data-group-id="8182088594-5">PID</span><span class="p" data-group-id="8182088594-5">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">258</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8182088594-5">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-6">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="8182088594-6">]</span><span class="p" data-group-id="8182088594-3">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="8182088594-7">{</span><span class="p" data-group-id="8182088594-8">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/2&#39;</span><span class="p" data-group-id="8182088594-8">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-9">#</span><span class="nc" data-group-id="8182088594-9">PID</span><span class="p" data-group-id="8182088594-9">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">257</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8182088594-9">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-10">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="8182088594-10">]</span><span class="p" data-group-id="8182088594-7">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="8182088594-11">{</span><span class="p" data-group-id="8182088594-12">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/3&#39;</span><span class="p" data-group-id="8182088594-12">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-13">#</span><span class="nc" data-group-id="8182088594-13">PID</span><span class="p" data-group-id="8182088594-13">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">256</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8182088594-13">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-14">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="8182088594-14">]</span><span class="p" data-group-id="8182088594-11">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="8182088594-15">{</span><span class="p" data-group-id="8182088594-16">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/4&#39;</span><span class="p" data-group-id="8182088594-16">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-17">#</span><span class="nc" data-group-id="8182088594-17">PID</span><span class="p" data-group-id="8182088594-17">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8182088594-17">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-18">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="8182088594-18">]</span><span class="p" data-group-id="8182088594-15">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="8182088594-19">{</span><span class="p" data-group-id="8182088594-20">{</span><span class="ss">:caching</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;timer&#39;</span><span class="p" data-group-id="8182088594-20">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-21">#</span><span class="nc" data-group-id="8182088594-21">PID</span><span class="p" data-group-id="8182088594-21">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">201</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8182088594-21">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8182088594-22">[</span><span class="ss">:n2o</span><span class="p" data-group-id="8182088594-22">]</span><span class="p" data-group-id="8182088594-19">}</span><span class="w">
+</span><span class="p" data-group-id="8182088594-2">]</span></code></pre>
 <p>In example you see two rings: <code class="inline">mqtt</code> and <code class="inline">ws</code> for MQTT and WebSocket workers respectively.</p>
 <p>File <code class="inline">config/config.exs</code> should contain <code class="inline">proto</code> N2O parameter, the module
 which contains N2O protocol that will be runned inside ring worker:</p>
@@ -146,13 +144,13 @@ the higher level that N2O, which is zero-dependency library.</p>
   </section>
 </section>
 <section class="detail" id="start/2">
-    <div class="detail-header">
+  <div class="detail-header">
     <a href="#start/2" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">start(_, _)</span>
-          </div>
+  </div>
   <section class="docstring">
 <p>Called when an application is started.</p>
 <p>This function is called when an application is started using
@@ -190,7 +188,7 @@ callback.</p>
 </section>
           </div>
         </section>
-          <footer class="footer">
+      <footer class="footer">
         <p>
           <span class="line">
             Built using
@@ -214,7 +212,5 @@ callback.</p>
   </div>
 </section>
 </div>
-  
   </body>
 </html>
-
