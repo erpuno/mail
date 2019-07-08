@@ -16,7 +16,7 @@ defmodule CHAT.TXT do
   @doc """
   N2O protocol implementation (client, session part).
   """
-  def info({:text, <<"N2O", x::binary>>}, r, s) do
+  def info({:text, <<"AUTH", x::binary>>}, r, s) do
     a = :string.trim(:erlang.binary_to_list(x))
     key = '/chat/' ++ a
     N2O.reg({:client, key})
@@ -26,7 +26,7 @@ defmodule CHAT.TXT do
   end
 
   def info({:text, <<"SEND", _::binary>>}, r, cx(session: []) = s),
-    do: {:reply, {:text, "Please login with N2O. Try HELP."}, r, s}
+    do: {:reply, {:text, "Please login with AUTH. Try HELP."}, r, s}
 
   def info({:text, <<"SEND", x::binary>>}, r, cx(session: from) = s) do
     case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ' ') do
@@ -73,7 +73,7 @@ defmodule CHAT.TXT do
   end
 
   def info({:text, "HELP"}, r, s),
-    do: {:reply, {:text, <<"N2O <user>\n| SEND <user> <msg>\n| BOX\n| CUT <id>.">>}, r, s}
+    do: {:reply, {:text, <<"AUTH <user>\n| SEND <user> <msg>\n| BOX\n| CUT <id>.">>}, r, s}
 
   def info({:text, <<"CUT", x::binary>>}, r, cx(session: from) = s) do
     case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ' ') do
