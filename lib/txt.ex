@@ -88,10 +88,10 @@ defmodule CHAT.TXT do
     end
   end
 
-  def info({:flush, CHAT."Pub"() = m}, r, s),
+  def info({:forward, CHAT."Pub"() = m}, r, s),
     do: {:reply, {:text, "NOTIFY " <> :erlang.list_to_binary(format_msg(m))}, r, s}
 
-  def info({:flush, text}, r, s), do: {:reply, {:text, text}, r, s}
+  def info({:forward, text}, r, s), do: {:reply, {:text, text}, r, s}
   def info({:text, _}, r, s), do: {:reply, {:text, "Try HELP"}, r, s}
   def info(msg, r, s), do: {:unknown, msg, r, s}
 end

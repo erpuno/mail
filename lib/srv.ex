@@ -18,7 +18,7 @@ defmodule CHAT.Server do
   def info(CHAT."Pub"(key: id, adr: CHAT."Adr"(dst: {:p2p, CHAT."P2P"(dst: to)})) = msg, r, s) do
     key = '/chat/' ++ to
     KVS.append(msg, key)
-    N2O.send({:client, key}, {:flush, msg})
+    N2O.send({:client, key}, {:forward, msg})
     {:reply, {:binary, CHAT."Ack"(lex: id)}, r, s}
   end
 
