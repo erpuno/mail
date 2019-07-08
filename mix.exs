@@ -32,7 +32,7 @@ defmodule CHAT.Mixfile do
       {:cowboy, "~> 2.5"},
       {:rocksdb, "~> 1.2.0"},
       {:syn, "~> 1.6.3"},
-      {:n2o, "~> 6.7.2"},
+      {:n2o, "~> 6.7.3"},
       {:kvs, "~> 6.7.3"}
     ]
   end

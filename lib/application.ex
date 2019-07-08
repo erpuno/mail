@@ -47,7 +47,8 @@ defmodule CHAT.Application do
   """
   def initialize() do
     :cowboy.start_tls(:http, :n2o_cowboy.env(:chat), %{env: %{dispatch: :n2o_cowboy2.points()}})
-    :kvs.join()
-    :syn.init()
+    :kvs.join
+    :syn.init
+    :n2o.start_ws
   end
 end
