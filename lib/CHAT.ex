@@ -7,7 +7,7 @@ defmodule CHAT do
   require KVS
 
   Enum.each(
-    Record.extract_all(from_lib: "chat/include/ROSTER.hrl"),
+    Record.extract_all(from_lib: "chat/priv/ROSTER.hrl"),
     fn {name, definition} ->
       Record.defrecord(name, definition)
     end
@@ -19,7 +19,7 @@ defmodule CHAT do
       tables: [
         KVS.table(
           name: CHAT.Pub,
-          fields: Record.extract(:Pub, from_lib: "chat/include/ROSTER.hrl")
+          fields: Record.extract(:Pub, from_lib: "chat/priv/ROSTER.hrl")
         )
       ]
     )
