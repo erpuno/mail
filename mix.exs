@@ -4,10 +4,10 @@ defmodule CHAT.Mixfile do
   def project() do
     [
       app: :chat,
-      version: "3.7.1",
+      version: "3.7.2",
       description: "CHAT Instant Messaging wss://n2o.im",
       package: package(),
-      elixir: "~> 1.7",
+      elixir: "~> 1.8.1",
       compilers: [:asn1] ++ Mix.compilers(),
       asn1_paths: ["src"],
       deps: deps()
