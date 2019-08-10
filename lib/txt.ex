@@ -43,7 +43,7 @@ defmodule CHAT.TXT do
         res =
           case CHAT.user(to) do
             false -> "ERROR user doesn't exist."
-            true -> :n2o_ring.send(:ws, {:publish, self(), from, msg})
+            true -> :n2o_ring.send(:ws, :chat, {:publish, self(), from, msg})
               <<>>
           end
 
