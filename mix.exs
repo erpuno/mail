@@ -4,7 +4,7 @@ defmodule CHAT.Mixfile do
   def project() do
     [
       app: :chat,
-      version: "5.11.0",
+      version: "5.11.1",
       description: "CHAT Instant Messaging wss://n2o.im",
       package: package(),
       elixir: "~> 1.7",

@@ -5,11 +5,11 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.20.2">
-    <meta name="project" content="chat v3.8.1">
-    <title>CHAT.Application — chat v3.8.1</title>
+    <meta name="project" content="chat v5.11.1">
+    <title>CHAT.Application — chat v5.11.1</title>
     <link rel="stylesheet" href="dist/html-d9f58a6320b5bfa6dd77.css" />
       <link rel="canonical" href="https://hexdocs.pm/chat/CHAT.Application.html" />
-    <script src="dist/sidebar_items-f77c19a3ab.js"></script>
+    <script src="dist/sidebar_items-ed5fc61e7f.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/html-d9f58a6320b5bfa6dd77.js"></script>
   </head>
@@ -44,7 +44,7 @@
       <a href="api-reference.html" class="sidebar-projectName">
 chat      </a>
       <h2 class="sidebar-projectVersion">
-        v3.8.1
+        v5.11.1
       </h2>
     </div>
   </div>
@@ -65,12 +65,13 @@ chat      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        <small class="app-vsn">chat v3.8.1</small>
+        <small class="app-vsn">chat v5.11.1</small>
 CHAT.Application      </h1>
 
 
         <section id="moduledoc">
-<p><a href="#content"><code class="inline">CHAT.Application</code></a> is an
+<p>
+<a href="#content"><code class="inline">CHAT.Application</code></a> is an
 <code class="inline">Erlang/OTP</code> application powered by N2O messaging protocol.
 It is implemented as a ring of protocol nodes.</p>
         </section>
@@ -89,16 +90,25 @@ It is implemented as a ring of protocol nodes.</p>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#env/1">env(app)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#initialize/0">initialize()</a>
   </div>
-    <div class="summary-synopsis"><p>Manual startup and conifiguring during startup the following Erlang/OTP
-applications: <code class="inline">:cowboy</code>, <code class="inline">:syn</code>, <code class="inline">:kvs</code> and <code class="inline">:n2o</code>.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#points/0">points()</a>
+  </div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#start/2">start(_, _)</a>
   </div>
-    <div class="summary-synopsis"><p>Called when an application is started.</p></div>
+    <div class="summary-synopsis"><p>
+Called when an application is started.</p></div>
 </div>
   </div>
         </section>
@@ -111,6 +121,17 @@ applications: <code class="inline">:cowboy</code>, <code class="inline">:syn</co
             </a>
 Functions          </h1>
           <div class="functions-list">
+<section class="detail" id="env/1">
+  <div class="detail-header">
+    <a href="#env/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">env(app)</span>
+  </div>
+  <section class="docstring">
+  </section>
+</section>
 <section class="detail" id="initialize/0">
   <div class="detail-header">
     <a href="#initialize/0" class="detail-link" title="Link to this function">
@@ -120,27 +141,17 @@ Functions          </h1>
     <h1 class="signature">initialize()</span>
   </div>
   <section class="docstring">
-<p>Manual startup and conifiguring during startup the following Erlang/OTP
-applications: <code class="inline">:cowboy</code>, <code class="inline">:syn</code>, <code class="inline">:kvs</code> and <code class="inline">:n2o</code>.</p>
-<p>Example:</p>
-<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex(1)&gt; </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">which_children</span><span class="p" data-group-id="8227048071-1">(</span><span class="ss">:n2o</span><span class="p" data-group-id="8227048071-1">)</span><span class="w">
-</span><span class="p" data-group-id="8227048071-2">[</span><span class="w">
-  </span><span class="p" data-group-id="8227048071-3">{</span><span class="p" data-group-id="8227048071-4">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/1&#39;</span><span class="p" data-group-id="8227048071-4">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-5">#</span><span class="nc" data-group-id="8227048071-5">PID</span><span class="p" data-group-id="8227048071-5">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">258</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8227048071-5">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-6">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="8227048071-6">]</span><span class="p" data-group-id="8227048071-3">}</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="8227048071-7">{</span><span class="p" data-group-id="8227048071-8">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/2&#39;</span><span class="p" data-group-id="8227048071-8">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-9">#</span><span class="nc" data-group-id="8227048071-9">PID</span><span class="p" data-group-id="8227048071-9">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">257</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8227048071-9">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-10">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="8227048071-10">]</span><span class="p" data-group-id="8227048071-7">}</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="8227048071-11">{</span><span class="p" data-group-id="8227048071-12">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/3&#39;</span><span class="p" data-group-id="8227048071-12">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-13">#</span><span class="nc" data-group-id="8227048071-13">PID</span><span class="p" data-group-id="8227048071-13">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">256</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8227048071-13">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-14">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="8227048071-14">]</span><span class="p" data-group-id="8227048071-11">}</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="8227048071-15">{</span><span class="p" data-group-id="8227048071-16">{</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;/ws/chat/4&#39;</span><span class="p" data-group-id="8227048071-16">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-17">#</span><span class="nc" data-group-id="8227048071-17">PID</span><span class="p" data-group-id="8227048071-17">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8227048071-17">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-18">[</span><span class="ss">:n2o_wsnode</span><span class="p" data-group-id="8227048071-18">]</span><span class="p" data-group-id="8227048071-15">}</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="8227048071-19">{</span><span class="p" data-group-id="8227048071-20">{</span><span class="ss">:caching</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;timer&#39;</span><span class="p" data-group-id="8227048071-20">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-21">#</span><span class="nc" data-group-id="8227048071-21">PID</span><span class="p" data-group-id="8227048071-21">&lt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">201</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="8227048071-21">&gt;</span><span class="p">,</span><span class="w"> </span><span class="ss">:worker</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8227048071-22">[</span><span class="ss">:n2o</span><span class="p" data-group-id="8227048071-22">]</span><span class="p" data-group-id="8227048071-19">}</span><span class="w">
-</span><span class="p" data-group-id="8227048071-2">]</span></code></pre>
-<p>In example you see two rings: <code class="inline">mqtt</code> and <code class="inline">ws</code> for MQTT and WebSocket workers respectively.</p>
-<p>File <code class="inline">config/config.exs</code> should contain <code class="inline">proto</code> N2O parameter, the module
-which contains N2O protocol that will be runned inside ring worker:</p>
-<pre><code class="nohighlight makeup elixir"><span class="n">config</span><span class="w"> </span><span class="ss">:n2o</span><span class="p">,</span><span class="w">
-  </span><span class="ss">proto</span><span class="p">:</span><span class="w"> </span><span class="nc">CHAT.Server</span><span class="p">,</span><span class="w">
-  </span><span class="ss">ws_server</span><span class="p">:</span><span class="w"> </span><span class="no">false</span></code></pre>
-<p>In CHAT application this <code class="inline">:n2o_wsnode</code> worker is <a href="CHAT.Server.html"><code class="inline">CHAT.Server</code></a> module.
-Also we need to disable WebSocket ring creationg at N2O startup and create it manually during CHAT startup
-as PI protocol <code class="inline">:init</code> function contains SYN registration which is dependency only for CHAT,
-the higher level that N2O, which is zero-dependency library.</p>
+  </section>
+</section>
+<section class="detail" id="points/0">
+  <div class="detail-header">
+    <a href="#points/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">points()</span>
+  </div>
+  <section class="docstring">
   </section>
 </section>
 <section class="detail" id="start/2">
@@ -152,38 +163,45 @@ the higher level that N2O, which is zero-dependency library.</p>
     <h1 class="signature">start(_, _)</span>
   </div>
   <section class="docstring">
-<p>Called when an application is started.</p>
-<p>This function is called when an application is started using
+<p>
+Called when an application is started.</p>
+<p>
+This function is called when an application is started using
 <a href="https://hexdocs.pm/elixir/Application.html#start/2"><code class="inline">Application.start/2</code></a> (and functions on top of that, such as
 <a href="https://hexdocs.pm/elixir/Application.html#ensure_started/2"><code class="inline">Application.ensure_started/2</code></a>). This function should start the top-level
 process of the application (which should be the top supervisor of the
 application&#39;s supervision tree if the application follows the OTP design
 principles around supervision).</p>
-<p><code class="inline">start_type</code> defines how the application is started:</p>
+<p>
+<code class="inline">start_type</code> defines how the application is started:</p>
 <ul>
-<li><code class="inline">:normal</code> - used if the startup is a normal startup or if the application
+  <li>
+<code class="inline">:normal</code> - used if the startup is a normal startup or if the application
 is distributed and is started on the current node because of a failover
 from another node and the application specification key <code class="inline">:start_phases</code>
-is <code class="inline">:undefined</code>.
-</li>
-<li><code class="inline">{:takeover, node}</code> - used if the application is distributed and is
-started on the current node because of a failover on the node <code class="inline">node</code>.
-</li>
-<li><code class="inline">{:failover, node}</code> - used if the application is distributed and is
+is <code class="inline">:undefined</code>.  </li>
+  <li>
+<code class="inline">{:takeover, node}</code> - used if the application is distributed and is
+started on the current node because of a failover on the node <code class="inline">node</code>.  </li>
+  <li>
+<code class="inline">{:failover, node}</code> - used if the application is distributed and is
 started on the current node because of a failover on node <code class="inline">node</code>, and the
-application specification key <code class="inline">:start_phases</code> is not <code class="inline">:undefined</code>.
-</li>
+application specification key <code class="inline">:start_phases</code> is not <code class="inline">:undefined</code>.  </li>
 </ul>
-<p><code class="inline">start_args</code> are the arguments passed to the application in the <code class="inline">:mod</code>
-specification key (e.g., <code class="inline">mod: {MyApp, [:my_args]}</code>).</p>
-<p>This function should either return <code class="inline">{:ok, pid}</code> or <code class="inline">{:ok, pid, state}</code> if
+<p>
+<code class="inline">start_args</code> are the arguments passed to the application in the <code class="inline">:mod</code>
+specification key (for example, <code class="inline">mod: {MyApp, [:my_args]}</code>).</p>
+<p>
+This function should either return <code class="inline">{:ok, pid}</code> or <code class="inline">{:ok, pid, state}</code> if
 startup is successful. <code class="inline">pid</code> should be the PID of the top supervisor. <code class="inline">state</code>
 can be an arbitrary term, and if omitted will default to <code class="inline">[]</code>; if the
 application is later stopped, <code class="inline">state</code> is passed to the <code class="inline">stop/1</code> callback (see
 the documentation for the <code class="inline">c:stop/1</code> callback for more information).</p>
-<p><code class="inline">use Application</code> provides no default implementation for the <a href="#start/2"><code class="inline">start/2</code></a>
+<p>
+<code class="inline">use Application</code> provides no default implementation for the <a href="#start/2"><code class="inline">start/2</code></a>
 callback.</p>
-<p>Callback implementation for <a href="https://hexdocs.pm/elixir/Application.html#c:start/2"><code class="inline">Application.start/2</code></a>.</p>
+<p>
+Callback implementation for <a href="https://hexdocs.pm/elixir/Application.html#c:start/2"><code class="inline">Application.start/2</code></a>.</p>
   </section>
 </section>
           </div>
