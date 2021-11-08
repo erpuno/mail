@@ -4,7 +4,7 @@ defmodule CHAT.Mixfile do
   def project() do
     [
       app: :chat,
-      version: "3.8.1",
+      version: "5.11.0",
       description: "CHAT Instant Messaging wss://n2o.im",
       package: package(),
       elixir: "~> 1.7",
@@ -29,11 +29,11 @@ defmodule CHAT.Mixfile do
     [
       {:ex_doc, "~> 0.20.2", only: :dev},
       {:asn1ex, github: "vicentfg/asn1ex", only: :dev},
-      {:cowboy, "~> 2.5"},
-      {:rocksdb, "~> 1.2.0"},
-      {:syn, "~> 1.6.3"},
-      {:n2o, "~> 6.8.1"},
-      {:kvs, "~> 6.7.4"}
+      {:cowboy, "~> 2.8"},
+      {:rocksdb, "~> 1.6.0"},
+      {:syn, "~> 2.1.1"},
+      {:n2o, "~> 8.8.1"},
+      {:kvs, "~> 8.10.4"}
     ]
   end
 end
