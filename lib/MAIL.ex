@@ -1,13 +1,13 @@
-defmodule CHAT do
+defmodule MAIL do
   @moduledoc """
-  `CHAT` is the front API module for application.
+  `MAIL` is the front API module for application.
   It provides records defititions, KVS mentainformation and useful functions.
   """
   require Record
   require KVS
 
   Enum.each(
-    Record.extract_all(from_lib: "chat/priv/ROSTER.hrl"),
+    Record.extract_all(from_lib: "mail/priv/ROSTER.hrl"),
     fn {name, definition} ->
       Record.defrecord(name, definition)
     end
@@ -18,8 +18,8 @@ defmodule CHAT do
       name: :roster,
       tables: [
         KVS.table(
-          name: CHAT.Pub,
-          fields: Record.extract(:Pub, from_lib: "chat/priv/ROSTER.hrl")
+          name: MAIL.Pub,
+          fields: Record.extract(:Pub, from_lib: "mail/priv/ROSTER.hrl")
         )
       ]
     )
@@ -28,7 +28,7 @@ defmodule CHAT do
   def bin(key), do: :erlang.list_to_binary(:io_lib.format("~p", [key]))
 
   def user(id) do
-    case :kvs.get(:writer, '/chat/' ++ id) do
+    case :kvs.get(:writer, '/mail/' ++ id) do
       {:ok, _} -> true
       {:error, _} -> false
     end

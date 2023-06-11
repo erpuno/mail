@@ -1,7 +1,7 @@
-CHAT: Instant Messaging
-=======================
+MAIL: Message Delivery System
+=============================
 
-TL;DR CRM core example for Elixir.
+TL;DR UNIX mail done right.
 
 Features
 --------

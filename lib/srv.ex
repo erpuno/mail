@@ -1,25 +1,25 @@
-defmodule CHAT.Server do
+defmodule MAIL.Server do
   @moduledoc """
-  The `CHAT.Server` is a ring node implemented as `:n2o_pi`
+  The `MAIL.Server` is a ring node implemented as `:n2o_pi`
   worker that handle all the incoming requests though hash function and
   implements RPC over MQ pattern. It suports both SYN and GPROC message buses (QoS=0). 
   """
   use N2O, with: [:n2o, :kvs]
-  require CHAT
+  require MAIL
 
   @doc """
   N2O protocol implementation (server part).
   """
-  def info(CHAT."Cut"(id: id), r, cx(session: from) = s) do
-    KVS.cut('/chat/' ++ from, id)
-    {:reply, {:default, CHAT."Ack"(lex: id)}, r, s}
+  def info(MAIL."Cut"(id: id), r, cx(session: from) = s) do
+    KVS.cut('/mail/' ++ from, id)
+    {:reply, {:default, MAIL."Ack"(lex: id)}, r, s}
   end
 
-  def info(CHAT."Pub"(key: id, adr: CHAT."Adr"(dst: {:p2p, CHAT."P2P"(dst: to)})) = msg, r, s) do
-    key = '/chat/' ++ to
+  def info(MAIL."Pub"(key: id, adr: MAIL."Adr"(dst: {:p2p, MAIL."P2P"(dst: to)})) = msg, r, s) do
+    key = '/mail/' ++ to
     KVS.append(msg, key)
     N2O.send({:client, key}, {:forward, msg})
-    {:reply, {:binary, CHAT."Ack"(lex: id)}, r, s}
+    {:reply, {:binary, MAIL."Ack"(lex: id)}, r, s}
   end
 
   def info(msg, r, s), do: {:unknown, msg, r, s}

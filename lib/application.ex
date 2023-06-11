@@ -1,6 +1,6 @@
-defmodule CHAT.Application do
+defmodule MAIL.Application do
   @moduledoc """
-  `CHAT.Application` is an
+  `MAIL.Application` is an
   `Erlang/OTP` application powered by N2O messaging protocol.
   It is implemented as a ring of protocol nodes.
   """
@@ -9,12 +9,12 @@ defmodule CHAT.Application do
 
   def start(_, _) do
     initialize()
-    Supervisor.start_link([], strategy: :one_for_one, name: CHAT.Supervisor)
+    Supervisor.start_link([], strategy: :one_for_one, name: MAIL.Supervisor)
   end
 
   def env(_app) do
     [
-      {:port, :application.get_env(:n2o, :port, 8002)}
+      {:port, :application.get_env(:n2o, :port, 8042)}
     ]
   end
 
@@ -30,7 +30,7 @@ defmodule CHAT.Application do
   end
 
   def initialize() do
-    :cowboy.start_clear(:http, env(:chat), %{env: %{dispatch: points()}})
+    :cowboy.start_clear(:http, env(:mail), %{env: %{dispatch: points()}})
     :kvs.join
     :n2o.start_ws
   end

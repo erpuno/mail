@@ -1,14 +1,14 @@
-defmodule CHAT.TXT do
+defmodule MAIL.TXT do
   @moduledoc """
-  `CHAT.TXT` is a WebSocket client interface and client
+  `MAIL.TXT` is a WebSocket client interface and client
   socket protocol (session level) representation and
   textual protocol termination.
   """
   use N2O, with: [:n2o, :kvs]
-  require CHAT
+  require MAIL
 
   defp format_msg(
-         CHAT."Pub"(bin: pl, key: id, adr: CHAT."Adr"(src: fr, dst: {:p2p, CHAT."P2P"(dst: to)}))
+         MAIL."Pub"(bin: pl, key: id, adr: MAIL."Adr"(src: fr, dst: {:p2p, MAIL."P2P"(dst: to)}))
        ) do
     :io_lib.format('~s:~s:~s:~s', [fr, to, id, pl])
   end
@@ -18,7 +18,7 @@ defmodule CHAT.TXT do
   """
   def info({:text, <<"AUTH", x::binary>>}, r, s) do
     a = :string.trim(:erlang.binary_to_list(x))
-    key = '/chat/' ++ a
+    key = '/mail/' ++ a
     N2O.reg({:client, key})
     KVS.ensure(writer(id: key))
 
@@ -34,16 +34,16 @@ defmodule CHAT.TXT do
         key = KVS.seq([], [])
 
         msg =
-          CHAT."Pub"(
+          MAIL."Pub"(
             key: key,
-            adr: CHAT."Adr"(src: from, dst: {:p2p, CHAT."P2P"(dst: to)}),
+            adr: MAIL."Adr"(src: from, dst: {:p2p, MAIL."P2P"(dst: to)}),
             bin: :erlang.iolist_to_binary(:string.join(rest, ' '))
           )
 
         res =
-          case CHAT.user(to) do
+          case MAIL.user(to) do
             false -> "ERROR user doesn't exist."
-            true -> :n2o_ring.send(:ws, :chat, {:publish, self(), from, msg})
+            true -> :n2o_ring.send(:ws, :mail, {:publish, self(), from, msg})
               <<>>
           end
 
@@ -55,8 +55,8 @@ defmodule CHAT.TXT do
   end
 
   def info({:text, <<"BOX">>}, r, cx(session: from) = s) do
-    KVS.ensure(writer(id: '/chat/' ++ from))
-    fetch = reader(KVS.take(reader(:kvs.reader('/chat/'++from), args: -1)), :args)
+    KVS.ensure(writer(id: '/mail/' ++ from))
+    fetch = reader(KVS.take(reader(:kvs.reader('/mail/'++from), args: -1)), :args)
 
     res =
       "LIST\n" <>
@@ -78,8 +78,8 @@ defmodule CHAT.TXT do
   def info({:text, <<"CUT", x::binary>>}, r, cx(session: from) = s) do
     case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ' ') do
       [id] ->
-        case KVS.cut('/chat/' ++ from, id) do
-          {:ok, count} -> {:reply, {:text, <<"ERASED ", CHAT.bin(count)::binary>>}, r, s}
+        case KVS.cut('/mail/' ++ from, id) do
+          {:ok, count} -> {:reply, {:text, <<"ERASED ", MAIL.bin(count)::binary>>}, r, s}
           {:error, _} -> {:reply, {:text, <<"NOT FOUND ">>}, r, s}
         end
 
@@ -88,7 +88,7 @@ defmodule CHAT.TXT do
     end
   end
 
-  def info({:forward, CHAT."Pub"() = m}, r, s),
+  def info({:forward, MAIL."Pub"() = m}, r, s),
     do: {:reply, {:text, "NOTIFY " <> :erlang.list_to_binary(format_msg(m))}, r, s}
 
   def info({:forward, text}, r, s), do: {:reply, {:text, text}, r, s}
