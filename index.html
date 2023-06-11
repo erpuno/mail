@@ -1,25 +1,25 @@
 <html><head><meta charset="utf-8" /><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="" />
-<meta name="author" content="Maxim Sokhatsky" /><title>CHAT</title>
+<meta name="author" content="Maxim Sokhatsky" /><title>MAIL</title>
     <link rel="stylesheet" href="https://n2o.dev/blank.css" />
     <link rel="stylesheet" href="https://n2o.dev/zima.css" />
     <link rel="stylesheet" href="https://n2o.dev/pro/pro.css" />
 </head><body><nav>
     <a href="https://erp.uno">ERP</a>
-    <a href="https://chat.erp.uno" style="background:#ededed;">CHAT</a>
+    <a href="https://mail.erp.uno" style="background:#ededed;">MAIL</a>
 </nav><header>
     <a href="https://github.com/synrc/ca"><img src="https://avatars.githubusercontent.com/u/4131155?s=400&u=5e1fb3f98771143ec08d91485e5a274ab60a5960&v=4" /></a>
-    <h1>CHAT</h1>
+    <h1>MAIL</h1>
 </header><aside>
     <article>
         <section>
             <h3>SYNOPSIS</h3>
-            <div>CHAT is a simple mailbox delivery system consists of:</div>
+            <div>MAIL is a simple mailbox delivery system consists of:</div>
             <div>
                  <ul><li>SYN for publish-subscribe message queue;
                  </li><li>N2O for protocols;</li><li>KVX for data storage;</li><li>and COWBOY for the web server.</li></ul></div>
                 <div>
-             CHAT uses WebSocket server and BER/BERT/TXT channel formatters.</div><br/>
+             MAIL uses WebSocket server and BER/BERT/TXT channel formatters.</div><br/>
 
         <figure>
         <code> $ wscat -c wss://n2o.im</code>
@@ -27,7 +27,7 @@
         </section>
         <section>
             <h3><a href="https://n2o.dev">MODULES</a></h3>
-            <div><ul><li><a href="man/chat_txt.htm">TXT</a></li><li><a href="man/chat_ber.htm">BER</a></li><li><a href="man/chat.htm">CHAT</a></li><li><a href="man/chat_server.htm">SERVER</a></li><li><a href="man/csr.htm">CSR</a></li></ul></div>
+            <div><ul><li><a href="man/mail_txt.htm">TXT</a></li><li><a href="man/mail_ber.htm">BER</a></li><li><a href="man/mail.htm">mail</a></li><li><a href="man/mail_server.htm">SERVER</a></li><li><a href="man/csr.htm">CSR</a></li></ul></div>
             <br />
             <div>
                 APR 2019 © <a href="https://github.com/5HT">5HT</a>
@@ -42,13 +42,13 @@
     <section>
 
     <h3>TXT PROTO</h3>
-    <p>The implementation of TXT CHAT protocol is trying to be informative but
+    <p>The implementation of TXT mail protocol is trying to be informative but
        not excessive, it should take care of run-time edge
        cases but not too stable. TXT protocol is dedicated
        for demo purposes and doesn't support file upload and voice calls.
      </p>
     <figure><code>
- $ wscat --no-check -c wss://chat-2.n2o.dev:8042/ws
+ $ wscat --no-check -c wss://mail-2.n2o.dev:8042/ws
  > HELP
  &lt; AUTH &lt;user&gt;
  | SEND &lt;user&gt; &lt;msg&gt;
@@ -111,14 +111,14 @@
                        cut [5] Cut }
  END
     </code></figure>
-       <p>CHAT is written in Erlang/OTP and supports <a href="https://rocksdb.org">RocksDB</a> or
+       <p>mail is written in Erlang/OTP and supports <a href="https://rocksdb.org">RocksDB</a> or
                         <a href="http://erlang.org/doc/man/mnesia.html">Mnesia</a> databases.</p>
     </section>
     <section>
        <h3>APP SPEC</h3>
         <p><table cellspacing="10" valign="center"><tbody><tr><td>
         <img src="https://n2o.dev/img/pdf.jpg" width="35" style="margin-bottom:-12px;margin-right:10px;" />
-        <a href="https://chat.n2o.dev/priv/doc/GUI.pdf">GUI.PDF</a></td></tr></tbody></table>
+        <a href="https://mail.n2o.dev/priv/doc/GUI.pdf">GUI.PDF</a></td></tr></tbody></table>
         <br />
        </p>
     </section>
