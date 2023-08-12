@@ -12,29 +12,6 @@ and has more telecomunication flavour than SMTP track of standards.
 Now MHS is used in avionics and in Military Message Handling
 System (MMHS, RFC 6477).
 
-Features
---------
-
-* Databases: MNESIA, ROCKSDB
-* Pub/Sub GPROC, SYN
-* Formatters BASE64, BERT, BER/DER/PER [ASN.1]
-
-Intro
------
-
-MAIL is an QoS=1 example of messaging system built on top of:
-
-* SYN for publish subscribe message queue;
-* N2O for protocols;
-* KVS for data storage;
-* ASN1 for encoding.
-
-It also contains simple textual WebSocket protocol for debugging purposes.
-You can freely use this example with your favourite formatter for user terminal protocol.
-
-```shell
-```
-
 Credits
 -------
 
