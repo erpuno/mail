@@ -13,6 +13,8 @@ defmodule MAIL do
     end
   )
 
+  def init([]), do: {:ok, {{:one_for_one, 5, 10}, [ ] }}
+
   def metainfo() do
     KVS.schema(
       name: :roster,

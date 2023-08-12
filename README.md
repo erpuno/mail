@@ -1,37 +1,43 @@
-MAIL: Message Delivery System
-=============================
+SYNRC ✉️ MAIL
+=============
 
-TL;DR UNIX mail done right.
+Open source lightweight Messaging Handling Service (MHS X.419)
+and Interpersonal Messaging System (IPMS X.420).
+MHS was a very open system, it was popular in the
+early 1990s as a glue between proprietary
+email systems, competing standards-based SMTP and X.400.
+However, by 1996 it was clear that SMTP over the Internet
+would take over this role. However MHS/IPMS is a faster
+and has more telecomunication flavour than SMTP track of standards.
+Now MHS is used in avionics and in Military Message Handling
+System (MMHS, RFC 6477).
 
 Features
 --------
 
-* Usage Example of N2O and KVS
-* RocksDB support out of the box
-* 150 LOC
+* Databases: MNESIA, ROCKSDB
+* Pub/Sub GPROC, SYN
+* Formatters BASE64, BERT, BER/DER/PER [ASN.1]
 
-Prerequisites
--------------
+Intro
+-----
 
-* cmake (rocksdb)
+MAIL is an QoS=1 example of messaging system built on top of:
 
-Run
----
+* SYN for publish subscribe message queue;
+* N2O for protocols;
+* KVS for data storage;
+* ASN1 for encoding.
 
-Before running, [fullchain.pem](./priv/ssl/fullchain.pem) certificate has to be added into a system.
+It also contains simple textual WebSocket protocol for debugging purposes.
+You can freely use this example with your favourite formatter for user terminal protocol.
 
+```shell
 ```
-$ mix deps.get
-$ mix compile
-$ iex -S mix
-```
-
-Then run `wscat --no-check -c https://localhost:8042/ws`
 
 Credits
 -------
 
-* Maxim Sokhatsky [5HT](https://github.com/5HT)
-* Vlad Ki [proger](https://github.com/proger)
+* Maxim Sokhatsky
 
 OM A HUM

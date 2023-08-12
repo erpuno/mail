@@ -1,39 +1,30 @@
-defmodule MAIL.Mixfile do
+defmodule CHAT.Mixfile do
   use Mix.Project
 
-  def project() do
-    [
-      app: :chat,
-      version: "5.11.1",
-      description: "MAIL Message Delivery System wss://mail-1.erp.uno:8042/",
+  def project do
+    [ app: :mail,
+      version: "7.8.0",
+      description: "MAIL IPMS MHS Protocol",
       package: package(),
-      elixir: "~> 1.7",
-      compilers: [:asn1] ++ Mix.compilers(),
-      asn1_paths: ["src"],
-      deps: deps()
-    ]
+      deps: deps()]
   end
 
-  def package() do
-    [
-      files: ~w(doc priv lib src mix.exs LICENSE),
+  def application do
+    [ mod: {MAIL.Application, []}, applications: [:kvs, :syn, :n2o, :mnesia]]
+  end
+
+  def package do
+    [ files: ~w(include lib priv src LICENSE mix.exs README.md),
       licenses: ["ISC"],
-      links: %{"GitHub" => "https://github.com/erpuno/mail"}
-    ]
+      maintainers: ["Namdak Tonpa"],
+      name: :mail420,
+      links: %{"GitHub" => "https://github.com/erpuno/mail"}]
   end
 
-  def application(),
-    do: [mod: {MAIL.Application, []}, applications: [:ranch, :cowboy, :kvs, :syn, :n2o]]
-
-  def deps() do
-    [
-      {:ex_doc, "~> 0.20.2", only: :dev},
-      {:asn1ex, github: "vicentfg/asn1ex", only: :dev},
-      {:cowboy, "~> 2.8"},
-      {:rocksdb, "~> 1.6.0"},
+  def deps do
+    [ {:ex_doc, ">= 0.0.0", only: :dev},
       {:syn, "~> 2.1.1"},
-      {:n2o, "~> 8.8.1"},
-      {:kvs, "~> 8.10.4"}
-    ]
+      {:n2o, "~> 10.8.2"},
+      {:kvs, "~> 10.8.2"}]
   end
 end

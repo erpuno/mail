@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="https://n2o.dev/zima.css" />
     <link rel="stylesheet" href="https://n2o.dev/pro/pro.css" />
 </head><body><nav>
-    <a href="https://erp.uno/en/">ERP</a>
-    <a href="https://mail.erp.uno" style="background:#ededed;">MAIL</a>
+    <a href="https://erp.uno">DEV</a>
+    <a href="https://mail.n2o.dev" style="background:#ededed;">MAIL</a>
 </nav><header>
     <a href="https://github.com/synrc/mail"><img src="https://openmoji.org/data/color/svg/2709.svg" /></a>
     <h1>MAIL</h1>
@@ -14,25 +14,32 @@
     <article>
         <section>
             <h3>SYNOPSIS</h3>
-            <div>MAIL is a simple mailbox delivery system consists of:</div>
-            <div>
-                 <ul><li>SYN for publish-subscribe message queue;
-                 </li><li>N2O for protocols;</li><li>KVX for data storage;</li><li>and COWBOY for the web server.</li></ul></div>
-                <div>
-             MAIL uses WebSocket server and BER/BERT/TXT channel formatters.</div><br/>
+
+        <div>Open source lightweight Messaging Handling Service (MHS X.419)
+             and Interpersonal Messaging System (IPMS X.420).
+             MHS was a very open system, it was popular in the
+             early 1990s as a glue between proprietary
+             email systems, competing standards-based SMTP and X.400.
+             However, by 1996 it was clear that SMTP over the Internet
+             would take over this role. However MHS/IPMS is a faster
+             and has more telecomunication flavour than SMTP track of standards.
+             Now MHS is used in avionics and in Military Message Handling
+             System (MMHS, RFC 6477).</div><br>
 
         <figure>
-        <code> $ wscat -c wss://n2o.im</code>
+        <code> $ mail-x420 mail.erp.uno</code>
         </figure>
         </section>
         <section>
-            <h3><a href="https://n2o.dev">MODULES</a></h3>
-            <div><ul><li><a href="man/mail_txt.htm">TXT</a></li><li><a href="man/mail_ber.htm">BER</a></li><li><a href="man/mail.htm">mail</a></li><li><a href="man/mail_server.htm">SERVER</a></li><li><a href="man/csr.htm">CSR</a></li></ul></div>
+            <h3>SERVERS</h3>
+            <div><ul><li><a href="man/ms.htm">MS</a></li>
+                     <li><a href="man/mts.htm">MTS</a></li>
+                     <li><a href="man/mta.htm">MTA</a></li>
+                     <li><a href="man/mail.htm">MAIL</a></li>
+                     <li><a href="man/ipms.htm">IPMS</a></li></ul></div>
             <br />
             <div>
-                APR 2019 © <a href="https://github.com/5HT">5HT</a>
-                                <a href="https://github.com/proger">proger</a> ISC<br />
-                VER 3.4
+                VER 7.8.1 2023 © <a href="https://github.com/5HT">5HT</a> DHARMA<br />
             </div>
         </section>
         <section>
@@ -40,87 +47,27 @@
     </article>
 </aside><main>
     <section>
-
-    <h3>TXT PROTO</h3>
-    <p>The implementation of TXT mail protocol is trying to be informative but
-       not excessive, it should take care of run-time edge
-       cases but not too stable. TXT protocol is dedicated
-       for demo purposes and doesn't support file upload and voice calls.
-     </p>
-    <figure><code>
- $ wscat --no-check -c wss://mail-2.n2o.dev:8042/ws
- > HELP
- &lt; AUTH &lt;user&gt;
- | SEND &lt;user&gt; &lt;msg&gt;
- | BOX
- | CUT &lt;id&gt;.
- > AUTH maxim
- &lt; USER maxim
- > SEND vlad HELO
- &lt; ERROR user doesn't exist.
- > AUTH vlad
- &lt; USER vlad
- > SEND maxim OK
- &lt; NOTIFY vlad:maxim:1556151953113322286:OK
- &lt; ACK "1556151953113322286"
- > AUTH maxim
- &lt; USER maxim
- > BOX
- &lt; LIST
- vlad:maxim:1556151953113322286:OK
- > SEND maxim this is me
- &lt; NOTIFY maxim:maxim:1556152151055371152:this is me
- &lt; ACK "1556152151055371152"
- > SEND maxim back again
- &lt; NOTIFY maxim:maxim:1556152157283311935:back again
- &lt; ACK "1556152157283311935"
- > BOX
- &lt; LIST
- vlad:maxim:1556151953113322286:OK
- maxim:maxim:1556152151055371152:this is me
- maxim:maxim:1556152157283311935:back again
- > CUT 1556152157283311935
- &lt; ERASED 3
- > BOX
- &lt; LIST
- >
-    </code></figure>
+     <h3>MTA</h3>
+     <h4>MTSE</h4>
+     <h4>RTSE</h4>
+     <h4>ACSE</h4>
     </section>
     <section>
-       <h3>BER ASN.1 PROTO</h3>
-    <figure><code>
- ROSTER DEFINITIONS IMPLICIT TAGS ::= BEGIN
-
-    P2P ::= SEQUENCE { dst OCTET STRING }
-    MUC ::= SEQUENCE { dst OCTET STRING }
-    Adr ::= SEQUENCE { src OCTET STRING,
-                       dst CHOICE { muc [0] MUC,
-                                    p2p [1] P2P } }
-    Pub ::= SEQUENCE { key OCTET STRING, adr Adr,
-                       tag OCTET STRING, bin OCTET STRING }
-    Sub ::= SEQUENCE { key OCTET STRING, adr Adr }
-    Cut ::= SEQUENCE { id  OCTET STRING }
-    N2O ::= SEQUENCE { tok OCTET STRING }
-    Ack ::= SEQUENCE { lex OCTET STRING }
-    Nak ::= SEQUENCE { key OCTET STRING }
-    Msg ::=   CHOICE { n2o [0] N2O,
-                       ack [1] Ack,
-                       nak [2] Nak,
-                       pub [3] Pub,
-                       sub [4] Sub,
-                       cut [5] Cut }
- END
-    </code></figure>
-       <p>mail is written in Erlang/OTP and supports <a href="https://rocksdb.org">RocksDB</a> or
-                        <a href="http://erlang.org/doc/man/mnesia.html">Mnesia</a> databases.</p>
+     <h3>MS</h3>
+     <h4>MSSE</h4>
+     <h4>MRSE</h4>
+     <h4>MASE</h4>
     </section>
     <section>
-       <h3>APP SPEC</h3>
-        <p><table cellspacing="10" valign="center"><tbody><tr><td>
-        <img src="https://n2o.dev/img/pdf.jpg" width="35" style="margin-bottom:-12px;margin-right:10px;" />
-        <a href="https://mail.n2o.dev/priv/doc/GUI.pdf">GUI.PDF</a></td></tr></tbody></table>
-        <br />
-       </p>
+     <h3>MTS</h3>
+     <h4>MSSE</h4>
+     <h4>MDSE-94</h4>
+     <h4>MASE-94</h4>
+    </section>
+    <section>
+     <h3>IPMS</h3>
+     <h4>IPMS</h4>
+     <h4>MAO</h4>
     </section>
 </main><footer>
     Made with <span class="heart">❤</span> to N2O
