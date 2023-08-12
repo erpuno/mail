@@ -38,6 +38,6 @@ You can freely use this example with your favourite formatter for user terminal 
 Credits
 -------
 
-* Maxim Sokhatsky
+* Namdak Tonpa
 
 OM A HUM
