@@ -1,0 +1,290 @@
+<html><head><meta charset="utf-8" /><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="" />
+<meta name="author" content="Maxim Sokhatsky" /><title>MAIL IPMS</title>
+    <link rel="stylesheet" href="https://n2o.dev/blank.css" />
+    <link rel="stylesheet" href="https://n2o.dev/zima.css" />
+    <link rel="stylesheet" href="https://n2o.dev/pro/pro.css" />
+</head><body><nav>
+    <a href="https://erp.uno">ERP</a>
+    <a href="https://mail.erp.uno">MAIL</a>
+    <a href="#" style="background:#ededed;">IPMS</a>
+</nav><header>
+    <a href="../index.html"><img src="https://openmoji.org/data/color/svg/2709.svg" /></a>
+    <h1>IPMS</h1>
+</header><main>
+    <section>
+
+    <h3>IPMS</h3>
+    <p>The implementation of Interpersonal Messaging System (IPMS X.420) follows this specification:</p>
+    <!--figure><code>
+InformationObject ::= CHOICE { ipm [0] IPM, ipn [1] IPN }
+IPM ::= SEQUENCE { heading Heading, body Body }
+Body ::= SEQUENCE OF BodyPart
+IPMIdentifier ::= [APPLICATION 11] SET {
+    user ORName OPTIONAL,
+    user-relative-identifier LocalIPMIdentifier }
+
+LocalIPMIdentifier ::= PrintableString (SIZE (0..ub-local-ipm-identifier))
+
+RecipientSpecifier ::= SET {
+    recipient             [0] ORDescriptor,
+    notification-requests [1] NotificationRequests DEFAULT {},
+    reply-requested       [2] BOOLEAN DEFAULT FALSE,
+    recipient-extensions  [3] RecipientExtensionsField OPTIONAL}
+
+NotificationRequests ::= BIT STRING {
+    rn (0),
+    nrn          (1),
+    ipm-return   (2),
+    an-supported (3),
+    suppress-an  (4)
+
+ORDescriptor ::= SET {
+    formal-name          ORName OPTIONAL,
+    free-form-name   [0] FreeFormName OPTIONAL,
+    telephone-number [1] TelephoneNumber OPTIONAL }
+}
+
+Heading ::= SET {
+    this-IPM ThisIPMField,
+    originator [0] OriginatorField OPTIONAL,
+    authorizing-users [1] AuthorizingUsersField OPTIONAL,
+    primary-recipients [2] PrimaryRecipientsField DEFAULT {},
+    copy-recipients [3] CopyRecipientsField DEFAULT {},
+    blind-copy-recipients [4] BlindCopyRecipientsField OPTIONAL,
+    replied-to-IPM  [5] RepliedToIPMField OPTIONAL,
+    obsoleted-IPMs  [6] ObsoletedIPMsField DEFAULT {},
+    related-IPMs  [7] RelatedIPMsField DEFAULT {},
+    subject  [8] EXPLICIT SubjectField OPTIONAL,
+    expiry-time  [9] ExpiryTimeField OPTIONAL,
+    reply-time [10] ReplyTimeField OPTIONAL,
+    reply-recipients [11] ReplyRecipientsField OPTIONAL,
+    importance [12] ImportanceField DEFAULT normal,
+    sensitivity [13] SensitivityField OPTIONAL,
+    auto-forwarded [14] AutoForwardedField DEFAULT FALSE,
+    extensions [15] ExtensionsField DEFAULT {} }
+
+    SensitivityField ::= ENUMERATED {
+        personal            (1),
+        private             (2),
+        company-confidential(3)}
+
+IPMBodyPartTable EXTENDED-BODY-PART-TYPE ::= {
+               StandardBodyParts |
+               ApplicationSpecificBodyParts }
+
+StandardBodyParts EXTENDED-BODY-PART-TYPE ::= {
+               ia5-text-body-part |
+               g3-facsimile-body-part |
+               g4-class1-body-part |
+               teletex-body-part |
+               videotex-body-part |
+               encrypted-body-part |
+               message-body-part |
+               mixed-mode-body-part |
+               bilaterally-defined-body-part |
+               nationally-defined-body-part |
+               general-text-body-part |
+               file-transfer-body-part |
+               voice-body-part |
+               report-body-part |
+               notification-body-part |
+               content-body-part |
+               pkcs7-body-part, ... }
+
+BodyPart ::= CHOICE {
+    basic CHOICE {
+        ia5-text [0] IA5TextBodyPart,
+        g3-facsimile [3] G3FacsimileBodyPart,
+        g4-class1 [4] G4Class1BodyPart,
+        teletex [5] TeletexBodyPart,
+        videotex [6] VideotexBodyPart,
+        encrypted [8] EncryptedBodyPart,
+        message [9] MessageBodyPart
+    }
+    extended [15] ExtendedBodyPart } {{IPMBodyPartTable}}
+
+ExtendedBodyPart {EXTENDED-BODY-PART-TYPE:IPMBodyPartTable} ::= SEQUENCE {
+  parameters [0] INSTANCE OF TYPE-IDENTIFIER OPTIONAL,
+  data INSTANCE OF TYPE-IDENTIFIER } (CONSTRAINED BY SEQUENCE {
+  parameters [0] IMPLICIT SEQUENCE {
+    direct-reference EXTENDED-BODY-PART-TYPE.&parameters.&id,
+    encoding CHOICE {
+      single-ASN1-type [0] EXTENDED-BODY-PART-TYPE.&parameters.&Type,
+      octet-aligned    [1] IMPLICIT OCTET STRING } } OPTIONAL,
+  data [UNIVERSAL 8] IMPLICIT SEQUENCE {
+    direct-reference EXTENDED-BODY-PART-TYPE.&data.&id,
+    encoding CHOICE {
+      single-ASN1-type [0] EXTENDED-BODY-PART-TYPE.&data.&Type,
+      octet-aligned    [1] IMPLICIT OCTET STRING } } }
+
+MessageBodyPart ::= SEQUENCE {
+  parameters MessageParameters,
+  data       MessageData}
+message-body-part EXTENDED-BODY-PART-TYPE ::= {
+  PARAMETERS {MessageParameters IDENTIFIED BY id-ep-message},
+  DATA       {MessageData IDENTIFIED BY id-et-message} }
+MessageParameters ::= SET {
+  delivery-time     [0] MessageDeliveryTime OPTIONAL,
+  delivery-envelope [1] OtherMessageDeliveryFields OPTIONAL}
+MessageData ::= IPM
+
+BilaterallyDefinedBodyPart ::= OCTET STRING
+bilaterally-defined-body-part EXTENDED-BODY-PART-TYPE ::= {
+DATA {BilaterallyDefinedBodyPart IDENTIFIED BY id-et-bilaterally-defined} }
+
+
+file-transfer-body-part EXTENDED-BODY-PART-TYPE ::= {
+  PARAMETERS (FileTransferParameters IDENTIFIED BY id-ep-file-transfer),
+  DATA (FileTransferData IDENTIFIED BY id-et-file-transfer) }
+
+FileTransferParameters ::= SEQUENCE {
+  related-stored-file  [0] RelatedStoredFile OPTIONAL,
+  contents-type [1] ContentsTypeParameter DEFAULT document-type:
+     { document-type-name {iso standard 8571 document-type(5)
+       unstructured-binary(3)} },
+  environment [2] EnvironmentParameter OPTIONAL,
+  compression [3] CompressionParameter OPTIONAL,
+  file-attributes [4] FileAttributes OPTIONAL,
+  extensions [5] ExtensionsField OPTIONAL }
+
+voice-body-part EXTENDED-BODY-PART-TYPE ::= {
+  PARAMETERS {VoiceParameters IDENTIFIED BY id-ep-voice},
+  DATA       {VoiceData IDENTIFIED BY id-et-voice} }
+VoiceParameters ::= SEQUENCE {
+  voice-message-duration [0] INTEGER OPTIONAL, -- In seconds
+  voice-encoding-type [1] OBJECT IDENTIFIER,
+  supplementary-information [2] IA5String OPTIONAL }
+VoiceData ::= OCTET STRING
+
+IPN ::= SET {
+  common-fields COMPONENTS OF CommonFields,
+  choice [0] CHOICE {
+    non-receipt-fields [0] NonReceiptFields,
+    receipt-fields [1] ReceiptFields,
+    other-notification-type-fields [2] OtherNotificationTypeFields} }
+
+NRN ::= IPN (WITH COMPONENTS { ... ,
+  choice (WITH COMPONENTS { non-receipt-fields PRESENT }) })
+
+RN ::= IPN (WITH COMPONENTS { ... ,
+  choice (WITH COMPONENTS { receipt-fields PRESENT }) })
+
+ON ::= IPN (WITH COMPONENTS { ... ,
+  choice (WITH COMPONENTS { other-notification-type-fields PRESENT }) })
+
+CommonFields ::= SET {
+  subject-ipm                 SubjectIPMField,
+  ipn-originator          [1] IPNOriginatorField OPTIONAL,
+  ipm-intended-recipient  [2] IPMIntendedRecipientField OPTIONAL,
+  conversion-eits ConversionEITsField OPTIONAL,
+  notification-extensions [3] NotificationExtensionsField OPTIONAL }
+
+SubjectIPMField ::= IPMIdentifier
+
+IPNOriginatorField ::= ORDescriptor
+IPMIntendedRecipientField ::= ORDescriptor
+
+NonReceiptFields ::= SET {
+  non-receipt-reason   [0] NonReceiptReasonField,
+  discard-reason       [1] DiscardReasonField OPTIONAL,
+  auto-forward-comment [2] AutoForwardCommentField OPTIONAL,
+  returned-ipm         [3] ReturnedIPMField OPTIONAL,
+  nrn-extensions       [4] NRNExtensionsField OPTIONAL}
+
+DiscardReasonField ::= ENUMERATED {
+               ipm-expired                  (0),
+               ipm-obsoleted                (1),
+               user-subscription-terminated (2),
+
+ReceiptTimeField ::= Time
+
+ipms MHS-OBJECT ::= {
+     RESPONDS    {ipms-access-contract}
+     ID          id-ot-ipms }
+
+origination PORT ::= {
+     CONSUMER INVOKES { originate-probe | originate-ipm
+                      | originate-rn | originate-on }
+     ID               id-pt-origination }
+
+reception PORT ::= {
+     SUPPLIER INVOKES { receive-report | receive-ipm
+                      | receive-rn | receive-nrn | receive-on }
+     ID               id-pt-reception }
+
+receive-report ABSTRACT-OPERATION ::= {
+     ARGUMENT SET {
+         envelope           [0] ReportDeliveryEnvelope,
+         undelivered-object [1] InformationObject OPTIONAL} }
+
+originate-probe ABSTRACT-OPERATION ::= {
+                ARGUMENT SET {
+                       envelope [0] ProbeSubmissionEnvelope,
+                       content  [1] IPM}
+                RESULT SET {
+                       submission-identifier [0] ProbeSubmissionIdentifier,
+                       submission-time       [1] ProbeSubmissionTime}
+                ERRORS {
+                       subscription-error |
+                       recipient-improperly-specified} }
+
+originate-ipm ABSTRACT-OPERATION ::= {
+              ARGUMENT SET {
+                       envelope [0] MessageSubmissionEnvelope,
+                       content  [1] IPM}
+                RESULT SET {
+                       submission-identifier [0] MessageSubmissionIdentifier,
+                       submission-time       [1] MessageSubmissionTime}
+                ERRORS {
+                       subscription-error |
+                       recipient-improperly-specified} }
+
+originate-rn ABSTRACT-OPERATION ::= {
+              ARGUMENT SET {
+                       envelope [0] MessageSubmissionEnvelope,
+                       content  [1] RN}
+                RESULT SET {
+                       submission-identifier [0] MessageSubmissionIdentifier,
+                       submission-time       [1] MessageSubmissionTime}
+                ERRORS {
+                       subscription-error |
+                        recipient-improperly-specified} }
+
+
+receive-rn ABSTRACT-OPERATION ::= {
+              ARGUMENT SET {
+                       envelope [0] MessageDeliveryEnvelope,
+                       content  [1] RN} }
+
+ receive-nrn ABSTRACT-OPERATION ::= {
+               ARGUMENT SET {
+                      envelope [0] MessageDeliveryEnvelope,
+                      content  [1] NRN} }
+
+
+change-auto-discard ABSTRACT-OPERATION ::= {
+               ARGUMENT SET {
+                      auto-discard-expired-IPMs  [0] BOOLEAN,
+                      auto-discard-obsolete-IPMs [1] BOOLEAN} }
+
+    </code></figure-->
+     <h4>Originate Probe</h4>
+     <h4>Originate IPM</h4>
+     <h4>Originate RN</h4>
+     <h4>Originate ON</h4>
+     <h4>Receive Report</h4>
+     <h4>Receive IPM</h4>
+     <h4>Receive RN</h4>
+     <h4>Receive NRN</h4>
+     <h4>Receive ON</h4>
+    </section>
+    <section>
+     <h3>MAO</h3>
+     <h4>Change Auto-discard</h4>
+     <h4>Change Auto-acknowledgment</h4>
+     <h4>Change Auto-forwarding</h4>
+    </section>
+</main><footer>
+    Made with <span class="heart">❤</span> to N2O
+</footer></body></html>
