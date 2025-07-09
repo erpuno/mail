@@ -1,4 +1,4 @@
-SYNRC ✉️ MAIL
+SYNRC ✉️ MHS
 =============
 
 Open source lightweight Messaging Handling Service (MHS X.419)
