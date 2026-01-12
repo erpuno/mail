@@ -30,6 +30,8 @@ defmodule MAIL.Mixfile do
   def deps do
       [
         {:ex_doc, ">= 0.0.0", only: :dev},
+        {:bandit, "~> 1.0"},
+        {:websock_adapter, "~> 0.5"},
         {:syn, "~> 2.1.1"},
         {:n2o, "~> 10.8.2"},
         {:kvs, "~> 10.8.2"}
