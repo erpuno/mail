@@ -10,7 +10,7 @@ defmodule MAIL.TXT do
   defp format_msg(
          MAIL."Pub"(bin: pl, key: id, adr: MAIL."Adr"(src: fr, dst: {:p2p, MAIL."P2P"(dst: to)}))
        ) do
-    :io_lib.format('~s:~s:~s:~s', [fr, to, id, pl])
+    :io_lib.format(~c"~s:~s:~s:~s", [fr, to, id, pl])
   end
 
   @doc """
@@ -18,7 +18,7 @@ defmodule MAIL.TXT do
   """
   def info({:text, <<"AUTH", x::binary>>}, r, s) do
     a = :string.trim(:erlang.binary_to_list(x))
-    key = '/mail/' ++ a
+    key = ~c"/mail/" ++ a
     N2O.reg({:client, key})
     KVS.ensure(writer(id: key))
 
@@ -29,7 +29,7 @@ defmodule MAIL.TXT do
     do: {:reply, {:text, "Please login with AUTH. Try HELP."}, r, s}
 
   def info({:text, <<"SEND", x::binary>>}, r, cx(session: from) = s) do
-    case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ' ') do
+    case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ~c" ") do
       [to | rest] ->
         key = KVS.seq([], [])
 
@@ -37,7 +37,7 @@ defmodule MAIL.TXT do
           MAIL."Pub"(
             key: key,
             adr: MAIL."Adr"(src: from, dst: {:p2p, MAIL."P2P"(dst: to)}),
-            bin: :erlang.iolist_to_binary(:string.join(rest, ' '))
+            bin: :erlang.iolist_to_binary(:string.join(rest, ~c" "))
           )
 
         res =
@@ -55,8 +55,8 @@ defmodule MAIL.TXT do
   end
 
   def info({:text, <<"BOX">>}, r, cx(session: from) = s) do
-    KVS.ensure(writer(id: '/mail/' ++ from))
-    fetch = reader(KVS.take(reader(:kvs.reader('/mail/'++from), args: -1)), :args)
+    KVS.ensure(writer(id: ~c"/mail/" ++ from))
+    fetch = reader(KVS.take(reader(:kvs.reader(~c"/mail/"++from), args: -1)), :args)
 
     res =
       "LIST\n" <>
@@ -65,7 +65,7 @@ defmodule MAIL.TXT do
             for m <- :lists.reverse(fetch) do
               format_msg(m)
             end,
-            '\n'
+            ~c"\n"
           )
         )
 
@@ -76,9 +76,9 @@ defmodule MAIL.TXT do
     do: {:reply, {:text, <<"AUTH <user>\n| SEND <user> <msg>\n| BOX\n| CUT <id>.">>}, r, s}
 
   def info({:text, <<"CUT", x::binary>>}, r, cx(session: from) = s) do
-    case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ' ') do
+    case :string.tokens(:string.trim(:erlang.binary_to_list(x)), ~c" ") do
       [id] ->
-        case KVS.cut('/mail/' ++ from, id) do
+        case KVS.cut(~c"/mail/" ++ from, id) do
           {:ok, count} -> {:reply, {:text, <<"ERASED ", MAIL.bin(count)::binary>>}, r, s}
           {:error, _} -> {:reply, {:text, <<"NOT FOUND ">>}, r, s}
         end

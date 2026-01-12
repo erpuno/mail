@@ -30,7 +30,7 @@ defmodule MAIL do
   def bin(key), do: :erlang.list_to_binary(:io_lib.format("~p", [key]))
 
   def user(id) do
-    case :kvs.get(:writer, '/mail/' ++ id) do
+    case :kvs.get(:writer, ~c"/mail/" ++ id) do
       {:ok, _} -> true
       {:error, _} -> false
     end

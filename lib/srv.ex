@@ -11,12 +11,12 @@ defmodule MAIL.Server do
   N2O protocol implementation (server part).
   """
   def info(MAIL."Cut"(id: id), r, cx(session: from) = s) do
-    KVS.cut('/mail/' ++ from, id)
+    KVS.cut(~c"/mail/" ++ from, id)
     {:reply, {:default, MAIL."Ack"(lex: id)}, r, s}
   end
 
   def info(MAIL."Pub"(key: id, adr: MAIL."Adr"(dst: {:p2p, MAIL."P2P"(dst: to)})) = msg, r, s) do
-    key = '/mail/' ++ to
+    key = ~c"/mail/" ++ to
     KVS.append(msg, key)
     N2O.send({:client, key}, {:forward, msg})
     {:reply, {:binary, MAIL."Ack"(lex: id)}, r, s}
