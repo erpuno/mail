@@ -4,8 +4,8 @@ defmodule MAIL.Mixfile do
   def project do
       [
         app: :mail,
-        version: "9.1.0",
-        description: "MAIL IPMS MHS Protocol",
+        version: "9.1.1",
+        description: "MAIL Simple Message Delivery Protocol",
         package: package(),
         deps: deps()
       ]
@@ -13,13 +13,13 @@ defmodule MAIL.Mixfile do
 
   def application do
       [ mod: { MAIL.Application, [] },
-        extra_applications: [ :kvs, :syn, :n2o, :mnesia ]
+        extra_applications: [ :syn, :n2o, :kvs ]
       ]
   end
 
   def package do
       [
-        files: ~w(lib priv src LICENSE mix.exs README.md),
+        files: ~w(include lib priv src LICENSE mix.exs README.md),
         licenses: ["ISC"],
         maintainers: ["Namdak Tonpa"],
         name: :mail420,

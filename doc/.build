@@ -1,7 +1,8 @@
 404.html
 MAIL.Application.html
-MAIL.Server.html
-MAIL.TXT.html
+MAIL.BERT.html
+MAIL.BanditAdapter.html
+MAIL.TEXT.html
 MAIL.html
 api-reference.html
 dist/html-XBCM4BHM.js
@@ -11,7 +12,7 @@ dist/lato-latin-700-normal-2XVSBPG4.woff2
 dist/lato-latin-ext-400-normal-N27NCBWW.woff2
 dist/lato-latin-ext-700-normal-Q2L5DVMW.woff2
 dist/remixicon-QPNJX265.woff2
-dist/search_data-91BB920A.js
-dist/sidebar_items-97F96588.js
+dist/search_data-B7507DDF.js
+dist/sidebar_items-A7D4DA85.js
 index.html
 search.html

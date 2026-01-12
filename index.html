@@ -1,45 +1,39 @@
 <html><head><meta charset="utf-8" /><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="" />
-<meta name="author" content="Maxim Sokhatsky" /><title>MHS</title>
+<meta name="author" content="Maxim Sokhatsky" /><title>MAIL</title>
     <link rel="stylesheet" href="https://n2o.dev/blank.css" />
     <link rel="stylesheet" href="https://n2o.dev/zima.css" />
     <link rel="stylesheet" href="https://n2o.dev/pro/pro.css" />
 </head><body><nav>
-    <a href="https://erp.uno/en/">DEV</a>
-    <a href="https://mail.n2o.dev" style="background:#ededed;">MHS</a>
+    <a href="https://erp.uno/">ERP</a>
+    <a href="https://mail.erp.uno">MAIL</a>
+    <a href="#" style="background:#ededed;">MAIL</a>
 </nav><header>
-    <a href="https://github.com/erpuno/mail"><img src="https://openmoji.org/data/color/svg/2709.svg" /></a>
-    <h1>MHS</h1>
+    <a href="../index.html"><img src="https://openmoji.org/data/color/svg/2709.svg" /></a>
+    <h1>MAIL</h1>
 </header><aside>
     <article>
         <section>
             <h3>SYNOPSIS</h3>
 
-        <div>Open source lightweight Messaging Handling Service (MHS X.419)
-             and Interpersonal Messaging System (IPMS X.420).
-             MHS was a very open system, it was popular in the
-             early 1990s as a glue between proprietary
-             email systems, competing standards-based SMTP and X.400.
-             However, by 1996 it was clear that SMTP over the Internet
-             would take over this role. However MHS/IPMS is a faster
-             and has more telecomunication flavour than SMTP track of standards.
-             Now MHS is used in avionics and in Military Message Handling
-             System (MMHS, RFC 6477).</div><br>
+        <div>MAIL is Sokhatsky Messanger v0 for WebSocket connectivity and Elixir/OTP
+             Mnesia persistent storage. It uses simple ASN.1 defined MAIL protocol,
+             and implemented in 100 LOC.</div><br>
 
         <figure>
-        <code> $ wscat mail.erp.uno</code>
+        <code> $ wscat -c ws://localhost:8043/text</code>
         </figure>
         </section>
         <section>
-            <h3>SERVERS</h3>
-            <div><ul><li><a href="man/ms.htm">MS</a></li>
-                     <li><a href="man/mts.htm">MTS</a></li>
-                     <li><a href="man/mta.htm">MTA</a></li>
-                     <li><a href="man/mail.htm">MAIL</a></li>
-                     <li><a href="man/ipms.htm">IPMS</a></li></ul></div>
+            <h3>MODULES</h3>
+            <div><ul><li><a href="#">TEXT</a></li>
+                     <li><a href="#">BERT</a></li>
+                     <li><a href="#">APPLICATION</a></li>
+                     <li><a href="#">WEBSOCKET</a></li>
+                     <li><a href="#">MAIL</a></li></ul></div>
             <br />
             <div>
-                VER 7.8.1 2023 © <a href="https://github.com/5HT">5HT</a> DHARMA<br />
+                VER 9.1.1 2026 © <a href="https://github.com/5HT">5HT</a> DHARMA<br />
             </div>
         </section>
         <section>
@@ -47,28 +41,102 @@
     </article>
 </aside><main>
     <section>
-     <h3>MTA</h3>
-     <h4>MTSE</h4>
-     <h4>RTSE</h4>
-     <h4>ACSE</h4>
-    </section>
-    <section>
-     <h3>MS</h3>
-     <h4>MSSE</h4>
-     <h4>MRSE</h4>
-     <h4>MASE</h4>
-    </section>
-    <section>
-     <h3>MTS</h3>
-     <h4>MSSE</h4>
-     <h4>MDSE-94</h4>
-     <h4>MASE-94</h4>
-    </section>
-    <section>
-     <h3>IPMS</h3>
-     <h4>IPMS</h4>
-     <h4>MAO</h4>
+
+<h3>INTRO</h3>
+
+<p>MAIL is a lightweight Message Delivery Service implemented as Elixir Erlang/OTP
+   applications with Mnesia database and WebSocket text command line interface.</p>
+
+   <figure><code>
+ $ cat MAIL.asn1
+
+MAIL DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+    P2P ::= SEQUENCE { dst OCTET STRING }
+    MUC ::= SEQUENCE { dst OCTET STRING }
+    Adr ::= SEQUENCE { src OCTET STRING,
+                       dst CHOICE { muc [0] MUC,
+                                    p2p [1] P2P } }
+    Pub ::= SEQUENCE { key OCTET STRING, adr Adr,
+                       tag OCTET STRING, bin OCTET STRING }
+    Sub ::= SEQUENCE { key OCTET STRING, adr Adr }
+    Cut ::= SEQUENCE { id  OCTET STRING }
+    N2O ::= SEQUENCE { tok OCTET STRING }
+    Ack ::= SEQUENCE { lex OCTET STRING }
+    Nak ::= SEQUENCE { key OCTET STRING }
+    Msg ::=   CHOICE { n2o [0] N2O,
+                       ack [1] Ack,
+                       nak [2] Nak,
+                       pub [3] Pub,
+                       sub [4] Sub,
+                       cut [5] Cut }
+
+END
+   </code></figure>
+
+   <figure><code>
+ $ mix deps.get
+ $ iex -S mix
+
+ > application:which_applications().
+ [{mail,"MAIL IPMS MHS Protocol","3.4"},
+  {syn,"SYN pub/sub", "1.5.0"},
+  {sh,"SH EXE REM SEC","3.5"},
+  {rocksdb,"RocksDB for Erlang","1.0.0"},
+  {mad,"MAD Manage Dependencies","5.4"},
+  {ssl,"Erlang/OTP SSL application","9.2.1"},
+  {cowlib,"COWLIB Web protocols.","2.6.0"},
+  {n2o,"N2O DAS MQTT TCP WebSocket","6.4"},
+  {kvs,"KVS Abstract Chain Database","6.4"},
+  {mnesia,"MNESIA  CXC 138 12","4.15.6"},
+  {public_key,"Public key infrastructure","1.6.5"},
+  {crypto,"CRYPTO","4.4.1"},
+  {asn1,"The Erlang ASN1 compiler version 5.0.8","5.0.8"},
+  {stdlib,"ERTS  CXC 138 10","3.8.1"},
+  {kernel,"ERTS  CXC 138 10","6.3.1"}]
+   </code></figure>
+
+   <figure><code>
+ $ wscat -c ws://localhost:8043/text
+
+ > HELP
+ &lt; AUTH &lt;user&gt;
+ | SEND &lt;user&gt; &lt;msg&gt;
+ | BOX
+ | CUT &lt;id&gt;.
+ > AUTH buddha
+ &lt; USER buddha
+ > SEND rocco HELO
+ &lt; ERROR user doesn't exist.
+ > AUTH rocco
+ &lt; USER rocco
+ > SEND buddha OK
+ &lt; NOTIFY rocco:buddha:1556151953113322286:OK
+ &lt; ACK "1556151953113322286"
+ > AUTH buddha
+ &lt; USER buddha
+ > BOX
+ &lt; LIST
+ rocco:buddha:1556151953113322286:OK
+ > SEND buddha this is me
+ &lt; NOTIFY buddha:buddha:1556152151055371152:this is me
+ &lt; ACK "1556152151055371152"
+ > SEND buddha back again
+ &lt; NOTIFY buddha:buddha:1556152157283311935:back again
+ &lt; ACK "1556152157283311935"
+ > BOX
+ &lt; LIST
+ rocco:buddha:1556151953113322286:OK
+ buddha:buddha:1556152151055371152:this is me
+ buddha:buddha:1556152157283311935:back again
+ > CUT 1556152157283311935
+ &lt; ERASED 3
+ > BOX
+ &lt; LIST
+ >
+   </code></figure>
+
     </section>
 </main><footer>
-    Made with <span class="heart">❤</span> to N2O
+    2023—2026 © Synrc Research Center
 </footer></body></html>

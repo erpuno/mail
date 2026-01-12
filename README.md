@@ -1,16 +1,21 @@
 SYNRC ✉️ MAIL
 =============
 
-MAIL is an oppen source lightweight Messaging Handling Service (MHS X.419)
-and Interpersonal Messaging System (IPMS X.420).
-MHS was a very open system, it was popular in the
-early 1990s as a glue between proprietary
-email systems, competing standards-based SMTP and X.400.
-However, by 1996 it was clear that SMTP over the Internet
-would take over this role. However MHS/IPMS is a faster
-and has more telecomunication flavour than SMTP track of standards.
-Now MHS is used in avionics and in Military Message Handling
-System (MMHS, RFC 6477).
+Оскільки всі мої чат месанжери виявились надзвичайно складними для навчальних потреб,
+я створив v0 версію Чат Месанжера Сохацького, яка називається MAIL і призначена у
+якості дидактичного матеріалу для курсу по теорії масового обслуговування,
+на якій побудована телекомунікаційна платформа Erlang від Ericsson. Ця версія займає
+100 рядків, використовує таку саму базу даних як WhatsApp (mnesia), а також пропонує
+текстовий протокол для взаємодії через WebSockets. Після цього можна переходити до v1
+версії мультікаст безсерверного месанжера, яка називається MESSAGE.
+
+```
+$ mix deps.get
+$ iex -S mix
+```
+
+```
+```
 
 Credits
 -------
