@@ -19,7 +19,7 @@ defmodule MAIL.Mixfile do
 
   def package do
       [
-        files: ~w(include lib priv src LICENSE mix.exs README.md),
+        files: ~w(lib priv src LICENSE mix.exs README.md),
         licenses: ["ISC"],
         maintainers: ["Namdak Tonpa"],
         name: :mail420,

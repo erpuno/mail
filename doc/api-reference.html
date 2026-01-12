@@ -4,140 +4,186 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.20.2">
-    <meta name="project" content="chat v5.11.1">
-    <title>API Reference — chat v5.11.1</title>
-    <link rel="stylesheet" href="dist/html-d9f58a6320b5bfa6dd77.css" />
-      <link rel="canonical" href="https://hexdocs.pm/chat/api-reference.html" />
-    <script src="dist/sidebar_items-ed5fc61e7f.js"></script>
-      <script src="docs_config.js"></script>
-    <script async src="dist/html-d9f58a6320b5bfa6dd77.js"></script>
-  </head>
-  <body data-type="extras">
-    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
-<div class="main">
+    <meta name="generator" content="ExDoc v0.39.3">
+    <meta name="project" content="mail v9.1.0">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+
+    <title>API Reference — mail v9.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-VYWJUHZE.css" />
+
+    <script defer src="dist/sidebar_items-97F96588.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-XBCM4BHM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button">
-      <span class="icon-search" aria-hidden="true"></span>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button">
-      <span class="icon-cross" title="Cancel search"></span>
-    </button>
-    <label class="search-label">
-      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
-    </label>
-  </form>
-
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
-    <div class="sidebar-projectDetails">
-      <a href="api-reference.html" class="sidebar-projectName">
-chat      </a>
-      <h2 class="sidebar-projectVersion">
-        v5.11.1
-      </h2>
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="api-reference.html" class="sidebar-projectName" translate="no">
+mail
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v9.1.0
+        </div>
+      </div>
     </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-extra" id="main" data-type="extras">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of mail</span>
+            <div class="search-input-wrapper">
+              <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+                <i class="ri-close-line ri-lg" title="Cancel search"></i>
+              </button>
+            </div>
+          </label>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <div class="engine-selector" data-multiple="false">
+          <button type="button" class="engine-button" aria-label="Select search engine" aria-haspopup="true" aria-expanded="false">
+            <i class="ri-search-2-line" aria-hidden="true"></i>
+            <span class="engine-name">Default</span>
+            <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+          </button>
+          <div class="engine-dropdown" hidden role="menu">
+
+              <button type="button"
+                      class="engine-option"
+                      data-engine-url="search.html?q="
+                      role="menuitemradio"
+                      aria-checked="true">
+                <span class="name">Default</span>
+                <span class="help">In-browser search</span>
+              </button>
+
+          </div>
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>API Reference <small class="app-vsn">mail v#9.1.0</small></h1>
+
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list" href="#full-list">Pages</a></li>
-
-      <li><a id="modules-list" href="#full-list">Modules</a></li>
-
-
-  </ul>
-  <div class="gradient"></div>
-  <ul id="full-list" class="sidebar-fullList"></ul>
-</section>
-
-<section class="content">
-  <div class="content-outer">
-    <div id="content" class="content-inner">
-
-<h1>
-  <small class="app-vsn">chat v5.11.1</small>
-  API Reference
-</h1>
-
-  <section class="details-list">
-    <h2 id="modules" class="section-heading">
-  <a href="#modules" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
-  Modules
-</h2>
-
-    <div class="summary">
+    <section class="details-list">
+      <h2 id="modules" class="section-heading">Modules</h2>
+      <div class="summary">
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="CHAT.html">CHAT</a>
+    <a href="MAIL.html" translate="no">MAIL</a>
+
   </div>
-    <div class="summary-synopsis"><p>
-<a href="#content"><code class="inline">CHAT</code></a> is the front API module for application.
+
+    <div class="summary-synopsis"><p><a href="MAIL.html"><code class="inline">MAIL</code></a> is the front API module for application.
 It provides records defititions, KVS mentainformation and useful functions.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="CHAT.Application.html">CHAT.Application</a>
+    <a href="MAIL.Application.html" translate="no">MAIL.Application</a>
+
   </div>
-    <div class="summary-synopsis"><p>
-<a href="#content"><code class="inline">CHAT.Application</code></a> is an
+
+    <div class="summary-synopsis"><p><a href="MAIL.Application.html"><code class="inline">MAIL.Application</code></a> is an
 <code class="inline">Erlang/OTP</code> application powered by N2O messaging protocol.
 It is implemented as a ring of protocol nodes.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="CHAT.Server.html">CHAT.Server</a>
+    <a href="MAIL.Server.html" translate="no">MAIL.Server</a>
+
   </div>
-    <div class="summary-synopsis"><p>
-The <a href="#content"><code class="inline">CHAT.Server</code></a> is a ring node implemented as <code class="inline">:n2o_pi</code>
+
+    <div class="summary-synopsis"><p>The <a href="MAIL.Server.html"><code class="inline">MAIL.Server</code></a> is a ring node implemented as <code class="inline">:n2o_pi</code>
 worker that handle all the incoming requests though hash function and
 implements RPC over MQ pattern. It suports both SYN and GPROC message buses (QoS=0). </p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="CHAT.TXT.html">CHAT.TXT</a>
+    <a href="MAIL.TXT.html" translate="no">MAIL.TXT</a>
+
   </div>
-    <div class="summary-synopsis"><p>
-<a href="#content"><code class="inline">CHAT.TXT</code></a> is a WebSocket client interface and client
+
+    <div class="summary-synopsis"><p><a href="MAIL.TXT.html"><code class="inline">MAIL.TXT</code></a> is a WebSocket client interface and client
 socket protocol (session level) representation and
 textual protocol termination.</p></div>
+
 </div>
-    </div>
-  </section>
+
+      </div>
+    </section>
 
 
-      <footer class="footer">
+</div>
+    <footer class="footer">
+
         <p>
+
+            <span class="line">
+              <a href="https://hex.pm/packages/mail420/9.1.0" class="footer-hex-package">Hex Package</a>
+
+              <a href="https://preview.hex.pm/preview/mail420/9.1.0">Hex Preview</a>
+
+            </span>
+
           <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.20.2),
-          </span>
-          <span class="line">
-            designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            <button class="a-main footer-button display-quick-switch" title="Go to package docs">
+              Go to package docs
+            </button>
+
+              <a href="mail.epub" title="ePub version">
+                Download ePub version
+              </a>
+
           </span>
         </p>
-        <p>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
+
+        <p class="built-using">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.39.3) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
-      </footer>
-    </div>
+
+
+    </footer>
   </div>
-</section>
+</main>
 </div>
+
   </body>
 </html>
