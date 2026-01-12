@@ -15,7 +15,7 @@ $ iex -S mix
 ```
 
 ```
-5HT@mac$ wscat -c ws://localhost:8043/text
+$ wscat -c ws://localhost:8043/text
 Connected (press CTRL+C to quit)
 > AUTH maxim
 < USER maxim
