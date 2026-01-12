@@ -1,7 +1,7 @@
-SYNRC ✉️ MHS
+SYNRC ✉️ MAIL
 =============
 
-Open source lightweight Messaging Handling Service (MHS X.419)
+MAIL is an oppen source lightweight Messaging Handling Service (MHS X.419)
 and Interpersonal Messaging System (IPMS X.420).
 MHS was a very open system, it was popular in the
 early 1990s as a glue between proprietary
