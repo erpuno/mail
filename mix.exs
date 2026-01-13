@@ -7,13 +7,14 @@ defmodule MAIL.Mixfile do
         version: "9.1.1",
         description: "MAIL Simple Message Delivery Protocol",
         package: package(),
-        deps: deps()
+        deps: deps(),
+        releases: [mail: [include_executables_for: [:unix], cookie: "SYNRC:MAIL"]]
       ]
   end
 
   def application do
       [ mod: { MAIL.Application, [] },
-        extra_applications: [ :syn, :n2o, :kvs ]
+        extra_applications: [ :syn, :n2o, :mnesia, :kvs ]
       ]
   end
 

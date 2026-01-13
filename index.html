@@ -9,8 +9,8 @@
     <a href="https://mail.erp.uno">MAIL</a>
     <a href="#" style="background:#ededed;">MAIL</a>
 </nav><header>
-    <!--a href="../index.html"><img src="https://openmoji.org/data/color/svg/2709.svg" /></a MESSAGE -->
-    <a href="../index.html"><img src="https://openmoji.org/data/color/svg/1F4EB.svg" /></a>
+    <!--a href="https://github.com/zencrypted/message"><img src="https://openmoji.org/data/color/svg/2709.svg"/></a-->
+    <a href="https://github.com/erpuno/mail"><img src="https://openmoji.org/data/color/svg/1F4EB.svg" /></a>
     <h1>MAIL</h1>
 </header><aside>
     <article>
@@ -79,22 +79,35 @@
  $ mix deps.get
  $ iex -S mix
 
- > application:which_applications().
- [{mail,"MAIL IPMS MHS Protocol","3.4"},
-  {syn,"SYN pub/sub", "1.5.0"},
-  {sh,"SH EXE REM SEC","3.5"},
-  {rocksdb,"RocksDB for Erlang","1.0.0"},
-  {mad,"MAD Manage Dependencies","5.4"},
-  {ssl,"Erlang/OTP SSL application","9.2.1"},
-  {cowlib,"COWLIB Web protocols.","2.6.0"},
-  {n2o,"N2O DAS MQTT TCP WebSocket","6.4"},
-  {kvs,"KVS Abstract Chain Database","6.4"},
-  {mnesia,"MNESIA  CXC 138 12","4.15.6"},
-  {public_key,"Public key infrastructure","1.6.5"},
-  {crypto,"CRYPTO","4.4.1"},
-  {asn1,"The Erlang ASN1 compiler version 5.0.8","5.0.8"},
-  {stdlib,"ERTS  CXC 138 10","3.8.1"},
-  {kernel,"ERTS  CXC 138 10","6.3.1"}]
+[
+  {:iex, ~c"iex", ~c"1.18.4"},
+  {:mail, ~c"MAIL Simple Message Delivery Protocol", ~c"9.1.1"},
+  {:websock_adapter, ~c"A set of WebSock adapters for common web servers", ~c"0.5.9"},
+  {:syn, ~c"A global Process Registry and Process Group manager.", ~c"2.1.4"},
+  {:n2o, ~c"N2O MQTT TCP WebSocket", ~c"10.8.2"},
+  {:xmerl, ~c"XML parser", ~c"2.1.5"},
+  {:kvs, ~c"KVS Abstract Chain Database", ~c"10.8.3"},
+  {:mnesia, ~c"MNESIA  CXC 138 12", ~c"4.24"},
+  {:bandit, ~c"A pure-Elixir HTTP server built for Plug & WebSock apps", ~c"1.10.1"},
+  {:websock, ~c"A specification for WebSocket connections", ~c"0.5.3"},
+  {:thousand_island, ~c"A simple & modern pure Elixir socket server", ~c"1.4.3"},
+  {:ssl, ~c"Erlang/OTP SSL application", ~c"11.3.2"},
+  {:public_key, ~c"Public key infrastructure", ~c"1.18.2"},
+  {:asn1, ~c"The Erlang ASN1 compiler version 5.4.1", ~c"5.4.1"},
+  {:plug, ~c"Compose web applications with functions", ~c"1.19.1"},
+  {:telemetry, ~c"Dynamic dispatching library for metrics and instrumentations", ~c"1.3.0"},
+  {:plug_crypto, ~c"Crypto-related functionality for the web", ~c"2.1.1"},
+  {:crypto, ~c"CRYPTO", ~c"5.6"},
+  {:mime, ~c"A MIME type module for Elixir", ~c"2.0.7"},
+  {:eex, ~c"eex", ~c"1.18.4"},
+  {:logger, ~c"logger", ~c"1.18.4"},
+  {:hpax, ~c"Implementation of the HPACK protocol (RFC 7541) for Elixir", ~c"1.0.3"},
+  {:sasl, ~c"SASL  CXC 138 11", ~c"4.3"},
+  {:elixir, ~c"elixir", ~c"1.18.4"},
+  {:compiler, ~c"ERTS  CXC 138 10", ~c"9.0.1"},
+  {:stdlib, ~c"ERTS  CXC 138 10", ~c"7.0.2"},
+  {:kernel, ~c"ERTS  CXC 138 10", ~c"10.3.2"}
+]
    </code></figure>
 
    <figure><code>
