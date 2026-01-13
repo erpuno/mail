@@ -4,7 +4,7 @@ defmodule MAIL.Mixfile do
   def project do
       [
         app: :mail,
-        version: "9.1.1",
+        version: "9.1.2",
         description: "MAIL Simple Message Delivery Protocol",
         package: package(),
         deps: deps(),
@@ -31,6 +31,7 @@ defmodule MAIL.Mixfile do
   def deps do
       [
         {:ex_doc, ">= 0.0.0", only: :dev},
+        {:telemetry, "~> 1.3.0"},
         {:bandit, "~> 1.0"},
         {:websock_adapter, "~> 0.5"},
         {:syn, "~> 2.1.1"},
