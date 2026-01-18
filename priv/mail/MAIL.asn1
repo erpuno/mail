@@ -1,12 +1,10 @@
 MAIL DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
     Adr ::= SEQUENCE { src OCTET STRING, dst CHOICE { muc [0] OCTET STRING, p2p [1] OCTET STRING } }
-    Pub ::= SEQUENCE { key OCTET STRING, adr Adr, tag OCTET STRING, bin OCTET STRING }
-    Sub ::= SEQUENCE { key OCTET STRING, adr Adr }
-    Cut ::= SEQUENCE { id  OCTET STRING }
-    N2O ::= SEQUENCE { tok OCTET STRING }
     Ack ::= SEQUENCE { lex OCTET STRING }
-    Msg ::=   CHOICE { n2o [0] N2O, ack [1] Ack,
-                       pub [3] Pub, sub [4] Sub, cut [5] Cut }
+    Auth ::= SEQUENCE { tok OCTET STRING }
+    Cut ::= SEQUENCE { id  OCTET STRING }
+    Message ::= SEQUENCE { key OCTET STRING, adr Adr, tag OCTET STRING, bin OCTET STRING }
+    MAILMessage ::= CHOICE { ack [0] Ack, n2o [1] Auth, cut [4] Cut, pub [3] Message }
 
 END
