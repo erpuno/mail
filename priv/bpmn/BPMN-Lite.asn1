@@ -1,0 +1,184 @@
+-- BPMN-lite ASN.1 schema inspired by your Erlang records
+-- Module name suggestion: BPMN-Lite-Execution
+
+BPMN-Lite DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+-- Basic types
+ProcId          ::= CHOICE {
+    null        NULL,
+    integer     INTEGER,
+    oid         OBJECT IDENTIFIER,      -- for composite {atom(),any()}
+    string      UTF8String
+}
+
+TimeStamp       ::= SEQUENCE {
+    time        CHOICE {                -- your term() placeholder
+        utc         UTCTime,            -- common choice
+        generalized GeneralizedTime,
+        opaque      OCTET STRING,       -- arbitrary term serialized
+        ...                             -- extensibility
+    }
+}
+
+-- Sequence Flow (core routing element)
+SequenceFlow    ::= SEQUENCE {
+    name        CHOICE { null NULL, value UTF8String } OPTIONAL,
+    condition   CHOICE { null NULL, expr UTF8String } OPTIONAL,  -- expression/script
+    source      CHOICE { null NULL, ref OCTET STRING } OPTIONAL, -- usually node id
+    target      CHOICE {
+        single      OCTET STRING,
+        multiple    SEQUENCE OF OCTET STRING
+    } OPTIONAL,
+    ...
+}
+
+-- Generic Task/Event fields (shared)
+TaskFields      ::= SEQUENCE {
+    id          OCTET STRING,           -- unique within process
+    name        UTF8String OPTIONAL,
+    proc        OCTET STRING OPTIONAL,  -- process / subprocess id
+    type        TaskType OPTIONAL,
+    ...
+}
+
+TaskType        ::= ENUMERATED {
+    task            (0),
+    userTask        (1),
+    serviceTask     (2),
+    receiveTask     (3),
+    sendTask        (4),
+    beginEvent      (5),
+    endEvent        (6),
+    gateway         (7),
+    ...
+}
+
+-- Gateways
+GatewayType     ::= ENUMERATED {
+    exclusive       (0),
+    parallel        (1),
+    inclusive       (2),
+    complex         (3),
+    eventBased      (4),
+    ...
+}
+
+-- Polymorphic FlowNode (tasks + events + gateways)
+FlowNode        ::= CHOICE {
+    simpleTask      SEQUENCE {
+        TaskFields,
+        -- nothing extra
+        ...
+    },
+    userTask        SEQUENCE {
+        TaskFields,
+        assignee    UTF8String OPTIONAL,    -- role/user
+        ...
+    },
+    serviceTask     SEQUENCE {
+        TaskFields,
+        implementation  UTF8String OPTIONAL, -- class/script/uri
+        ...
+    },
+    receiveTask     SEQUENCE {
+        TaskFields,
+        -- reader=[] :: #reader{}  → placeholder
+        messageRef  OCTET STRING OPTIONAL,
+        ...
+    },
+    sendTask        SEQUENCE {
+        TaskFields,
+        -- writer=[] :: #writer{}
+        messageRef  OCTET STRING OPTIONAL,
+        ...
+    },
+    gateway         SEQUENCE {
+        TaskFields,
+        gatewayType GatewayType DEFAULT parallel,
+        filler      SEQUENCE OF OCTET STRING OPTIONAL,  -- gateways can have extra
+        ...
+    },
+    messageEvent    SEQUENCE {
+        TaskFields,
+        messageRef  OCTET STRING OPTIONAL,
+        ...
+    },
+    boundaryEvent   SEQUENCE {
+        TaskFields,
+        attachedTo  OCTET STRING OPTIONAL,
+        interrupt   BOOLEAN DEFAULT TRUE,
+        ...
+    },
+    timeoutEvent    SEQUENCE {
+        TaskFields,
+        timeoutSpec CHOICE { duration UTF8String, cron UTF8String, opaque OCTET STRING },
+        cyclic      BOOLEAN DEFAULT FALSE,
+        ...
+    },
+    ...
+}
+
+-- History entry
+HistoryEntry    ::= SEQUENCE {
+    id          CHOICE { null NULL, step Step },
+    name        CHOICE { null NULL, value UTF8String },
+    task        CHOICE { null NULL, type TaskType },
+    docs        SEQUENCE OF DocumentRef OPTIONAL,
+    time        CHOICE { null NULL, ts TimeStamp },
+    ...
+}
+
+DocumentRef     ::= SEQUENCE {              -- tuple placeholder
+    type        UTF8String OPTIONAL,
+    id          OCTET STRING,
+    ...
+}
+
+-- Step (used in sched & hist)
+Step            ::= SEQUENCE {
+    id          INTEGER DEFAULT 0,
+    proc        UTF8String DEFAULT "",
+    ...
+}
+
+-- Scheduler state
+Scheduler       ::= SEQUENCE {
+    id          CHOICE { null NULL, step Step },
+    pointer     INTEGER DEFAULT -1,
+    state       SEQUENCE OF SequenceFlow OPTIONAL,
+    ...
+}
+
+-- Main Process Instance
+ProcessInstance ::= SEQUENCE {
+    id          ProcId,
+    name        CHOICE { null NULL, value UTF8String },
+    feeds       SEQUENCE OF OCTET STRING OPTIONAL,      -- feeds=[]
+    roles       SEQUENCE OF UTF8String OPTIONAL,
+    tasks       SEQUENCE OF FlowNode OPTIONAL,          -- runtime nodes
+    events      SEQUENCE OF FlowNode OPTIONAL,          -- if separate
+    flows       SEQUENCE OF SequenceFlow,
+    rules       CHOICE { null NULL, opaque OCTET STRING } OPTIONAL,
+    docs        SEQUENCE OF DocumentRef OPTIONAL,
+    options     CHOICE { null NULL, opaque OCTET STRING } OPTIONAL,
+    taskState   CHOICE { null NULL, value TaskType } DEFAULT created,
+    timer       CHOICE { null NULL, ref OCTET STRING } OPTIONAL,  -- reference()
+    notifications CHOICE { null NULL, opaque OCTET STRING } OPTIONAL,
+    result      CHOICE { null NULL, value OCTET STRING } OPTIONAL,
+    started     CHOICE { null NULL, ts TimeStamp },
+    beginEvent  CHOICE { null NULL, type TaskType },
+    endEvent    CHOICE { null NULL, type TaskType },
+    ...
+}
+
+-- SubProcess (embedded process)
+SubProcess      ::= SEQUENCE {
+    name        CHOICE { null NULL, value OCTET STRING },
+    diagram     ProcessInstance,                        -- recursive
+    ...
+}
+
+-- Top-level types you may want to export
+EXPORTS ProcessInstance, HistoryEntry, Scheduler, FlowNode, SequenceFlow, SubProcess;
+
+END

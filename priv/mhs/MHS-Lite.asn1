@@ -1,0 +1,114 @@
+-- MHS-Lite.asn1
+-- Simplified Message Handling System ASN.1 for BPMN-driven CRM Mailboxes
+-- Inspired by X.400 (X.411 P1 envelope + X.420 P2 IPM), but lightweight
+-- For use with SMTP/POP3 transport or custom СЕВ
+
+MHS-Lite DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+-- Basic reusable types
+ORAddress       ::= SEQUENCE {                  -- Simplified X.400-style O/R address
+    org         UTF8String OPTIONAL,            -- ORGANIZATION
+    branch      UTF8String OPTIONAL,            -- BRANCH
+    employee    UTF8String OPTIONAL,            -- EMPLOYEE / PERSON
+    role        UTF8String OPTIONAL,            -- ROLE
+    position    UTF8String OPTIONAL,            -- POSITION
+    location    UTF8String OPTIONAL,            -- LOCATION / PLACE
+    address     UTF8String OPTIONAL,            -- ADDRESS fallback
+    ...                                         -- extensibility
+}
+
+Priority        ::= ENUMERATED {
+    urgent      (0),
+    normal      (1),
+    nonUrgent   (2),
+    ...
+}
+
+TraceInfo       ::= SEQUENCE {
+    mta         UTF8String,                     -- MTA / agent name
+    time        UTCTime,
+    action      ENUMERATED { received(0), relayed(1), delivered(2), ... }
+}
+
+Recipient       ::= SEQUENCE {
+    address     ORAddress,
+    perRecipientExtensions SEQUENCE OF OCTET STRING OPTIONAL,  -- e.g. ABAC tags
+    ...
+}
+
+BodyPartType    ::= OBJECT IDENTIFIER
+
+BodyPart        ::= CHOICE {
+    ia5Text         IA5String,                  -- simple text
+    utf8Text        UTF8String,
+    binary          OCTET STRING,               -- attachments/files
+    structured      ANY,                        -- e.g. BPMN task, DOCUMENT ASN.1
+    external        EXTERNAL,                   -- reference to FILEDESC / external doc
+    ...
+}
+
+-- Main message envelope (like P1 + P2 simplified)
+MessageEnvelope ::= SEQUENCE {
+    messageId       OCTET STRING,               -- unique global id
+    originator      ORAddress,
+    recipients      SEQUENCE OF Recipient,
+    trace           SEQUENCE OF TraceInfo OPTIONAL,
+    priority        Priority DEFAULT normal,
+    subject         UTF8String OPTIONAL,
+    timestamp       UTCTime,
+    -- BPMN/CRM extensions
+    processRef      OCTET STRING OPTIONAL,      -- link to BPMN #process.id
+    taskRef         OCTET STRING OPTIONAL,      -- link to task/step id
+    templateType    ENUMERATED {                -- your ШАБЛОНИ
+        letter      (0),
+        blank       (1),
+        memo        (2),
+        reply       (3),
+        ...
+    } OPTIONAL,
+    securityLabel   OCTET STRING OPTIONAL,      -- ABAC / ROLE-based
+    notifications   BOOLEAN DEFAULT FALSE,      -- request read/delivery receipt
+    ...                                         -- extensibility
+}
+
+-- Content (like IPM heading + body parts)
+MessageContent  ::= SEQUENCE {
+    heading         SEQUENCE {
+        subject         UTF8String OPTIONAL,
+        replyTo         ORAddress OPTIONAL,
+        importance      ENUMERATED { low(0), normal(1), high(2) } OPTIONAL,
+        keywords        SEQUENCE OF UTF8String OPTIONAL,
+        ...
+    } OPTIONAL,
+    body            SEQUENCE OF BodyPart,
+    attachments     SEQUENCE OF BodyPart OPTIONAL,  -- explicit ATTACH / FILES
+    ...
+}
+
+-- Full message (envelope + content) — what gets sent/received
+MHSMessage      ::= SEQUENCE {
+    envelope        MessageEnvelope,
+    content         MessageContent,
+    ...
+}
+
+-- Delivery / receipt report (simplified)
+DeliveryReport  ::= SEQUENCE {
+    messageId       OCTET STRING,
+    recipient       ORAddress,
+    status          ENUMERATED {
+        delivered       (0),
+        nonDelivered    (1),
+        forwarded       (2),
+        read            (3),
+        ...
+    },
+    time            UTCTime,
+    reason          UTF8String OPTIONAL,
+    ...
+}
+
+-- Top-level exports
+EXPORTS MHSMessage, MessageEnvelope, ORAddress, DeliveryReport;
+
+END
